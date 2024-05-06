@@ -1,0 +1,2 @@
+launch app :
+npm run dev
