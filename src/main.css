@@ -54,7 +54,7 @@
 
 @font-face {
     font-family: 'Trajan';
-    src: url('../font/TrajanPro-Regular.woff') format('woff');
+    src: url('./font/TrajanPro-Regular.woff') format('woff');
 }
 
 a {
@@ -145,7 +145,8 @@ p {
 .news {
     background-color: white;
     border-radius: 10px;
-    min-width: 250px;
+    max-width: 320px;
+    min-width: 200px;
     margin: 20px;
     padding: 10px;
 
