@@ -1,21 +1,29 @@
 import ConfigSession from './ConfigSession.js';
 import Session from './Session.js';
+import EndSession from './EndSession.js';
 import { host } from "../Config/Config.js";
 
 export default {
-    components: {ConfigSession,Session},
+    components: {ConfigSession,Session, EndSession},
 
     template: `
     <component :is="configSession" v-if="configSession" @generateSession="handleSession" >
 </component>
-<component :is="session" v-if="session"  :sessionGameData="sessionGameData"></component>
+<component 
+:is="session" v-if="session"  
+:sessionGameData="sessionGameData" 
+@generateEndSession="handleEndSession">
+</component>
+<component :is="endSession" v-if="endSession" :result="result"></component>
     `,
 
     data() {
         return {
             sessionGameData: [],
             session: null,
-            configSession : ConfigSession
+            endSession: null,
+            configSession : ConfigSession,
+            result: null
         }
     },
 
@@ -31,6 +39,13 @@ export default {
                 });
             this.configSession = null;
             this.session = Session;
-          }
+          },
+
+        handleEndSession(result) {
+            console.log("rzqr");
+             this.session = null;
+             this.endSession = EndSession;
+             this.result = result;
+           }
     }
 }
