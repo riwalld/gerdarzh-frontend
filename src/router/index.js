@@ -5,6 +5,7 @@ import Wordstems from "../components/Wordstems/Wordstems.js";
 import ProperNouns from "../components/Propernouns/ProperNouns.js";
 import NotImplemented from "../components/Profile/NotImplemented.js";
 import Home from "../components/Home/Home.js";
+import Game from '../components/Game/GameRoot.js';
 
 const routes = [
   {
@@ -26,7 +27,7 @@ const routes = [
   {
     path: '/sessionGame',
     name: 'SessionGame',
-    component: NotImplemented
+    component: Game
   },
   {
     path: '/leaderboard',
