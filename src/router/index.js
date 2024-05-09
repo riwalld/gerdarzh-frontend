@@ -1,6 +1,6 @@
 
 
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { createWebHistory, createRouter } from 'vue-router'
 import Wordstems from "../components/Wordstems/Wordstems.js";
 import ProperNouns from "../components/Propernouns/ProperNouns.js";
 import NotImplemented from "../components/Profile/NotImplemented.js";
@@ -43,7 +43,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createMemoryHistory(),
+  history: createWebHistory(),
   routes,
 })
 
