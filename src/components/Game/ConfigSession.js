@@ -1,6 +1,10 @@
 export default {
     template: `
     <section class="quiz">
+    <h3>Principe du jeu</h3>
+    <p>Des noms d'origine celtique vont s'afficher succivement. Vous devrez alors trouver la signification littérale du nom.<br>
+    Les radicaux comosant le nom sont proposés comme aide, vous pouvez voir la traduction correspondante en cliquant dessus. <p>
+    <p>Bonne chance !</p>
 <h3>Choisissez un thème lexical:</h3>
 <div style="padding:30px">
 <button :class=styleBtn id="1" @click="setWordTheme(1)">Lieux et Pays</button>
@@ -25,7 +29,7 @@ export default {
             wordTheme: 0,
             styleSelectedBtn : "btn selected",
             styleBtn : "btn",
-            styleFrozenbtn : "btnfrozen"
+            styleFrozenbtn : "btn frozen"
         }
     },
     methods: {

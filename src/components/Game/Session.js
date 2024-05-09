@@ -34,12 +34,19 @@ export default {
         <div class="answersForm">
         <button class="btn"
         v-for="(responseChoice, index) in currentSessionStep.proposedLiteralTranslationList"
-        :style=setStyle(index)
+        :class="setStyle(index)"
         @click="selectResponse(index)"
         >{{responseChoice.responseChoice}}</button>
         </div>
-        <button class="btn" @click="verifyResponse()" v-if="selectedResponse > -1 && !done">Valider</button>
-        <button class="btn" @click="nextStep()" v-if="done">Suivant</button>
+        
+        <button 
+
+        :class="setValidateBtn()"
+        @click="selectedResponse > -1 ? verifyResponse() : null" v-if="!done"
+
+        >Valider</button>
+
+        <button class="btn validate" @click="nextStep" v-if="done">Suivant</button>
     </section>
     `,
 
@@ -50,43 +57,76 @@ export default {
     data() {
         return {
             currentSessionStep: null,
-            step: 12,
+            step: -1,
             score: 0,
             selectedResponse: -1,
             done: false,
             imageURL: null,
-            progressbarWidth: 0
+            progressbarWidth: 0,
+            //correctAudio : new Audio(require('@/sound/good_answer.mp3'))
         }
     },
 
     created() {
         this.nextStep();
+        document.addEventListener("keydown", (event) => {this.onPressEnter(event)})
     },
 
     methods: {
+
+        onPressEnter(event) {
+
+            if (event.key === "Enter") {
+                if (this.selectedResponse > -1) {
+                    if (!this.done) {
+                        this.verifyResponse();
+                    }
+                    else {
+                        this.nextStep();
+                    }
+
+                }
+            }
+        },
+
         nextStep() {
             this.step++;
             if(this.step < this.sessionGameData.length){
-            this.done = false;
-            this.selectedResponse = -1;
-            this.progressbarWidth = this.step * 6.6
-            this.currentSessionStep = this.sessionGameData[this.step];
-            import(`@/images/nouns/${this.currentSessionStep.properName.image}`)
-                .then(imageUrl => {
-                    this.imageURL = imageUrl.default;
-                })}
-                else {
-                    this.generateEndSession();
-                }
+                this.done = false;
+                this.selectedResponse = -1;
+                this.progressbarWidth = this.step * 6.6
+                this.currentSessionStep = this.sessionGameData[this.step];
+                import(`@/images/nouns/${this.currentSessionStep.properName.image}`)
+                    .then(imageUrl => {
+                        this.imageURL = imageUrl.default;
+                    })}
+            else {
+                this.generateEndSession();
+            }
         },
 
         setStyle(index) {
             if (index == this.selectedResponse) {
-                return {
-                    background: 'rgb(233, 224, 200)',
-                    color: '#111'
-                  };
+                if (this.done) {
+                    if (this.currentSessionStep.proposedLiteralTranslationList[this.selectedResponse].correctness == true) {
+                        return "correct";
+                    }
+                    else return "incorrect";
                 }
+                else return "selected";
+            }
+            else if (this.done) {
+                if (this.currentSessionStep.proposedLiteralTranslationList[index].correctness == true) {
+                    return "correct";
+                }
+            }
+        },
+
+        setValidateBtn() {
+            if (this.selectedResponse == -1) {
+                return "btn validate frozen";
+            }
+            else return "btn validate"
         },
 
         selectResponse(index) {
@@ -96,6 +136,7 @@ export default {
         verifyResponse() {
             if (this.currentSessionStep.proposedLiteralTranslationList[this.selectedResponse].correctness == true) {
                 this.score++;
+                //this.correctAudio.play();
             }
             this.done = true;
         },

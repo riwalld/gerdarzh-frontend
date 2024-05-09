@@ -4,7 +4,7 @@ export default {
     <section class="quiz">
 <h3>Votre score est de {{result}} sur 15</h3>
 <p>{{sentence}}</p>
-<div class="summary-btn"><router-link to="/sessionGame">Rejouer</router-link></div>
+<div class="summary-btn"><a :href="$router.resolve({name: 'SessionGame'}).href">Retourner au menu</a></div>
 </section>
     `,
 
@@ -13,13 +13,13 @@ export default {
     },
     data() {
         return {
-            sentence : null
+            sentence : null,
+            //audio : new Audio(require('@/sound/trumpet_fanfare.mp3'))
         }
     },
     created() {
-        console.log(this.result)
         if (this.result > 12) {
-
+trumpet_fanfare.mp3
             this.sentence = "Félicitions !"
         }
         else if(this.result > 9 && result < 13) {
@@ -27,6 +27,10 @@ export default {
         }
         else {
             this.sentence = "Encore quelques efforts !"
+            //this.audio.play();
         }
+    },
+    generateNewSession() {
+        this.$emit('generateNewSession', this.score);
     }
 }
