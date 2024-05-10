@@ -1,11 +1,11 @@
 
 
 import { createWebHistory, createRouter } from 'vue-router'
-import Wordstems from "../components/Wordstems/Wordstems.js";
-import ProperNouns from "../components/Propernouns/ProperNouns.js";
-import NotImplemented from "../components/Profile/NotImplemented.js";
-import Home from "../components/Home/Home.js";
-import Game from '../components/Game/GameRoot.js';
+import Wordstems from "../components/Wordstems/Wordstems.vue";
+import ProperNouns from "../components/Propernouns/ProperNouns.vue";
+import NotImplemented from "../components/Profile/NotImplemented.vue";
+import Home from "../components/Home/Home.vue";
+import Game from '../components/Game/GameRoot.vue';
 
 const routes = [
   {

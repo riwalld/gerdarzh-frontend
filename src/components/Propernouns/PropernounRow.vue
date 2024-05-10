@@ -1,7 +1,6 @@
-import { setLanguages } from "../Config/Config.js";
-export default {
-    template: `
-    <tr class="wstr">
+<template>
+
+<tr class="wstr">
     <td><b><a :href="'/entities/entree?nom='+ propernoun.currentName">
      {{propernoun.currentName}}
      </a></b></td>
@@ -10,6 +9,12 @@ export default {
      <td class="cell">{{propernoun.place}}</td>
      <td class="cell">{{propernoun.country}}</td>
      <td class="cell"></td></tr>
+</template>
+<script>
+import { setLanguages } from "../Config/Config.js";
+export default {
+    template: `
+    
     `,
 
     props: {
@@ -40,3 +45,4 @@ export default {
       }
     }
 }
+</script>
