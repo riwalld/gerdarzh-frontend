@@ -1,21 +1,32 @@
 {
-  "name": "vue3",
-  "version": "1.0.0",
-  "description": "vue3 learning",
-  "author": "",
+  "name": "testbuildvuelatest",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "start": "npx serve & npx json-server data/db.json -p 3001",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "vue-cli-service serve"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test:unit": "vitest",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "format": "prettier --write src/"
   },
-  "main": "index.js",
   "dependencies": {
-    "vue-router": "^4.3.2"
+    "uniq": "^1.0.1",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-router": "~5.0.0",
-    "@vue/cli-service": "^5.0.8",
-    "json-server": "^0.17.4"
-  },
-  "license": "ISC"
+    "@rushstack/eslint-patch": "^1.8.0",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "@vue/eslint-config-prettier": "^9.0.0",
+    "@vue/test-utils": "^2.4.5",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.23.0",
+    "jsdom": "^24.0.0",
+    "prettier": "^3.2.5",
+    "vite": "^5.2.8",
+    "vite-plugin-vue-images": "^0.6.1",
+    "vitest": "^1.4.0"
+  }
 }
