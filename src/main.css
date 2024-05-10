@@ -413,10 +413,65 @@ p {
     transition: all 0.3s;
 }
 
+.themebtn {
+    aspect-ratio: 7/1;
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, .5);
+    background-position: center right;
+    background-size: 630px;
+    color: rgb(220, 230, 250);
+    text-align: left;
+    font-size: x-large;
+    font-weight: 500;
+    max-width: 600px;
+    width: 80%;
+    min-width: 250px;
+    border: 1px solid #222;
+    padding: 15px;
+    padding-left: 40px;
+    margin: 7px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-shadow: 2px 2px 2px black;
+}
+
+.places {
+    background-image: url("./images/places_ico.jpg");
+}
+
+.historic {
+    background-image: url("./images/historic_ico.jpg");
+}
+
+.mythic {
+    background-image: url("./images/mythic_ico.jpg");
+}
+
+
+.tribes {
+    background-image: url("./images/tribes_ico.jpg");
+}
+
+.weapons {
+    background-image: url("./images/weapons_ico.jpg");
+}
+
+.themebtn:hover {
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0);
+}
+
+.themeSelected {
+
+    box-shadow: inset 0 0 0 1000px rgba(255, 255, 255, 0.1);
+    color: white;
+    max-width: 630px;
+    width: 86%;
+}
+
 .validate {
     margin: 40px;
     max-width: 130px;
-    font-weight:800;
+    font-weight: 800;
     height: 50px;
     border-radius: 20px;
     border: 2px solid #ffffff;
@@ -429,7 +484,7 @@ p {
     border: none;
     background: #b3b3b3;
     color: #e2e2e2;
-    cursor:default;
+    cursor: default;
     pointer-events: none;
 }
 
@@ -508,7 +563,7 @@ p {
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-#lottieSubmitted{
+#lottieSubmitted {
     left: 50%;
     text-align: center;
     display: none;
@@ -522,7 +577,7 @@ p {
     background-color: transparent;
 }
 
-.cell{
+.cell {
     padding: 15px;
 }
 
