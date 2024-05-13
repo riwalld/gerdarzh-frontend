@@ -1,4 +1,5 @@
-export const host = "http://ec2-16-171-253-51.eu-north-1.compute.amazonaws.com:8081"
+export const host = "http://ec2-51-20-9-64.eu-north-1.compute.amazonaws.com:8082"
+//export const host = "http://localhost:8082"
 export const pageSize = 10
 export const siteLanguage = 1
 
