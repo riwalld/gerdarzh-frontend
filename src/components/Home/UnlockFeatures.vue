@@ -5,7 +5,7 @@
         <div class="last-nouns">
             <div class="new-noon">
                 <div class="new-noon-img">
-                    <img src="../images/paris.jpg" width="150" height="150" border-radius="10" alt="Paris">
+                <a :href=paris><img :src=paris width="150" alt="rouen"></a>
                 </div>
                 <div class="new-noon-text">
                     <h3>Paris</h3>
@@ -24,8 +24,7 @@
         <div class="last-nouns">
             <div class="new-noon">
                 <div class="new-noon-img">
-                    <a href="../images/rouen.jpg"><img src="../images/rouen.jpg" width="150" height="150"
-                            border-radius="10" alt="Paris"></a>
+                <a :href=rouen><img :src=rouen width="150" alt="rouen"></a>
                 </div>
                 <div class="new-noon-text">
                     <h3>Rouen</h3>
@@ -41,3 +40,19 @@
         </div>
     </section>
 </template>
+
+<script>
+import Paris from '../../images/paris.jpg'
+import Rouen from '../../images/rouen.jpg'
+
+export default {
+    components: { Paris, Rouen },
+
+    data() {
+        return {
+            rouen: Rouen,
+            paris: Paris
+        }
+    }
+}
+</script>
