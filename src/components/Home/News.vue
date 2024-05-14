@@ -6,7 +6,7 @@
       <li>
         Une version "monolithique" type MVC avec le framewrk <b>Java Spring et JS natif</b>, accessible au port <span
           style="color: blue;"><b><u><a
-                href="http://ec2-51-20-9-64.eu-north-1.compute.amazonaws.com:8081/">:8081</a></u></b></span></li>
+                href="http://ec2-13-50-16-65.eu-north-1.compute.amazonaws.com:8081/">:8081</a></u></b></span></li>
       <li>Une version "multi-tiers" de type MVVM avec le framework back-end <b>Python Django</b>, (port <span
           style="color: blue;"><b><u><a
                 href="http://ec2-51-20-9-64.eu-north-1.compute.amazonaws.com:8082/">:8082</a></u></b></span>), et un
@@ -45,7 +45,7 @@
     <p>
       <b>- 13/05/24:</b> Les requêtes API ne pointent plus vers le serveur <b>Java Spring</b> (toujours actif au port
       <span style="color: blue;"><b><u><a
-              href="http://ec2-51-20-9-64.eu-north-1.compute.amazonaws.com:8081/">:8081</a></u></b></span>)
+              href="http://ec2-13-50-16-65.eu-north-1.compute.amazonaws.com:8081/">:8081</a></u></b></span>)
       mais vers un serveur <b>Python Django</b> (actif au port <span style="color: blue;"><b><u><a
               href="http://ec2-51-20-9-64.eu-north-1.compute.amazonaws.com:8082/">:8082</a></u></b></span>).<br> Les
       fonctionnalités et les données retournées sont
