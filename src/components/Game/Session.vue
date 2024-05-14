@@ -20,7 +20,7 @@
         <div class="etymoForm" id="etymoForm">
             <div id="pres">Radicaux composant le nom:</div>
             <div id="etymoName">
-                <button class="etymoBtn2" v-for="etymo in currentSessionStep.pcelticRadicals"
+                <button class="etymoBtn2" v-for="etymo in currentSessionStep.celticRadicals"
                 :key="etymo.name"
                 :alt="etymo.translation">
                     {{ etymo.name }}

@@ -15,10 +15,7 @@
           </tr>
         </thead>
         <tbody>
-          <wordstem-row 
-          v-for="wordstem in pageableWordstems"
-          :key="wordstem.wordStemName"
-          :wordstem="wordstem">
+          <wordstem-row v-for="wordstem in pageableWordstems" :key="wordstem.wordStemName" :wordstem="wordstem">
           </wordstem-row>
         </tbody>
       </table>
@@ -27,71 +24,86 @@
         <span>Page: {{ pageNum }}</span>
         <button @click=changePage(pageNum+1)>Suivant</button>
       </div>
-      <button @click="popAddWordstem()">Ajouter un terme</button>
+      <button @click="handleAddWordstem(true)">Ajouter un terme</button>
     </div>
-    <create-wordstem></create-wordstem>
+    <create-wordstem v-if="addWordstemModal" @handleAddWordstem="handleAddWordstem"></create-wordstem>
   </section>
 </template>
 
 <script>
-  import WordstemRow from "./WordstemRow.vue"; import CreateWordstem from "./CreateWordstem.vue"; import {
-    host, pageSize
-  } from "../Config/Config.js"; export default {
-    components: { WordstemRow, CreateWordstem }, template: ` `,
-    data() { return { wordStems: [], pageNum: 1 } }, created() {
-      fetch(host + '/wordstems', { method: "GET" })
+import WordstemRow from "./WordstemRow.vue";
+import CreateWordstem from "./CreateWordstem.vue";
+import { host, pageSize } from "../Config/Config.js";
+
+export default {
+  components: { WordstemRow, CreateWordstem },
+
+  data() {
+    return {
+      wordStems: [],
+      pageNum: 1,
+      addWordstemModal:false
+    }
+  },
+
+  created() {
+    fetch(host + '/wordstems/', { 
+      method: "GET",     
+      headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    } })
       .then(response => response.json())
       .then(wordStems => {
         this.wordStems = wordStems;
       });
+  },
 
-      //insertdata(data, pageNum, pageSize);
+  computed: {
+    pageableWordstems() {
+      return this.wordStems.slice((this.pageNum - 1) * pageSize, (this.pageNum) * pageSize)
+    },
+    filters() {
+      return {
+        isBreton: this.wordStems.filter(wordstem => wordstem.wordstemLanguage == "LB")
+      };
+    }
+  },
+
+  methods: {
+    changePage(page) {
+      this.pageNum = page;
     },
 
-    computed: {
-      pageableWordstems() {
-        return this.wordStems.slice((this.pageNum - 1) * pageSize, (this.pageNum) * pageSize)
-      },
-      filters() {
-        return {
-          isBreton: this.wordStems.filter(wordstem => wordstem.wordstemLanguage == "LB")
-        };
-      }
+    handleAddWordstem(boolean) {
+      this.addWordstemModal = boolean;
     },
 
-    methods: {
-      changePage(page) {
-        this.pageNum = page;
-      },
-
-      popAddWordstem() {
-      },
-
-      sortTable(columnIndex) {
-        switch (columnIndex) {
-          case 0:
-            this.wordStems.sort((a, b) => (a.wordStemLanguage > b.wordStemLanguage) ? 1 : -1);
-            break;
-          case 1:
-            this.wordStems.sort((a, b) => (a.wordStemName > b.wordStemName) ? 1 : -1);
-            break;
-          case 2:
-            this.wordStems.sort((a, b) => (a.wordClass > b.wordClass) ? 1 : -1);
-            break;
-          case 3:
-            this.wordStems.sort((a, b) => (a.frTranslation > b.frTranslation) ? 1 : -1);
-            break;
-          case 4:
-            this.wordStems.sort((a, b) => (a.firstOccurence > b.firstOccurence) ? 1 : -1);
-            break;
-          case 5:
-            this.wordStems.sort((a, b) => (a.semanticField > b.semanticField) ? 1 : -1);
-            break;
-          default:
-            console.log(`No corresponding column to sort.`);
-        }
-        this.pageNum = 1
+    sortTable(columnIndex) {
+      switch (columnIndex) {
+        case 0:
+          this.wordStems.sort((a, b) => (a.wordStemLanguage > b.wordStemLanguage) ? 1 : -1);
+          break;
+        case 1:
+          this.wordStems.sort((a, b) => (a.wordStemName > b.wordStemName) ? 1 : -1);
+          break;
+        case 2:
+          this.wordStems.sort((a, b) => (a.wordClass > b.wordClass) ? 1 : -1);
+          break;
+        case 3:
+          this.wordStems.sort((a, b) => (a.frTranslation > b.frTranslation) ? 1 : -1);
+          break;
+        case 4:
+          this.wordStems.sort((a, b) => (a.firstOccurence > b.firstOccurence) ? 1 : -1);
+          break;
+        case 5:
+          this.wordStems.sort((a, b) => (a.semanticField > b.semanticField) ? 1 : -1);
+          break;
+        default:
+          console.log(`No corresponding column to sort.`);
       }
+      this.pageNum = 1
     }
   }
+}
 </script>

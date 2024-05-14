@@ -27,12 +27,13 @@ export default {
 
     methods: {
         async handleSession(wordTheme) {
-            await fetch(host + '/sessionGameData?wordTheme=' + wordTheme, {
+            await fetch(host + '/sessionGameData/?wordTheme=' + wordTheme, {
                 method: "GET"
             }
             )
                 .then(response => response.json())
                 .then(sessionGameData => {
+                    console.log(sessionGameData)
                     this.sessionGameData = sessionGameData;
                 });
             this.configSession = null;

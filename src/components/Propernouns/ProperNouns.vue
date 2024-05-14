@@ -51,7 +51,7 @@ export default {
   },
 
   created() {
-    fetch(host + '/properNouns', {
+    fetch(host + '/properNouns/', {
       method: "GET"
     }
     )
