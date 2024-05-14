@@ -63,11 +63,6 @@ export default {
     pageableWordstems() {
       return this.wordStems.slice((this.pageNum - 1) * pageSize, (this.pageNum) * pageSize)
     },
-    filters() {
-      return {
-        isBreton: this.wordStems.filter(wordstem => wordstem.wordstemLanguage == "LB")
-      };
-    }
   },
 
   methods: {
