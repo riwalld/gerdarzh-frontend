@@ -11,20 +11,20 @@
 
         <label for="wordStemLanguage">Langue du mot :</label>
         <select v-model="wordstemDto.wordStemLanguage" required>
-          <option value="1">Breton</option>
-          <option value="2">Brittonique</option>
-          <option value="3">Cornique</option>
-          <option value="4">Anglais</option>
-          <option value="5">Français</option>
-          <option value="6">Gaulois</option>
-          <option value="7">Germanique</option>
-          <option value="8">Proto-indo-européen</option>
-          <option value="9">Irlandais</option>
-          <option value="10">vieil Irlandais</option>
-          <option value="11">Gaélique écossais</option>
-          <option value="12">Proto-celte</option>
-          <option value="13">Gallois</option>
-          <option value="14">Latin</option>
+          <option value="LB">Breton</option>
+          <option value="BBQ">Brittonique</option>
+          <option value="LC">Cornique</option>
+          <option value="LE">Anglais</option>
+          <option value="LF">Français</option>
+          <option value="LG">Gaulois</option>
+          <option value="LGER">Germanique</option>
+          <option value="LIE">Proto-indo-européen</option>
+          <option value="LIR">Irlandais</option>
+          <option value="LOI">vieil Irlandais</option>
+          <option value="LS">Gaélique écossais</option>
+          <option value="LPC">Proto-celte</option>
+          <option value="LW">Gallois</option>
+          <option value="LLT">Latin</option>
         </select><br><br>
 
         <label for="phonetic">Phonétique :</label>
@@ -32,24 +32,24 @@
 
         <label for="gender">Genre :</label>
         <select v-model="wordstemDto.gender" required>
-          <option value="1">Masculin</option>
-          <option value="2">Féminin</option>
-          <option value="3">Neutre</option>
-          <option value="4">Inconnu</option>
-          <option value="5">N/A</option>
+          <option value="GM">Masculin</option>
+          <option value="GF">Féminin</option>
+          <option value="GN">Neutre</option>
+          <option value="GU">Inconnu</option>
+          <option value="NO">N/A</option>
         </select><br><br>
 
         <label for="wordClass">Classe du mot :</label>
         <select v-model="wordstemDto.wordClass" required>
-          <option value="1">Nom</option>
-          <option value="2">Verbe</option>
-          <option value="3">Adjectif</option>
-          <option value="4">Adverbe</option>
-          <option value="5">Article</option>
-          <option value="6">Pronom</option>
-          <option value="7">Préposition</option>
-          <option value="8">Conjonction</option>
-          <option value="9">Affixe</option>
+          <option value="WN">Nom</option>
+          <option value="WV">Verbe</option>
+          <option value="WADJ">Adjectif</option>
+          <option value="WADV">Adverbe</option>
+          <option value="WART">Article</option>
+          <option value="WPRN">Pronom</option>
+          <option value="WPREP">Préposition</option>
+          <option value="WCONJ">Conjonction</option>
+          <option value="WAF">Affixe</option>
         </select><br><br>
 
         <label for="engTranslation">Traduction en anglais :</label>
@@ -60,7 +60,7 @@
 
         <label for="semanticField">Champ sémantique :</label>
         <input type="number" list="semanticFields" v-model="wordstemDto.semanticField" required>
-          <datalist id="semanticFields">
+        <datalist id="semanticFields">
           <option value="1">Militaire</option>
           <option value="2">Famille</option>
           <option value="3">Travail</option>
@@ -92,7 +92,7 @@
         <label for="source">Livre de référence :</label>
         <select v-model="source" required>
           <option v-for="source in sources" :key="source.sourceId" :value="source.sourceId">
-           ( {{ source.sourceAbbreviation }} ) :
+            ( {{ source.sourceAbbreviation }} ) :
             {{ source.sourceOriginalName }}
           </option>
         </select><br><br>
@@ -137,6 +137,7 @@ export default {
 
   methods: {
     async submit() {
+      console.log(this.wordstemDto)
       this.wordstemDto.sources.push(this.source);
       try {
         await fetch(host + "/wordstems/", {
