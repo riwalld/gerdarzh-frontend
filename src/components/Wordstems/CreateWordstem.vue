@@ -59,32 +59,11 @@
         <input type="text" v-model="wordstemDto.frTranslation" required><br><br>
 
         <label for="semanticField">Champ sémantique :</label>
-        <input type="number" list="semanticFields" v-model="wordstemDto.semanticField" required>
-        <datalist id="semanticFields">
-          <option value="1">Militaire</option>
-          <option value="2">Famille</option>
-          <option value="3">Travail</option>
-          <option value="4">Religion</option>
-          <option value="5">Couleur</option>
-          <option value="6">Émotions</option>
-          <option value="7">Végétation</option>
-          <option value="8">Cosmos</option>
-          <option value="9">Outil</option>
-          <option value="10">Esprit</option>
-          <option value="11">Mathématique</option>
-          <option value="12">Minéral</option>
-          <option value="13">Architecture</option>
-          <option value="14">Frontière</option>
-          <option value="15">Abstractions</option>
-          <option value="16">Animal</option>
-          <option value="17">Anatomie</option>
-          <option value="18">Nombre</option>
-          <option value="19">Communication</option>
-          <option value="20">Nature</option>
-          <option value="21">Action</option>
-          <option value="22">Adjectif</option>
-          <option value="23">Géométrie</option>
-        </datalist><br><br>
+        <select v-model="wordstemDto.semanticField" required>
+          <option v-for="semfield in semfields" :key="semfield.id" :value="semfield.id">
+            {{ semfield.frName }}
+          </option>
+        </select><br><br>
 
         <label for="firstOccurence">Première occurrence :</label>
         <input type="number" v-model="wordstemDto.firstOccurrence" required><br><br>
@@ -109,6 +88,13 @@
 import { host } from '../Config/Config';
 
 export default {
+
+  props: {
+    wordstem: { type: Object, required: true },
+    semfields: { type: Array, required: true },
+    sources: { type: Array, required: true }
+  },
+
   data() {
     return {
       wordstemDto: {
@@ -127,12 +113,7 @@ export default {
       },
       message: '',
       source: '',
-      sources: []
     };
-  },
-
-  created() {
-    this.getSources();
   },
 
   methods: {
@@ -155,23 +136,7 @@ export default {
         console.error(error);
       }
     },
-
-    async getSources() {
-      try {
-        console.error('test');
-        const response = await fetch(host + "/sources/", {
-          method: "GET"
-        }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        this.sources = await response.json();
-        console.log(this.sources)
-      } catch (error) {
-        console.error(error);
-      }
-    },
+    
     close() {
       this.$emit('handleAddWordstem', false);
     }

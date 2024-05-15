@@ -581,7 +581,12 @@ li {
 .cell {
     padding: 15px;
 }
-
+.entry{
+    color: rgb(50, 50, 150)
+}
+.entry:hover{
+    cursor: pointer;
+}
 .modal-content {
     text-align: left;
     margin: auto;

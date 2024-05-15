@@ -3,12 +3,11 @@
     <td>
       <span class="langws" :title="wordstem.wordStemLanguage"> {{ wordstem.wordStemLanguage }} </span>
     </td>
-    <td> <b><a style="color: rgb(50, 50, 150)" :href="'/lexique/entree?nom=' + wordstem.wordStemName">{{
+    <td> <b><a class="entry" @click="handleShowWordstem(wordstem)">{{
       wordstem.wordStemName }} </a></b></td>
     <td>
       <span class="langws" :title="wordstem.wordClass">{{ wordstem.wordClass }}</span>
-      &nbsp;
-      <span class="langws" :title="wordstem.wordGender">{{ wordstem.wordGender }}</span>
+      <span class="langws" :title="wordstem.gender">{{ wordstem.gender }}</span>
     </td>
     <td>
       <span class="langws" title="français">fr.</span>
@@ -16,22 +15,33 @@
       <br><span class="langws" title="anglais">ang.</span>
       : <i>{{ wordstem.engTranslation }}</i>
     </td>
-    <td>{{ wordstem.firstOccurence }}</td>
-    <td>{{ wordstem.semanticField }}</td>
+    <td>{{ wordstem.firstOccurrence }}</td>
+    <td>{{ semfields[wordstem.semanticField-1].frName }}</td>
   </tr>
 </template>
 <script>
 import { setLanguages } from "../Config/Config.js";
 export default {
-  template: `
-
-`,
 
   props: {
-    wordstem: Object
+    wordstem: Object,
+    semfields :Array
+  },
+
+  data() {
+    return {
+      showWordstemArticle : false,
+    }
   },
 
   created() {
     setLanguages();
   },
+
+  methods:{
+    handleShowWordstem(wordstem) {
+      console.log(wordstem)
+      this.$emit('handleShowWordstem', wordstem);
+    }
+  }
 }</script>
