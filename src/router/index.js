@@ -6,6 +6,7 @@ import ProperNouns from "../components/Propernouns/ProperNouns.vue";
 import NotImplemented from "../components/Profile/NotImplemented.vue";
 import Home from "../components/Home/Home.vue";
 import Game from '../components/Game/GameRoot.vue';
+import Contact from '../components/Home/Contact.vue';
 
 const routes = [
   {
@@ -39,6 +40,11 @@ const routes = [
     path: '/userprofile',
     name: 'UserProfile',
     component: NotImplemented
+  }
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: Contact
   }
 ]
 
