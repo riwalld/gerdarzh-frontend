@@ -11,6 +11,7 @@ import ConfigSession from './ConfigSession.vue';
 import Session from './Session.vue';
 import EndSession from './EndSession.vue';
 import { host } from "../Config/Config.js";
+import failImg from '../../images/fail_king_arthur.png'
 
 export default {
     components: { ConfigSession, Session, EndSession },
@@ -21,7 +22,9 @@ export default {
             session: null,
             endSession: null,
             configSession: ConfigSession,
-            result: null
+            result: null,
+            isVictory : null,
+            imgBackground : null
         }
     },
 
@@ -40,7 +43,11 @@ export default {
             this.session = Session;
         },
 
-        handleEndSession(result) {
+        handleEndSession(result, isVictory) {
+            if(!isVictory){
+                this.imgBackground = failImg;
+            }
+            this.isVictory = isVictory;
             this.session = null;
             this.endSession = EndSession;
             this.result = result;

@@ -6,8 +6,13 @@
                 </div>
             </div>
         </div>
+        <div class="shield-hearts">
+            <span class="shield-heart" v-for="(shield) in shields" :key="shield">
+            <img :src="shield" />
+                </span>
+        </div>
     </div>
-    <section class="quiz">
+    <section :class=transitionQuiz>
         <div class="etymoInfo">
             <div>
                 <img :src="imageURL" />
@@ -20,17 +25,16 @@
         <div class="etymoForm" id="etymoForm">
             <div id="pres">Radicaux composant le nom:</div>
             <div id="etymoName">
-                <button class="etymoBtn2" v-for="etymo in currentSessionStep.celticRadicals"
-                :key="etymo.name"
-                :alt="etymo.translation">
+                <button class="etymoBtn2" v-for="etymo in currentSessionStep.celticRadicals" :key="etymo.name"
+                    :alt="etymo.translation">
                     {{ etymo.name }}
                 </button>
             </div>
         </div>
         <div class="answersForm">
             <button class="btn" v-for="(responseChoice, index) in currentSessionStep.proposedLiteralTranslationList"
-            :key="responseChoice.responseChoice"
-                :class="setStyle(index)" @click="selectResponse(index)">{{ responseChoice.responseChoice }}</button>
+                :key="responseChoice.responseChoice" :class="setStyle(index)" @click="selectResponse(index)">{{
+                    responseChoice.responseChoice }}</button>
         </div>
 
         <button :class="setValidateBtn()" @click="selectedResponse > -1 ? verifyResponse() : null"
@@ -42,6 +46,8 @@
 <script>
 
 import trumpet from '../../sound/good_answer.mp3'
+import breakshield from '../../sound/answer_bad.mp3'
+import shield from '../../images/celtic-icon2.png'
 export default {
     props: {
         sessionGameData: Array
@@ -50,18 +56,29 @@ export default {
     data() {
         return {
             currentSessionStep: null,
-            step: -1,
+            step: 0,
             score: 0,
             selectedResponse: -1,
             done: false,
             imageURL: null,
             progressbarWidth: 0,
-            correctAudio: new Audio(trumpet)
+            correctAudio: new Audio(trumpet),
+            badAudio: new Audio(breakshield),
+            transitionQuiz: "quiz transquiz2",
+            shields : [shield, shield, shield, shield, shield]
         }
     },
 
     created() {
-        this.nextStep();
+        this.done = false;
+        this.selectedResponse = -1;
+        this.progressbarWidth = this.step * 6.6
+        this.currentSessionStep = this.sessionGameData[this.step];
+        this.transitionQuiz = "quiz init"
+        import(`@/images/nouns/${this.sessionGameData[this.step].properName.image}.jpg`).then(imageUrl => {
+            this.imageURL = imageUrl.default;
+        })
+
         document.addEventListener("keydown", (event) => { this.onPressEnter(event) })
     },
 
@@ -84,17 +101,20 @@ export default {
 
         nextStep() {
             this.step++;
+            if(this.shields.length > 0){
             if (this.step < this.sessionGameData.length) {
-                this.done = false;
-                this.selectedResponse = -1;
-                this.progressbarWidth = this.step * 6.6
-                this.currentSessionStep = this.sessionGameData[this.step];
-                import(`@/images/nouns/${this.currentSessionStep.properName.image}.jpg`)
-                    .then(imageUrl => {
-                        this.imageURL = imageUrl.default;
-                    })
+                this.transitionQuiz = "quiz transquiz"
+                import(`@/images/nouns/${this.sessionGameData[this.step].properName.image}.jpg`).then(imageUrl => {
+                    this.imageURL = imageUrl.default;
+                })
+                setTimeout(() =>
+                    this.setQuizTranslation()
+                    , 300)
             }
             else {
+                this.generateEndSession();
+            }}
+            else{
                 this.generateEndSession();
             }
         },
@@ -115,6 +135,18 @@ export default {
                 }
             }
         },
+        setQuizTranslation() {
+            this.done = false;
+            this.selectedResponse = -1;
+            this.progressbarWidth = this.step * 6.6
+            this.currentSessionStep = this.sessionGameData[this.step];
+            this.transitionQuiz = "quiz transquiz2"
+            setTimeout(() =>
+                this.transitionQuiz = "quiz initquiz"
+                , 50)
+
+        },
+
 
         setValidateBtn() {
             if (this.selectedResponse == -1) {
@@ -130,14 +162,23 @@ export default {
         verifyResponse() {
             if (this.currentSessionStep.proposedLiteralTranslationList[this.selectedResponse].correctness == true) {
                 this.score++;
-
                 this.correctAudio.play();
             }
+            else {
+                this.badAudio.play();
+                this.shields.pop();
+            }
             this.done = true;
+
+            
         },
 
         generateEndSession() {
-            this.$emit('generateEndSession', this.score);
+            if(this.step<15){
+            this.$emit('generateEndSession', this.score, false);}
+            else{
+                this.$emit('generateEndSession', this.score, true);
+            }
         }
     }
 }

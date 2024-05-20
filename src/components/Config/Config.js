@@ -101,7 +101,6 @@ export function setLanguages() {
     lang[i].innerHTML = lang[i].innerHTML.replace("WAF", affixWClassAbr[siteLanguage])
     lang[i].innerHTML = lang[i].innerHTML.replace("WN", nameWClassAbr[siteLanguage])
     lang[i].innerHTML = lang[i].innerHTML.replace("WV", verbWClassAbr[siteLanguage])
-    lang[i].innerHTML = lang[i].innerHTML.replace("WN", verbWClassAbr[siteLanguage])
     lang[i].innerHTML = lang[i].innerHTML.replace("WPREP", prepWClassAbr[siteLanguage])
     lang[i].innerHTML = lang[i].innerHTML.replace("GM", mGenderAbr[siteLanguage])
     lang[i].innerHTML = lang[i].innerHTML.replace("GF", fGenderAbr[siteLanguage])

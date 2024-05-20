@@ -2,34 +2,50 @@
     <section class="quiz">
         <h3>Votre score est de {{ result }} sur 15</h3>
         <p>{{ sentence }}</p>
-        <div class="summary-btn"><a :href="$router.resolve({ name: 'SessionGame' }).href">Retourner au menu</a></div>
+        <div>
+                <img :src="imageBackground" />
+            </div>
+            <div class="btn"><a :href="$router.resolve({ name: 'SessionGame' }).href">Retourner au menu</a></div>
     </section>
 </template>
 <script>
 import trumpet from '@/sound/trumpet_fanfare.mp3'
+import failTrumpet from '@/sound/dramatic_defeat.mp3'
+
+
 export default {
 
     props: {
-        result: Number
+        result: Number,
+        isVictory: Boolean,
+        imageBackground : Image
     },
     data() {
         return {
             sentence: null,
-            audio : new Audio(trumpet)
+            victory: new Audio(trumpet),
+            fail: new Audio(failTrumpet),
         }
     },
     created() {
-        if (this.result > 12) {
-            this.audio.play();
-            this.sentence = "Félicitions !"
-        }
-        else if (this.result > 9 && this.result < 13) {
-            this.sentence = "Pas mal !"
-            this.audio.play();
+        console.log("gah3")
+        if (this.isVictory) {
+            if (this.result > 12) {
+                this.victory.play();
+                this.sentence = "Félicitions !"
+            }
+            else if (this.result > 9 && this.result < 13) {
+                this.sentence = "Pas mal !"
+                this.victory.play();
+            }
+            else {
+                this.sentence = "Encore quelques efforts !"
+                this.victory.play();
+            }
         }
         else {
-            this.sentence = "Encore quelques efforts !"
-            this.audio.play();
+            this.fail.play();
+            this.sentence = "La gaule est perdue."
         }
     }
 }
