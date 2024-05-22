@@ -1,12 +1,14 @@
 <template>
     <section>
         <div class="banner">
-            <h1>- Bienvenue sur Celtiadur -</h1>
+            <Vue3Lottie style="margin:0"   :animationData="playJSON" :height="300" :width="300" />
+            <h1>- Bienvenue sur Gerdarzh -</h1>
         </div>
     </section>
     <div class="home">
         <section class="intro">
-            <h2>Qu’est ce que le site Geriadur ?</h2>
+
+            <h2>Qu’est ce que le site Gerdarzh ?</h2>
             <h3>Un lexique étymologique</h3>
             <div style="display: flex;
       justify-content: center;">
@@ -14,6 +16,10 @@
 
             </div>
             <div>
+                <div>
+
+
+                </div>
                 <p>
                     Geriadur est d’abord un lexique
                     etymologique des langues celtiques. Ici nous répéretorions et
@@ -68,14 +74,18 @@
 import News from "./News.vue";
 import UnlockFeatures from "./UnlockFeatures.vue";
 import EtymoTree from '../../images/flc.jpg'
+import { Vue3Lottie } from "vue3-lottie";
+import playJSON from "../../images/gaul_lottie.json";
 
 export default {
-    components: { News, UnlockFeatures },
+    components: { News, UnlockFeatures, Vue3Lottie },
 
     data() {
         return {
-            etymotree: EtymoTree
+            etymotree: EtymoTree,
+            gaulLottie : null,
+            playJSON,
         }
-    }
+    },
 }
 </script>

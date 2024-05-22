@@ -12,9 +12,11 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "lottie-web": "^5.12.2",
     "uniq": "^1.0.1",
     "vue": "^3.4.21",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vue3-lottie": "^3.3.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.8.0",
