@@ -1,4 +1,5 @@
 <template>
+    <div class="gamePage">
     <section class="quiz">
         <h3>Principe du jeu</h3>
         <p>Des noms d'origine celtique vont s'afficher succivement. Vous devrez alors trouver la signification littérale
@@ -16,7 +17,7 @@
             <button :class=styleBtn class="weapons" id="5" @click="setWordTheme(5)">Armes et Créatures</button>
         </div>
         <div style="padding:30px">
-            <h3 style="color: grey">Choisissez un thème culturelle (à venir)</h3>
+            <h3 style="color: grey">Choisissez un thème culturel (à venir)</h3>
             <button :class=styleFrozenbtn id="1">Gaules</button>
             <button :class=styleFrozenbtn id="3">Irlande et Écosse</button>
             <button :class=styleFrozenbtn id="2">Grande et petite Bretagne</button>
@@ -24,6 +25,7 @@
         </div>
         <button :class="setValidateBtn()" id="validate" @click="generateSession()">Valider</button>
     </section>
+</div>
 </template>
 
 <script>
