@@ -56,6 +56,10 @@
     font-family: 'Trajan';
     src: url('./font/TrajanPro-Regular.woff') format('woff');
 }
+@font-face {
+    font-family: 'Helvetica';
+    src: url('./font/helvetica-rounded.otf') format('otf');
+}
 
 a {
     color: inherit;
@@ -101,28 +105,40 @@ body {
 }
 
 header {
+    line-height: 70px;
     box-sizing: border-box;
     display: flex;
     width: 100vw;
-    background: ghostwhite;
+    background: rgb(239, 247, 248);
     position: relative;
     top: 0;
     padding: 20px;
-    height: 80px;
+    padding-left:80px;
+    height: 110px;
     margin: 0;
     max-width: 100%;
 }
 
 footer {
-    box-sizing: border-box;
-    background: #555555;
-    position: relative;
-    bottom: 0px;
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center; 
+    background: #363636;
+    width: 100vw;
+    height: 170px;
+    max-width: 100%;
     padding: 20px;
     padding-bottom: 50px;
-    width: 100vw;
-    height: 100px;
-    max-width: 100%;
+    bottom: 0px;
+}
+
+.footer-content{
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    width: 55%;
+    max-width: 1200px;
 }
 
 strong {
@@ -133,9 +149,11 @@ strong {
 p {
     font-family: sans-serif;
 }
+
 li {
     padding: 4px;
 }
+
 .gameHeader {
     padding: 20px;
     height: 80px;
@@ -161,6 +179,18 @@ li {
     margin: auto;
 }
 
+.footer-element {
+    transition: .3s;
+    color: rgb(194, 194, 194);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 5px;
+}
+
+.footer-element:hover {
+    transform: translateX(4px);
+    color: white;
+    font-weight: bold;
+}
 .banner {
     display: flex;
     justify-content: center;
@@ -183,7 +213,6 @@ li {
     text-decoration: underline dotted;
     position: relative;
     border-bottom: 1px dotted black;
-    /* If you want dots under the hoverable text */
 }
 
 /* Tooltip text */
@@ -242,15 +271,10 @@ li {
     padding: 15px;
 }
 
-#CreativeC {
-    justify-content: center;
-    display: flex;
-    align-content: center;
-}
-
 .summary {
-    font-family: "Arial Black", serif;
+    font-family: Helvetica;
     font-size: small;
+    font-weight: bold;
     color: black;
     display: flex;
     flex-direction: row;
@@ -268,6 +292,7 @@ li {
     padding: 7px;
     margin: 5px;
     margin-right: 20px;
+    padding-top: 0px;
     border-radius: 5px;
     transition-duration: 0.3s;
 }
@@ -384,7 +409,12 @@ li {
     border: none;
     transition: 0.3s;
 }
-
+.gamePage{
+    background-image: url("./images/background_game_02.jpg");
+    background-size: cover;
+    background-position: 50% 50%;
+    width: 100vw;
+}
 .quiz {
     margin: auto;
     text-align: center;
@@ -393,21 +423,20 @@ li {
     max-width: 1000px;
     min-height: 500px;
     /*overflow: scroll;*/
-
 }
 
-.initquiz{
+.initquiz {
     transition: all 0.3s;
 }
 
 .transquiz {
     transition: all 0.3s;
-    transform:  translateX(-50px);
+    transform: translateX(-50px);
     opacity: 0;
 }
 
 .transquiz2 {
-    transform:  translateX(50px);
+    transform: translateX(50px);
     opacity: 0;
 }
 
@@ -429,8 +458,9 @@ li {
     cursor: pointer;
     transition: all 0.3s;
 }
-.btn:hover{
-    transform:  translateY(-4px);
+
+.btn:hover {
+    transform: translateY(-4px);
 }
 
 .themebtn {
@@ -489,7 +519,7 @@ li {
 }
 
 .validate {
-    margin: 40px;
+    margin: 30px;
     max-width: 130px;
     font-weight: 800;
     height: 50px;
@@ -497,7 +527,7 @@ li {
     border: 2px solid #ffffff;
     background: #3c6d2f;
     color: rgb(255, 255, 255);
-    float: right;
+    /*float: right;*/
 }
 
 .frozen {
@@ -511,7 +541,7 @@ li {
 .selected {
     background: ghostwhite;
     color: #111;
-    transform:  translateY(-4px);
+    transform: translateY(-4px);
 }
 
 
@@ -605,12 +635,15 @@ li {
 .cell {
     padding: 15px;
 }
-.entry{
+
+.entry {
     color: rgb(50, 50, 150)
 }
-.entry:hover{
+
+.entry:hover {
     cursor: pointer;
 }
+
 .modal-content {
     text-align: left;
     margin: auto;

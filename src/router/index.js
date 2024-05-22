@@ -40,7 +40,7 @@ const routes = [
     path: '/userprofile',
     name: 'UserProfile',
     component: NotImplemented
-  }
+  },
   {
     path: '/contact',
     name: 'Contact',
