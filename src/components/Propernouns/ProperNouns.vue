@@ -2,7 +2,7 @@
   <section class="showWS">
     <h2>Lexique etymologique</h2>
     <h3>Nombre de mots: {{ properNouns.length }}</h3>
-    <div>
+    <div style="margin: 50px;">
       <table class="wstable" id="wstable">
         <thead style="background-color: rgb(204, 202, 195);">
           <tr>
