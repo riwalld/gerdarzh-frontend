@@ -2,6 +2,16 @@
   <section class="showWS">
     <h2>Lexique etymologique</h2>
     <h3>Nombre de mots: {{ wordStems.length }}</h3>
+    <div class="searchBar" 
+      >
+      <input type="text" v-model="inputValue" placeholder="Search..." @blur="searchResult = false" @focus="searchResult = true"/>
+      <div class="searchResult" v-show=searchResult>
+        <div v-for="result in resultList(inputValue).slice(0, 5)" :key="result.wordStemName" :value="result">
+          <button @click="handleShowWordstem(result)"> {{ result.wordStemName }}
+          </button>
+        </div>
+      </div>
+    </div>
     <div style="margin: 50px;">
       <table class="wstable" id="wstable">
         <thead style="background-color: rgb(204, 202, 195);">
@@ -41,12 +51,14 @@ import CreateWordstem from "./CreateWordstem.vue";
 import { host, pageSize } from "../Config/Config.js";
 import WordstemArticle from "./WordstemArticle.vue";
 
+
 export default {
   components: { WordstemRow, CreateWordstem, WordstemArticle },
 
   data() {
     return {
       wordStems: [],
+      inputValue: '',
       pageNum: 1,
       addWordstemModal: false,
       showWordstem: null,
@@ -58,6 +70,7 @@ export default {
       translationColumun: true,
       occurrenceColumun: true,
       semfieldColumun: true,
+      searchResult: false
     }
   },
 
@@ -85,7 +98,16 @@ export default {
   },
 
   methods: {
+    resultList() {
+      if (!this.inputValue) {
+        return [];
+      }
+      const inputValue = this.inputValue.toLowerCase();
+      return this.wordStems.filter((ws) =>
+        ws.wordStemName.toLowerCase().includes(inputValue)
+      );
 
+    },
     async getSemanticField() {
       try {
         const response = await fetch(host + "/semanticFields/", {
@@ -125,6 +147,7 @@ export default {
     },
 
     handleShowWordstem(wordstem) {
+      console.log("wordstem")
       console.log(wordstem)
       this.showWordstem = wordstem;
     },
@@ -142,56 +165,62 @@ export default {
     sortTable(columnIndex) {
       switch (columnIndex) {
         case 0:
-          if(this.lgColumun){
-          this.wordStems.sort((a, b) => this.checkOrder(a.wordStemLanguage, b.wordStemLanguage));
-          this.lgColumun = false}
+          if (this.lgColumun) {
+            this.wordStems.sort((a, b) => this.checkOrder(a.wordStemLanguage, b.wordStemLanguage));
+            this.lgColumun = false
+          }
           else {
             this.wordStems.sort((a, b) => this.checkOrder(b.wordStemLanguage, a.wordStemLanguage));
             this.lgColumun = true
           }
           break;
         case 1:
-        if(this.wordColumun){
-          this.wordStems.sort((a, b) => this.checkOrder(a.wordStemName, b.wordStemName));
-          this.wordColumun = false}
+          if (this.wordColumun) {
+            this.wordStems.sort((a, b) => this.checkOrder(a.wordStemName, b.wordStemName));
+            this.wordColumun = false
+          }
           else {
             this.wordStems.sort((a, b) => this.checkOrder(b.wordStemName, a.wordStemName));
             this.wordColumun = true
           }
           break;
         case 2:
-        if(this.wordclassColumun){
-          this.wordStems.sort((a, b) => this.checkOrder(a.wordClass, b.wordClass));
-          this.wordclassColumun = false}
+          if (this.wordclassColumun) {
+            this.wordStems.sort((a, b) => this.checkOrder(a.wordClass, b.wordClass));
+            this.wordclassColumun = false
+          }
           else {
             this.wordStems.sort((a, b) => this.checkOrder(b.wordClass, a.wordClass));
             this.wordclassColumun = true
           }
           break;
         case 3:
-        if(this.translationColumun){
-          this.wordStems.sort((a, b) => this.checkOrder(a.frTranslation, b.frTranslation));
-          this.translationColumun = false}
+          if (this.translationColumun) {
+            this.wordStems.sort((a, b) => this.checkOrder(a.frTranslation, b.frTranslation));
+            this.translationColumun = false
+          }
           else {
             this.wordStems.sort((a, b) => this.checkOrder(b.frTranslation, a.frTranslation));
             this.translationColumun = true
           }
-         break;
+          break;
         case 4:
-        if(this.occurrenceColumun){
-          this.wordStems.sort((a, b) => this.checkOrder(a.firstOccurrence, b.firstOccurrence));
-          this.occurrenceColumun = false}
+          if (this.occurrenceColumun) {
+            this.wordStems.sort((a, b) => this.checkOrder(a.firstOccurrence, b.firstOccurrence));
+            this.occurrenceColumun = false
+          }
           else {
             this.wordStems.sort((a, b) => this.checkOrder(b.firstOccurrence, a.firstOccurrence));
             this.occurrenceColumun = true
           }
           break;
         case 5:
-        if(this.semfieldColumun){
-          this.wordStems.sort((a, b) => this.checkOrder(this.semfields[a.semanticField - 1].frName , this.semfields[b.semanticField - 1].frName ));
-          this.semfieldColumun = false}
+          if (this.semfieldColumun) {
+            this.wordStems.sort((a, b) => this.checkOrder(this.semfields[a.semanticField - 1].frName, this.semfields[b.semanticField - 1].frName));
+            this.semfieldColumun = false
+          }
           else {
-            this.wordStems.sort((a, b) => this.checkOrder(this.semfields[b.semanticField - 1].frName , this.semfields[a.semanticField - 1].frName ));
+            this.wordStems.sort((a, b) => this.checkOrder(this.semfields[b.semanticField - 1].frName, this.semfields[a.semanticField - 1].frName));
             this.semfieldColumun = true
           }
           break;
