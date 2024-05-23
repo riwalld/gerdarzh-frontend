@@ -56,6 +56,7 @@
     font-family: 'Trajan';
     src: url('./font/TrajanPro-Regular.woff') format('woff');
 }
+
 @font-face {
     font-family: 'Helvetica';
     src: url('./font/helvetica-rounded.otf') format('otf');
@@ -95,6 +96,32 @@ p {
     font-family: Calibri, sans-serif;
 }
 
+input {
+    display: block;
+    width: 350px;
+    margin: 20px auto;
+    padding: 10px 45px;
+    background: white url("assets/search-icon.svg") no-repeat 15px center;
+    background-size: 15px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+        rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+.searchBar{
+    width: 200px; margin: 50px;
+    margin: auto;
+}
+.searchResult{
+    box-shadow: 0px 1px 2px #CCC;
+    background-color: white;
+    position: absolute;
+    width: 200px;
+    z-index: 1000;
+    margin: 0 auto;
+}
+
 body {
     position: relative;
     background: #e9e5e1;
@@ -113,7 +140,7 @@ header {
     position: relative;
     top: 0;
     padding: 20px;
-    padding-left:80px;
+    padding-left: 80px;
     height: 110px;
     margin: 0;
     max-width: 100%;
@@ -121,8 +148,9 @@ header {
 
 footer {
     display: flex;
-    justify-content: center; /* Horizontal centering */
-    align-items: center; 
+    justify-content: center;
+    /* Horizontal centering */
+    align-items: center;
     background: #363636;
     width: 100vw;
     height: 170px;
@@ -132,7 +160,7 @@ footer {
     bottom: 0px;
 }
 
-.footer-content{
+.footer-content {
     justify-content: space-between;
     display: flex;
     flex-direction: row;
@@ -191,6 +219,7 @@ li {
     color: white;
     font-weight: bold;
 }
+
 .banner {
     display: flex;
     justify-content: center;
@@ -409,12 +438,25 @@ li {
     border: none;
     transition: 0.3s;
 }
-.gamePage{
+
+/*
+.notice {
+    display: none;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}*/
+
+.gamePage {
     background-image: url("./images/background_game_02.jpg");
-    background-size: cover;
-    background-position: 50% 50%;
+    background-size: contain;
+    background-position: 50% 0px;
+    position: relative;
     width: 100vw;
 }
+
 .quiz {
     margin: auto;
     text-align: center;
