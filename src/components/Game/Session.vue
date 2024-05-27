@@ -1,47 +1,49 @@
 <template>
-    <div style="display: flex; justify-content: center;">
-        <div class="progress-container">
-            <div class="progress-bar" :style="'width:' + progressbarWidth + '%'">
-                <div class="progress-bar-in">
+    <div class="gamePage">
+        <div style="display: flex; justify-content: center;">
+            <div class="progress-container">
+                <div class="progress-bar" :style="'width:' + progressbarWidth + '%'">
+                    <div class="progress-bar-in">
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="shield-hearts">
-            <span class="shield-heart" v-for="(shield) in shields" :key="shield">
-            <img :src="shield" />
+            <div >
+                <span class="shield" v-for="(shield, index) in shields" :key="shield" :id="isLast(index)">
+                    <img :src="shield" />
                 </span>
+            </div>
         </div>
+        <section :class=transitionQuiz>
+            <div class="etymoInfo">
+                <div>
+                    <img :src="imageURL" />
+                </div>
+                <div style="padding: 30px;">
+                    <h2>{{ currentSessionStep.properName.currentName }} </h2>
+                    <div class="description">{{ currentSessionStep.properName.descr }}</div>
+                </div>
+            </div>
+            <div class="etymoForm" id="etymoForm">
+                <div id="pres">Radicaux composant le nom:</div>
+                <div id="etymoName">
+                    <button class="etymoBtn2" v-for="etymo in currentSessionStep.celticRadicals" :key="etymo.name"
+                        :alt="etymo.translation">
+                        {{ etymo.name }}
+                    </button>
+                </div>
+            </div>
+            <div class="answersForm">
+                <button class="btn" v-for="(responseChoice, index) in currentSessionStep.proposedLiteralTranslationList"
+                    :key="responseChoice.responseChoice" :class="setStyle(index)" @click="selectResponse(index)">{{
+                        responseChoice.responseChoice }}</button>
+            </div>
+
+            <button :class="setValidateBtn()" @click="selectedResponse > -1 ? verifyResponse() : null"
+                v-if="!done">Valider</button>
+
+            <button class="btn validate" @click="nextStep" v-if="done">Suivant</button>
+        </section>
     </div>
-    <section :class=transitionQuiz>
-        <div class="etymoInfo">
-            <div>
-                <img :src="imageURL" />
-            </div>
-            <div style="padding: 30px;">
-                <h2>{{ currentSessionStep.properName.currentName }} </h2>
-                <div class="description">{{ currentSessionStep.properName.descr }}</div>
-            </div>
-        </div>
-        <div class="etymoForm" id="etymoForm">
-            <div id="pres">Radicaux composant le nom:</div>
-            <div id="etymoName">
-                <button class="etymoBtn2" v-for="etymo in currentSessionStep.celticRadicals" :key="etymo.name"
-                    :alt="etymo.translation">
-                    {{ etymo.name }}
-                </button>
-            </div>
-        </div>
-        <div class="answersForm">
-            <button class="btn" v-for="(responseChoice, index) in currentSessionStep.proposedLiteralTranslationList"
-                :key="responseChoice.responseChoice" :class="setStyle(index)" @click="selectResponse(index)">{{
-                    responseChoice.responseChoice }}</button>
-        </div>
-
-        <button :class="setValidateBtn()" @click="selectedResponse > -1 ? verifyResponse() : null"
-            v-if="!done">Valider</button>
-
-        <button class="btn validate" @click="nextStep" v-if="done">Suivant</button>
-    </section>
 </template>
 <script>
 
@@ -58,6 +60,7 @@ export default {
             currentSessionStep: null,
             step: 0,
             score: 0,
+            isCorrect: true,
             selectedResponse: -1,
             done: false,
             imageURL: null,
@@ -65,14 +68,14 @@ export default {
             correctAudio: new Audio(trumpet),
             badAudio: new Audio(breakshield),
             transitionQuiz: "quiz transquiz2",
-            shields : [shield, shield, shield, shield, shield]
+            shields: [shield, shield, shield, shield, shield]
         }
     },
 
     created() {
         this.done = false;
         this.selectedResponse = -1;
-        this.progressbarWidth = this.step * 6.6
+        this.progressbarWidth = this.step * 10
         this.currentSessionStep = this.sessionGameData[this.step];
         this.transitionQuiz = "quiz init"
         import(`@/images/nouns/${this.sessionGameData[this.step].properName.image}.jpg`).then(imageUrl => {
@@ -101,20 +104,22 @@ export default {
 
         nextStep() {
             this.step++;
-            if(this.shields.length > 0){
-            if (this.step < this.sessionGameData.length) {
-                this.transitionQuiz = "quiz transquiz"
-                import(`@/images/nouns/${this.sessionGameData[this.step].properName.image}.jpg`).then(imageUrl => {
-                    this.imageURL = imageUrl.default;
-                })
-                setTimeout(() =>
-                    this.setQuizTranslation()
-                    , 300)
+            this.isCorrect=true;
+            if (this.shields.length > 0) {
+                if (this.step < this.sessionGameData.length) {
+                    this.transitionQuiz = "quiz transquiz"
+                    import(`@/images/nouns/${this.sessionGameData[this.step].properName.image}.jpg`).then(imageUrl => {
+                        this.imageURL = imageUrl.default;
+                    })
+                    setTimeout(() =>
+                        this.setQuizTranslation()
+                        , 300)
+                }
+                else {
+                    this.generateEndSession();
+                }
             }
             else {
-                this.generateEndSession();
-            }}
-            else{
                 this.generateEndSession();
             }
         },
@@ -147,6 +152,12 @@ export default {
 
         },
 
+        isLast(index) {
+            if(index === this.shields.length - 1){
+                return "lastShield";
+            }
+
+        },
 
         setValidateBtn() {
             if (this.selectedResponse == -1) {
@@ -166,17 +177,24 @@ export default {
             }
             else {
                 this.badAudio.play();
-                this.shields.pop();
+                let lastShieldClass = document.getElementById('lastShield')
+                console.log(lastShieldClass)
+                lastShieldClass.classList.add("shieldHeartsBroken")
+                
+                setTimeout(() =>
+                this.shields.pop()
+                , 1000)
             }
             this.done = true;
 
-            
+
         },
 
         generateEndSession() {
-            if(this.step<15){
-            this.$emit('generateEndSession', this.score, false);}
-            else{
+            if (this.step < 15) {
+                this.$emit('generateEndSession', this.score, false);
+            }
+            else {
                 this.$emit('generateEndSession', this.score, true);
             }
         }
