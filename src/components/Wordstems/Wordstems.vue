@@ -4,11 +4,20 @@
     <h3>Nombre de mots: {{ wordStems.length }}</h3>
     <div class="searchBar" 
       >
-      <input type="text" v-model="inputValue" placeholder="Search..." @blur="searchResult = false" @focus="searchResult = true"/>
+      <input 
+      type="text" 
+      v-model="inputValue" 
+      placeholder="Search..." 
+
+      @focus="searchResult = true"/>
       <div class="searchResult" v-show=searchResult>
-        <div v-for="result in resultList(inputValue).slice(0, 5)" :key="result.wordStemName" :value="result">
-          <button @click="handleShowWordstem(result)"> {{ result.wordStemName }}
-          </button>
+        <div 
+        v-for="result in resultList(inputValue).slice(0, 5)" 
+        :key="result.wordStemName" 
+        :value="result">
+          <div
+          @click="handleShowWordstem(result)"> {{ result.wordStemName }}
+          </div>
         </div>
       </div>
     </div>
@@ -147,8 +156,8 @@ export default {
     },
 
     handleShowWordstem(wordstem) {
-      console.log("wordstem")
-      console.log(wordstem)
+      this.inputValue ='';
+      this.searchResult = false;
       this.showWordstem = wordstem;
     },
 
