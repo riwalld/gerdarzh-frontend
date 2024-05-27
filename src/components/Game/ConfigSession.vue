@@ -2,15 +2,23 @@
     <div class="gamePage">
         <section class="quiz">
             
-            <button @click="toggleNotice()"><h3>Notice du jeu<br>▼</h3></button>
+            <button @click="toggleNotice()"><h3>Consulter la notice du jeu<br>▼</h3></button>
             <div v-show="showInstructions" class="notice">
-                <p>Des noms d'origine celtique vont s'afficher succivement. Vous devrez alors trouver la signification
-                    littérale
-                    du nom.<br>
-                    Les radicaux comosant le nom sont proposés comme aide, vous pouvez voir la traduction correspondante
+                <div class="noticeContent">
+                <p>Le jeu consiste en une série de 10 questions aléatoirement selectionnées en fonction d'un thème lexicale choisie:</p>
+                <ul>
+                    <li>💒 <i>Lieux et Pays</i>: regroupant le termes essentiellement toponymiques d'origine gauloise, bretonne ou brittanique.</li>
+                    <li>👑<i>Figures Historiques</i>: regroupant des personnages connus de l'histoire du monde celte.</li>
+                    <li>⚡<i>Figures Mythiques</i>: regroupant des dieux ou héros légendaires issus des épopée irlandaise, breton, ou du panthéon gaulois.</li>
+                    <li>🍀<i>Peuples et Tribus</i>: regroupant des gentilés gaulois et noms de clans irlandais, écossais.</li>
+                    <li>⚔️<i>Armes et Créatures</i>: regroupant des noms données à des armes légendaires et des créature du folklore celtique.</li>
+                </ul>
+                <p>Tous les noms présentés étant d'origine celtique, votre mission va être de deviner le sens littérale du nom et de choisir la bonne réponse parmi cinq propositions.</p>
+                <p>Les radicaux composant le nom sont affichés comme aide, vous pouvez voir la traduction correspondante
                     en
-                    cliquant dessus. </p>
+                    cliquant sur le radical correspondant. </p>
                 <p>Bonne chance !</p>
+            </div>
             </div>
 
 
