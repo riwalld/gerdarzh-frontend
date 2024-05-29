@@ -15,9 +15,8 @@
           </tr>
         </thead>
         <tbody>
-          <properNoun-row v-for="propernoun in pageableProperNouns"
-          :key="propernoun.currentName"
-          :propernoun="propernoun">
+          <properNoun-row v-for="propernoun in pageableProperNouns" :key="propernoun.currentName"
+            :propernoun="propernoun">
           </properNoun-row>
         </tbody>
       </table>
@@ -26,18 +25,20 @@
         <span>Page: {{ pageNum }}</span>
         <button @click=changePage(pageNum+1)>Suivant</button>
       </div>
-      <button id="modalAddWordstemBtn">Ajouter un terme</button>
+      <button @click="handleAddProperNoun(true)">Ajouter un nom</button>
     </div>
+    <create-proper-noun v-if="addProperNounModal" @handleAddProperNoun="handleAddProperNoun"></create-proper-noun>
   </section>
 </template>
 
 <script>
 import { host, pageSize } from "../Config/Config.js";
 import ProperNounRow from "./PropernounRow.vue";
+import CreateProperNoun from "./CreateProperNoun.vue";
 
 export default {
 
-  components: { ProperNounRow },
+  components: { ProperNounRow, CreateProperNoun },
 
   template: `
     
@@ -46,7 +47,9 @@ export default {
   data() {
     return {
       properNouns: [],
-      pageNum: 1
+      pageNum: 1,
+      addProperNounModal: false,
+      pcRadicals: []
     }
   },
 
@@ -96,7 +99,10 @@ export default {
           console.log(`No corresponding column to sort.`);
       }
       this.pageNum = 1
-    }
+    },
+    handleAddProperNoun(boolean) {
+      this.addProperNounModal = boolean;
+    },
   }
 }
 </script>

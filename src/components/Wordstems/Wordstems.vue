@@ -8,8 +8,8 @@
       type="text" 
       v-model="inputValue" 
       placeholder="Search..." 
-
       @focus="searchResult = true"/>
+      
       <div class="searchResult" v-show=searchResult>
         <div 
         v-for="result in resultList(inputValue).slice(0, 5)" 

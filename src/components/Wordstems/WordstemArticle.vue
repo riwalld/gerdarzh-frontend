@@ -36,8 +36,8 @@
       <p> {{ wordstem.descrFr }}</p>
       <h3>Sources</h3>
       <ul>
-        <li v-for="src in wordstem.sources" :key="src.id"> {{ sources[src].sourceAbbreviation }} :
-          {{ sources[src].sourceOriginalName }} ({{ sources[src].sourceEngName }})</li>
+        <li v-for="src in wordstem.sources" :key="src.id-1"> {{ sources[src-1].sourceAbbreviation }} :
+          {{ sources[src-1].sourceOriginalName }} ({{ sources[src-1].sourceEngName }})</li>
       </ul>
     </div>
   </div>
