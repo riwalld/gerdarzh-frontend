@@ -1,6 +1,6 @@
 <template>
   <section class="showWS">
-    <h2>Lexique etymologique</h2>
+    <h2>Personnages, lieux et gentilés celtiques</h2>
     <h3>Nombre de mots: {{ properNouns.length }}</h3>
     <div style="margin: 50px;">
       <table class="wstable" id="wstable">

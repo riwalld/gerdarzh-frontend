@@ -1,7 +1,7 @@
 <template>
     <section>
         <div class="banner">
-            <Vue3Lottie style="margin:0"   :animationData="playJSON" :height="300" :width="300" />
+            <!--<Vue3Lottie style="margin:0"   :animationData="playJSON" :height="300" :width="300" />-->
             <h1>- Bienvenue sur Gerdarzh -</h1>
         </div>
     </section>

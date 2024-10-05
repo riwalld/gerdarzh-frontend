@@ -7,7 +7,7 @@
                     </div>
                 </div>
             </div>
-            <div >
+            <div>
                 <span class="shield" v-for="(shield, index) in shields" :key="shield" :id="isLast(index)">
                     <img :src="shield" />
                 </span>
@@ -18,18 +18,28 @@
                 <div>
                     <img :src="imageURL" />
                 </div>
+                <div style="display: flex; flex-direction: column;">
                 <div style="padding: 30px;">
-                    <h2>{{ currentSessionStep.properName.currentName }} </h2>
-                    <div class="description">{{ currentSessionStep.properName.descr }}</div>
+                    <h2 style="padding-bottom: 20px;">{{ currentSessionStep.properName.currentName }} </h2>
+                    <div class="description" style="font-size: larger; font-weight: bold;">{{ currentSessionStep.properName.descr }}</div>
+                </div>
+                <div style="margin-top: auto; text-align: left; padding: 5px; max-width: 250px;">
+                    <div class="description">{{ currentSessionStep.properName.imgCaption }}</div>
                 </div>
             </div>
-            <div class="etymoForm" id="etymoForm">
-                <div id="pres">Radicaux composant le nom:</div>
-                <div id="etymoName">
-                    <button class="etymoBtn2" v-for="etymo in currentSessionStep.celticRadicals" :key="etymo.name"
-                        :alt="etymo.translation">
-                        {{ etymo.name }}
-                    </button>
+            </div>
+            <div style="display: flex; padding-left: 100px; height: 105px;">
+                <button @click="toggleClue()" style="height: 30px; margin-top: 60px;">
+                    <h3>Indice ▶</h3>
+                </button>
+                <div class="etymoForm" id="etymoForm" v-show="clue">
+                    <div id="pres">Radicaux composant le nom:</div>
+                    <div id="etymoName">
+                        <button class="etymoBtn2" v-for="etymo in currentSessionStep.celticRadicals" :key="etymo.name"
+                            :alt="etymo.translation">
+                            {{ etymo.name }}
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="answersForm">
@@ -68,7 +78,8 @@ export default {
             correctAudio: new Audio(trumpet),
             badAudio: new Audio(breakshield),
             transitionQuiz: "quiz transquiz2",
-            shields: [shield, shield, shield, shield, shield]
+            shields: [shield, shield, shield],
+            clue: false
         }
     },
 
@@ -78,9 +89,13 @@ export default {
         this.progressbarWidth = this.step * 10
         this.currentSessionStep = this.sessionGameData[this.step];
         this.transitionQuiz = "quiz init"
+        if(this.sessionGameData[this.step].properName.image !== null){
         import(`@/images/nouns/${this.sessionGameData[this.step].properName.image}.jpg`).then(imageUrl => {
             this.imageURL = imageUrl.default;
-        })
+        })}
+        else{
+            this.imageURL =null;
+        }
 
         document.addEventListener("keydown", (event) => { this.onPressEnter(event) })
     },
@@ -104,13 +119,17 @@ export default {
 
         nextStep() {
             this.step++;
-            this.isCorrect=true;
+            this.isCorrect = true;
             if (this.shields.length > 0) {
                 if (this.step < this.sessionGameData.length) {
                     this.transitionQuiz = "quiz transquiz"
-                    import(`@/images/nouns/${this.sessionGameData[this.step].properName.image}.jpg`).then(imageUrl => {
+                    if(this.sessionGameData[this.step].properName.image !== null){
+                        import(`@/images/nouns/${this.sessionGameData[this.step].properName.image}.jpg`).then(imageUrl => {
                         this.imageURL = imageUrl.default;
-                    })
+                        })}
+                    else{
+                        this.imageURL =null;
+                    }
                     setTimeout(() =>
                         this.setQuizTranslation()
                         , 300)
@@ -143,7 +162,7 @@ export default {
         setQuizTranslation() {
             this.done = false;
             this.selectedResponse = -1;
-            this.progressbarWidth = this.step * 6.6
+            this.progressbarWidth = this.step * 10
             this.currentSessionStep = this.sessionGameData[this.step];
             this.transitionQuiz = "quiz transquiz2"
             setTimeout(() =>
@@ -153,7 +172,7 @@ export default {
         },
 
         isLast(index) {
-            if(index === this.shields.length - 1){
+            if (index === this.shields.length - 1) {
                 return "lastShield";
             }
 
@@ -180,18 +199,15 @@ export default {
                 let lastShieldClass = document.getElementById('lastShield')
                 console.log(lastShieldClass)
                 lastShieldClass.classList.add("shieldHeartsBroken")
-                
-                setTimeout(() =>
                 this.shields.pop()
-                , 1000)
             }
             this.done = true;
-
-
         },
-
+        toggleClue() {
+            this.clue = !this.clue
+        },
         generateEndSession() {
-            if (this.step < 15) {
+            if (this.score < 5) {
                 this.$emit('generateEndSession', this.score, false);
             }
             else {
