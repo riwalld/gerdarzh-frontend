@@ -16,7 +16,7 @@
         </thead>
         <tbody>
           <properNoun-row v-for="propernoun in pageableProperNouns" :key="propernoun.currentName"
-            :propernoun="propernoun">
+            :propernoun="propernoun" @handleShowProperNoun="handleShowProperNoun">
           </properNoun-row>
         </tbody>
       </table>
@@ -27,6 +27,9 @@
       </div>
       <button @click="handleAddProperNoun(true)">Ajouter un nom</button>
     </div>
+    <ProperNounArticle v-if="showProperNoun" :currentName="currentName"
+      @handleShowProperNoun="handleShowProperNoun">
+    </ProperNounArticle>
     <create-proper-noun v-if="addProperNounModal" @handleAddProperNoun="handleAddProperNoun"></create-proper-noun>
   </section>
 </template>
@@ -35,10 +38,10 @@
 import { host, pageSize } from "../Config/Config.js";
 import ProperNounRow from "./PropernounRow.vue";
 import CreateProperNoun from "./CreateProperNoun.vue";
-
+import ProperNounArticle from "./ProperNounArticle.vue";
 export default {
 
-  components: { ProperNounRow, CreateProperNoun },
+  components: { ProperNounRow, CreateProperNoun, ProperNounArticle },
 
   template: `
     
@@ -49,7 +52,10 @@ export default {
       properNouns: [],
       pageNum: 1,
       addProperNounModal: false,
-      pcRadicals: []
+      pcRadicals: [],
+      showProperNoun: false,
+      propernoun : { type: Object, required: true },
+      currentName: null
     }
   },
 
@@ -102,6 +108,13 @@ export default {
     },
     handleAddProperNoun(boolean) {
       this.addProperNounModal = boolean;
+    },
+    handleShowProperNoun(properNoun) {
+      this.inputValue ='';
+      this.searchResult = false;
+      this.currentName = properNoun.currentName;
+      this.showProperNoun =true;
+      console.log("test")
     },
   }
 }

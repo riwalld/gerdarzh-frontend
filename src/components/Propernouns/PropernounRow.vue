@@ -1,9 +1,9 @@
 <template>
 
 <tr class="wstr">
-    <td><b><a :href="'/entities/entree?nom='+ propernoun.currentName">
-     {{propernoun.currentName}}
-     </a></b></td>
+    <td><b>
+      <a class="entry" @click="handleShowProperNoun(propernoun)"> {{propernoun.currentName}}</a>
+     </b></td>
      <td class="cell" id="wordtheme"></td>
      <td class="cell">{{propernoun.period}}</td>
      <td class="cell">{{propernoun.place}}</td>
@@ -42,7 +42,13 @@ export default {
           default:
             console.log(`No corresponding wortheme for the number.`);
         }
-      }
+      },
+
+    handleShowProperNoun(ProperNoun) {
+      console.log(ProperNoun)
+      this.$emit('handleShowProperNoun', ProperNoun);
     }
+  }
+    
 }
 </script>
