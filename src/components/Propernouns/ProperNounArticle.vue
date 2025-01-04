@@ -4,22 +4,24 @@
     <!-- Modal content -->
     <div class="modal-content">
       <span class="close" @click="close()">&times;</span>
-      <h2>{{ propernoun.currentName }}</h2>
         <div style="display: flex; padding: 10px;">
           <div class="etymoInfo">
-                <div>
-                    <img :src="imageURL" />
+            <div>
+                  <img :src="getImagePath()" />
                 </div>
                 <div style="display: flex; flex-direction: column;">
                 <div style="padding: 30px;">
                     <h2 style="padding-bottom: 20px;">{{ propernoun.currentName }} </h2>
-                    <div class="description" style="font-size: larger; font-weight: bold;">{{ propernoun.descr }}</div>
+                    <div style="font-size: larger; font-weight: bold;">{{ propernoun.descrFr }}</div>
                 </div>
-                <div style="margin-top: auto; text-align: left; padding: 5px; max-width: 250px;">
-                    <div class="description">{{ propernoun.imgCaption }}</div>
-                </div>
+                <div> Sens littéral: {{ propernoun.litTrans.litTransFr }}</div>
+                <div> Forme étymologique: {{ propernoun.etymoName }}</div>
+                <div> Lieu: {{ propernoun.place }}, {{ propernoun.country }}</div>
+                <div> Période: {{ propernoun.period }}</div>
+
             </div>
-            </div></div>
+            </div>
+          </div>
     </div>
   </div>
 
@@ -28,7 +30,6 @@
 <script>
 
 import { host } from '../Config/Config';
-
 export default {
 
   props: {
@@ -51,6 +52,15 @@ export default {
                     this.propernoun = propernoun;
                 });
 
+  },
+  methods:{
+    close() {
+      this.$emit('handleShowProperNoun', null);
+    },
+    getImagePath() {
+      console.log(new URL('../../images/nouns/'+ this.propernoun.image + '.jpg', import.meta.url).href)
+    return new URL(`../../images/nouns/${this.propernoun.image}.jpg`, import.meta.url).href;
+    }
   }
 }
 

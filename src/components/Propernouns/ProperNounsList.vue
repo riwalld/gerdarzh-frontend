@@ -110,11 +110,16 @@ export default {
       this.addProperNounModal = boolean;
     },
     handleShowProperNoun(properNoun) {
+      if(properNoun!=null){
       this.inputValue ='';
       this.searchResult = false;
       this.currentName = properNoun.currentName;
       this.showProperNoun =true;
-      console.log("test")
+      }
+      else{
+        this.currentName = null;
+      this.showProperNoun =false;
+      }
     },
   }
 }
