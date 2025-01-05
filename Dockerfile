@@ -7,19 +7,15 @@ ENV VITE_BACKEND_URL=${VITE_BACKEND_URL}
 ENV VITE_API_ENDPOINT=${VITE_API_ENDPOINT}
 
 WORKDIR /app
-COPY package.json /app/
-COPY . ./
+
+COPY package.json package-lock.json /app/
+
 RUN npm install --silent
-RUN npm run build
 
+COPY . /app
 
-FROM nginx:1.23.3 as final
+EXPOSE 8080
 
-COPY --from=build /app/dist/ /app/dist/
-
-ARG nginx_uid=33
-ARG nginx_gid=33
-
-RUN usermod -u $nginx_uid -o nginx && groupmod -g $nginx_gid -o nginx
+CMD ["npm", "run", "dev", "--", "--host"]
 
 
