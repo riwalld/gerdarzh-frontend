@@ -3,7 +3,7 @@
     </component>
     <component :is="session" v-if="session" :sessionGameData="sessionGameData" @generateEndSession="handleEndSession">
     </component>
-    <component :is="endSession" v-if="endSession" :result="result"></component>
+    <component :is="endSession" v-if="endSession" :result="result" :isVictory="isVictory"></component>
 </template>
 <script>
 

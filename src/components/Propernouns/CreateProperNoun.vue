@@ -16,6 +16,14 @@
 
             <label for="litTransEng">Traduction littérale anglaise:</label>
             <input type="text" v-model="properNounDto.litTrans.litTransEng" required><br><br>
+
+            <label for="place">Lieu géographique :</label>
+            <input type="text" v-model="properNounDto.place" required><br>
+
+            <label for="country">Pays:</label>
+            <input type="text" v-model="properNounDto.country" required><br>
+
+
           </div>
           <div>
             <label for="wordTheme">Thème lexical :</label>
@@ -65,15 +73,20 @@
               </div>
             </div><br>
 
+            <label for="period">Epoque :</label>
+            <input type="text" v-model="properNounDto.period" required><br>
+
+            <label for="year">Equivalent année approximative:</label>
+            <input type="text" v-model="properNounDto.year" required><br>
+
           </div>
         </div>
         <label for="descrFr">Description (une cinquantaine de mots au plus) :</label>
-        <textarea type="text" v-model="properNounDto.descrFr" rows="7" cols="90"
+        <textarea type="text" v-model="properNounDto.descrFr" rows="5" cols="90"
           style="max-width: 90%;"></textarea><br><br>
 
-        <label for="descrEng">Description en anglais (une cinquantaine de mots au plus) :</label>
-        <textarea type="text" v-model="properNounDto.descrEng" rows="7" cols="90" style="max-width: 90%;"></textarea>
-
+        <label for="descrEng">Legende de l'image: (une vingtaine de mots au plus) :</label>
+        <textarea type="text" v-model="properNounDto.imgCaption" rows="3" cols="90" style="max-width: 90%;"></textarea>
 
         <input type="submit" value="Ajouter">
       </form>
@@ -94,7 +107,7 @@ export default {
         currentName: '',
         etymoName: '',
         wordStemsPC: [],
-        descrFr: '',
+        descrFr: 'Nom de famille breton essentiellement porté dans le pays de Quimper.',
         descrEng: '',
         shortDescrFr: '',
         shortDescrEng: '',
@@ -106,9 +119,10 @@ export default {
           litTransType: ''
         },
         place: '',
-        country: '',
-        period: '',
-        year: 1000,
+        country: 'Bretagne',
+        period: 'XIIIème s.',
+        year: 1200,
+        imgCaption:''
       },
       pcRadicalInputValue: '',
       pcRadicals: [],

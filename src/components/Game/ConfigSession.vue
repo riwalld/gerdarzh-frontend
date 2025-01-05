@@ -7,7 +7,8 @@
                 <div class="noticeContent">
                 <p>Le jeu consiste en une série de 10 questions aléatoirement selectionnées en fonction d'un thème lexicale choisie:</p>
                 <ul>
-                    <li>💒 <i>Lieux et Pays</i>: regroupant le termes essentiellement toponymiques d'origine gauloise, bretonne ou brittanique.</li>
+                    <li>💒 <i>Lieux et Pays</i>: regroupant les termes toponymiques d'origine gauloise, bretonne ou brittanique.</li>
+                    <li>📜 <i>Noms de famille Bretons</i>: regroupant les patronymes actuels d'origine bretonne.</li>
                     <li>👑<i>Figures Historiques</i>: regroupant des personnages connus de l'histoire du monde celte.</li>
                     <li>⚡<i>Figures Mythiques</i>: regroupant des dieux ou héros légendaires issus des épopée irlandaise, breton, ou du panthéon gaulois.</li>
                     <li>🍀<i>Peuples et Tribus</i>: regroupant des gentilés gaulois et noms de clans irlandais, écossais.</li>
@@ -25,6 +26,7 @@
             <div style="padding:30px">
                 <h3>Choisissez un thème lexical:</h3>
                 <button :class=styleBtn class="places" id="1" @click="setWordTheme(1)">Lieux et Pays</button>
+                <button :class=styleBtn class="family" id="6" @click="setWordTheme(6)">Noms de famille Bretons</button>
                 <button :class=styleBtn class="historic" id="2" @click="setWordTheme(2)">Figures Historiques</button>
                 <button :class=styleBtn class="mythic" id="3" @click="setWordTheme(3)">Figures Mythiques</button>
                 <button :class=styleBtn class="tribes" id="4" @click="setWordTheme(4)">Peuples et Tribus</button>
@@ -58,7 +60,7 @@ export default {
                     this.showInstructions = !this.showInstructions},
         setWordTheme(wordTheme) {
             this.wordTheme = wordTheme;
-            for (let index = 1; index < 6; index++) {
+            for (let index = 1; index < 7; index++) {
                 document.getElementById(index).classList.remove(this.styleSelectedBtn);
             }
             document.getElementById(wordTheme).classList.add(this.styleSelectedBtn);

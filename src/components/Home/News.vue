@@ -1,23 +1,18 @@
 <template>
   <section class="news">Derniers ajouts techniques:
-    <p>
-      <b>L'application est actuellement déployée en la version suivante:</b><br>
-    <ul>
 
-      <li>Une version "multi-tiers" de type MVVM avec le framework back-end <b>Python Django</b>, (port <span
-          style="color: blue;"><b><u><a
-                href="http://ec2-51-20-9-64.eu-north-1.compute.amazonaws.com:8082/">:8082</a></u></b></span>), et un
-        front-end avec le framework <b>Vue3</b>, accessible au port <span style="color: blue;"><b><u><a
-                href="http://ec2-51-20-9-64.eu-north-1.compute.amazonaws.com:8080/">:8080</a></u></b></span><br></li>
-    </ul></p>
-    <p>Projet <b>Django</b> consultable sur <span style="color: blue;"><b><u><a
-              href="https://github.com/riwalld/django_back-end_geriadur">GitHub</a></u></b></span>.</p>
+
     <p>
-      <b>- 10/05/24:</b> Adaptation de l'interface de l'ensemble de site dans une architecture progressive par
-      composants via le framework Vue.Js (Vue3).
+      <b>- 28/05/24:</b> Restructuration des données affichées lors des sessions de jeu.<br>
+      - ajout d'une légende décrivant succintement l'illustration
+      - système de "cache" permettant d'afficher l'indice étymologique seulement si désiré
     </p>
-    <p>Projet Vue consultable sur <span style="color: blue;"><b><u><a
-              href="https://github.com/riwalld/Vue3-Front-Geriadur">GitHub</a></u></b></span>.</p>
+    <p>
+      <b>- 25/05/24:</b> Ajout d'une nouvelle rubrique: <i>Noms de Famille Bretons</i>.
+    </p>
+    <p>
+      <b>- 15/05/24:</b> Mise en place d'un système de points de vie (3 essai avant échec sur une série de 10 fiches).
+    </p>
     <p>
       <b>- 30/04/24:</b> Implémentation des formulaires permettant de proposition des termes pour le lexique, ou des
       noms propres (lieux, personnages historiques, mythiques...) pour le Jeu Gerdarzh. Les fomulaires sont accessibles
