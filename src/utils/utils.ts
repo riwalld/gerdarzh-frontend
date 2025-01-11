@@ -1,19 +1,19 @@
 import axios from "axios";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
-  ? import.meta.env.VITE_BACKEND_URL
-  : "http://localhost:8001";
+  ? "http://localhost:8000"
+  : "http://localhost:8000";
 
 const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT
   ? import.meta.env.VITE_API_ENDPOINT
   : "/api";
 
-const  MEDIA_ENDPOINT = import.meta.env.VITE_MEDIA_ENDPOINT
+const  PROPERNOUN_ENDPOINT = import.meta.env.VITE_MEDIA_ENDPOINT
   ? import.meta.env.VITE_MEDIA_ENDPOINT
-  : "/media";
+  : "/properNouns/propernoun";
 
 export const API_URL = BACKEND_URL + API_ENDPOINT;
-export const MEDIA_URL = BACKEND_URL + MEDIA_ENDPOINT;
+export const PROPERNOUN_URL = BACKEND_URL + PROPERNOUN_ENDPOINT;
 const CSRF_COOKIE_NAME = "csrftoken";
 const CSRF_HEADER_NAME = "X-CSRFToken";
 
@@ -23,17 +23,30 @@ export const apiAxios = axios.create({
   xsrfHeaderName: CSRF_HEADER_NAME,
 });
 
-const mediaAxios = axios.create({
-  baseURL: MEDIA_URL,
+export const properNounAxios = axios.create({
+  baseURL: PROPERNOUN_URL,
   xsrfCookieName: CSRF_COOKIE_NAME,
   xsrfHeaderName: CSRF_HEADER_NAME,
 });
 
-export async function getImage() {
+export async function getPropernoun(currentName:string) {
   try {
-    const response = await mediaAxios.get('/endpoint');
-    return response.data;
-  } catch (error: any) {
-    throw new Error(error.response?.data?.message || error.message || 'Erreur inconnue');
+    const response = await fetch(PROPERNOUN_URL + `?current_name=${currentName}`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error('Erreur lors de la récupération des données');
+    }
+    const data = await response.json();
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error('Erreur lors de la requête :', error);
+    return null;
   }
+}
+
+export function getImage(imageName: string) {
+  return "/media/images/" + imageName + '.jpg';
 }
