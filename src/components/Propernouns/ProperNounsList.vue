@@ -1,3 +1,81 @@
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+import { host, pageSize } from "../Config/Config";
+import ProperNounRow from "./PropernounRow.vue";
+import CreateProperNoun from "./CreateProperNoun.vue";
+import ProperNounArticle from "./ProperNounArticle.vue";
+
+defineProps({});
+defineEmits([]);
+
+const properNouns = ref<any[]>([]);
+const pageNum = ref(1);
+const addProperNounModal = ref(false);
+const showProperNoun = ref(false);
+const currentName = ref<string | null>(null);
+
+onMounted(async () => {
+  
+  try {
+    const response = await fetch(`${host}/properNouns/`, { method: "GET" });
+    const data = await response.json();
+    properNouns.value = data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des noms propres :", error);
+  }
+});
+
+const pageableProperNouns = computed(() => {
+  const start = (pageNum.value - 1) * pageSize;
+  const end = pageNum.value * pageSize;
+  return properNouns.value.slice(start, end);
+});
+
+function changePage(page: number) {
+  pageNum.value = page;
+}
+
+function sortTable(columnIndex: number) {
+  switch (columnIndex) {
+    case 0:
+      properNouns.value.sort((a, b) => (a.currentName > b.currentName ? 1 : -1));
+      break;
+    case 1:
+      properNouns.value.sort((a, b) => (a.wordTheme > b.wordTheme ? 1 : -1));
+      break;
+    case 2:
+      properNouns.value.sort((a, b) => (a.year > b.year ? 1 : -1));
+      break;
+    case 3:
+      properNouns.value.sort((a, b) => (a.place > b.place ? 1 : -1));
+      break;
+    case 4:
+      properNouns.value.sort((a, b) => (a.country > b.country ? 1 : -1));
+      break;
+    case 5:
+      properNouns.value.sort((a, b) => (a.shortDescrFr > b.shortDescrFr ? 1 : -1));
+      break;
+    default:
+      console.log(`No corresponding column to sort.`);
+  }
+  pageNum.value = 1;
+}
+
+function handleAddProperNoun(boolean: boolean) {
+  addProperNounModal.value = boolean;
+}
+
+function handleShowProperNoun(properNoun: any | null) {
+  if (properNoun != null) {
+    currentName.value = properNoun.currentName;
+    showProperNoun.value = true;
+  } else {
+    currentName.value = null;
+    showProperNoun.value = false;
+  }
+}
+</script>
+
 <template>
   <section class="showWS">
     <h2>Personnages, lieux et gentilés celtiques</h2>
@@ -33,94 +111,3 @@
     <create-proper-noun v-if="addProperNounModal" @handleAddProperNoun="handleAddProperNoun"></create-proper-noun>
   </section>
 </template>
-
-<script>
-import { host, pageSize } from "../Config/Config.js";
-import ProperNounRow from "./PropernounRow.vue";
-import CreateProperNoun from "./CreateProperNoun.vue";
-import ProperNounArticle from "./ProperNounArticle.vue";
-export default {
-
-  components: { ProperNounRow, CreateProperNoun, ProperNounArticle },
-
-  template: `
-    
-    `,
-
-  data() {
-    return {
-      properNouns: [],
-      pageNum: 1,
-      addProperNounModal: false,
-      pcRadicals: [],
-      showProperNoun: false,
-      propernoun : { type: Object, required: true },
-      currentName: null
-    }
-  },
-
-  created() {
-    fetch(host + '/properNouns/', {
-      method: "GET"
-    }
-    )
-      .then(response => response.json())
-      .then(properNouns => {
-        this.properNouns = properNouns;
-      });
-  },
-
-  computed: {
-    pageableProperNouns() {
-      return this.properNouns.slice((this.pageNum - 1) * pageSize, (this.pageNum) * pageSize)
-    },
-  },
-
-  methods: {
-    changePage(page) {
-      this.pageNum = page;
-    },
-
-    sortTable(columnIndex) {
-      switch (columnIndex) {
-        case 0:
-          this.properNouns.sort((a, b) => (a.currentName > b.currentName) ? 1 : -1);
-          break;
-        case 1:
-          this.properNouns.sort((a, b) => (a.wordTheme > b.wordTheme) ? 1 : -1);
-          break;
-        case 2:
-          this.properNouns.sort((a, b) => (a.year > b.year) ? 1 : -1);
-          break;
-        case 3:
-          this.properNouns.sort((a, b) => (a.place > b.place) ? 1 : -1);
-          break;
-        case 4:
-          this.properNouns.sort((a, b) => (a.country > b.country) ? 1 : -1);
-          break;
-        case 5:
-          this.properNouns.sort((a, b) => (a.shortDescrFr > b.shortDescrFr) ? 1 : -1);
-          break;
-        default:
-          console.log(`No corresponding column to sort.`);
-      }
-      this.pageNum = 1
-    },
-    handleAddProperNoun(boolean) {
-      this.addProperNounModal = boolean;
-    },
-    handleShowProperNoun(properNoun) {
-      if(properNoun!=null){
-      this.inputValue ='';
-      this.searchResult = false;
-      this.currentName = properNoun.currentName;
-      this.showProperNoun =true;
-      }
-      else{
-        this.currentName = null;
-      this.showProperNoun =false;
-      }
-    },
-  }
-}
-</script>

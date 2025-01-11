@@ -1,7 +1,6 @@
-<script setup>
-import { ref, defineProps, defineEmits, onMounted } from 'vue';
-import { host } from '@/components/Config/Config';
-import { getImage } from '@/utils/utils';
+<script setup lang="ts">
+import { ref, defineProps, defineEmits,  onBeforeMount } from 'vue';
+import { getImage, getPropernoun } from '@/utils/utils';
 import { Propernoun } from '@/utils/types';
 import { useI18n } from 'vue-i18n';
 
@@ -14,14 +13,8 @@ const emit = defineEmits(['handleShowProperNoun']);
 
 const propernoun = ref<Propernoun | null>(null);
 
-onMounted(() => {
-  fetch(host + '/properNouns/propernoun?current_name=' + props.currentName, {
-    method: 'GET',
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      propernoun.value = data;
-    });
+onBeforeMount(async () => {
+  propernoun.value = await getPropernoun(props.currentName);
 });
 
 function close() {
@@ -36,8 +29,9 @@ function close() {
         <div style="display: flex; padding: 10px;">
           <div class="etymoInfo">
             <div>
-                  <img :src="getImage(propernoun.getImage)" />
-                </div>
+             
+              <img :src="getImage(propernoun.image)" /></div>
+                
                 <div style="display: flex; flex-direction: column;">
                 <div style="padding: 30px;">
                     <h2 style="padding-bottom: 20px;">{{ propernoun.currentName }} </h2>
