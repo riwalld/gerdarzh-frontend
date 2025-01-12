@@ -4,7 +4,8 @@ import { host, pageSize } from "../Config/Config";
 import ProperNounRow from "./PropernounRow.vue";
 import CreateProperNoun from "./CreateProperNoun.vue";
 import ProperNounArticle from "./ProperNounArticle.vue";
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 defineProps({});
 defineEmits([]);
 
@@ -78,13 +79,13 @@ function handleShowProperNoun(properNoun: any | null) {
 
 <template>
   <section class="showWS">
-    <h2>Personnages, lieux et gentilés celtiques</h2>
-    <h3>Nombre de mots: {{ properNouns.length }}</h3>
+    <h2>{{t('characters_places_and_demonym')}}</h2>
+    <h3>{{t('word_count')}}: {{ properNouns.length }}</h3>
     <div style="margin: 50px;">
       <table class="wstable" id="wstable">
         <thead style="background-color: rgb(204, 202, 195);">
           <tr>
-            <th><a href="#" @click="sortTable(0);"> Mot</a></th>
+            <th><a href="#" @click="sortTable(0);"> {{t('word')}}</a></th>
             <th><a href="#" @click="sortTable(1);"> Thème lexical</a></th>
             <th style="max-width: 50px;"><a href="#" @click="sortTable(2);"> Période</a></th>
             <th><a href="#" @click="sortTable(3);"> Lieu</a></th>
@@ -99,11 +100,11 @@ function handleShowProperNoun(properNoun: any | null) {
         </tbody>
       </table>
       <div id="pagesbutton">
-        <button @click=changePage(pageNum-1)>Précédent</button>
-        <span>Page: {{ pageNum }}</span>
-        <button @click=changePage(pageNum+1)>Suivant</button>
+        <button @click=changePage(pageNum-1)>{{t('previous')}}</button>
+        <span>{{t('page')}}: {{pageNum}}</span>
+        <button @click=changePage(pageNum+1)>{{t('next')}}</button>
       </div>
-      <button @click="handleAddProperNoun(true)">Ajouter un nom</button>
+      <button @click="handleAddProperNoun(true)">{{t('add_name')}}</button>
     </div>
     <ProperNounArticle v-if="showProperNoun" :currentName="currentName"
       @handleShowProperNoun="handleShowProperNoun">

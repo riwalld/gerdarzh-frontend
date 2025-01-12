@@ -3,7 +3,6 @@ import { ref, defineProps, defineEmits,  onBeforeMount } from 'vue';
 import { getImage, getPropernoun } from '@/utils/utils';
 import { Propernoun } from '@/utils/types';
 import { useI18n } from 'vue-i18n';
-
 const { t } = useI18n();
 const props = defineProps({
   currentName: { type: String, required: true }

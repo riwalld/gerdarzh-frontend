@@ -1,190 +1,172 @@
+<script setup lang="ts">
+import { ref, defineEmits, onMounted } from 'vue';
+import { host } from '../Config/Config';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+const properNounDto = ref({
+  currentName: '',
+  etymoName: '',
+  wordStemsPC: [],
+  descrFr: '',
+  descrEng: '',
+  shortDescrFr: '',
+  shortDescrEng: '',
+  wordTheme: '',
+  culturalArea: '',
+  litTrans: {
+    litTransFr: '',
+    litTransEng: '',
+    litTransType: ''
+  },
+  place: '',
+  country: 'Bretagne',
+  period: 'XIIIème s.',
+  year: 1200,
+  imgCaption: ''
+});
+const pcRadicalInputValue = ref('');
+const pcRadicals = ref([]);
+const message = ref('');
+
+const emit = defineEmits();
+const handleAddProperNoun = (value: boolean) => {
+  emit('handleAddProperNoun', value);
+};
+
+const submit = async () => {
+  try {
+    await fetch(host + '/properNouns/', {
+      body: JSON.stringify(properNounDto.value),
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+    message.value = 'Word Stem added successfully!';
+    close();
+  } catch (error) {
+    message.value = 'There was an error while adding the noun.';
+    console.error(error);
+  }
+};
+
+const close = () => {
+  handleAddProperNoun(false);
+};
+
+const resultList = () => {
+  if (!pcRadicalInputValue.value) {
+    return [];
+  }
+  const inputValue = pcRadicalInputValue.value.toLowerCase();
+  return pcRadicals.value.filter((pcRad) =>
+    pcRad.name.toLowerCase().includes(inputValue)
+  );
+};
+
+const addPcRadical = (result: any) => {
+  properNounDto.value.wordStemsPC.push(result);
+  pcRadicalInputValue.value = '';
+};
+onMounted(() => {
+  fetch(host + '/wordstems/Str/', {
+    method: 'GET'
+  })
+    .then(response => response.json())
+    .then(pcRadicalsData => {
+      pcRadicals.value = pcRadicalsData;
+      console.log(pcRadicals.value);
+    });
+});
+</script>
+
 <template>
   <div id="modal-bg" class="modal">
-
     <!-- Modal content -->
     <div class="modal-content">
-      <span class="close" @click="close()">&times;</span>
-      <h2>Proposer une nouvelle entité au jeu:</h2>
+      <span class="close" @click="close">&times;</span>
+      <h2>{{ t('propose_new_proper_noun') }}</h2>
       <form @submit.prevent="submit">
         <div style="display: flex; padding: 10px;">
           <div style="padding-right: 65px;">
-            <label for="pNCurrentName">Nom de l'entité :</label>
+            <label for="pNCurrentName">{{ t('entity_name') }}:</label>
             <input type="text" v-model="properNounDto.currentName" required><br><br>
 
-            <label for="litTransFr">Traduction littérale :</label>
+            <label for="litTransFr">{{ t('literal_translation_fr') }}:</label>
             <input type="text" v-model="properNounDto.litTrans.litTransFr" required><br><br>
 
-            <label for="litTransEng">Traduction littérale anglaise:</label>
+            <label for="litTransEng">{{ t('literal_translation_eng') }}:</label>
             <input type="text" v-model="properNounDto.litTrans.litTransEng" required><br><br>
 
-            <label for="place">Lieu géographique :</label>
+            <label for="place">{{ t('geographical_place') }}:</label>
             <input type="text" v-model="properNounDto.place" required><br>
 
-            <label for="country">Pays:</label>
+            <label for="country">{{ t('country') }}:</label>
             <input type="text" v-model="properNounDto.country" required><br>
-
-
           </div>
           <div>
-            <label for="wordTheme">Thème lexical :</label>
+            <label for="wordTheme">{{ t('lexical_theme') }}:</label>
             <select v-model="properNounDto.wordTheme" required>
-              <option value="1">Lieux et Pays</option>
-              <option value="2">Figures Historiques</option>
-              <option value="3">Figures Mythiques</option>
-              <option value="4">Peuples et Tribus</option>
-              <option value="5">Armes et Créatures</option>
-              <option value="6">Prénoms et Noms de famille</option>
+              <option value="1">{{ t('places_and_countries') }}</option>
+              <option value="2">{{ t('historical_figures') }}</option>
+              <option value="3">{{ t('mythical_figures') }}</option>
+              <option value="4">{{ t('peoples_and_tribes') }}</option>
+              <option value="5">{{ t('weapons_and_creatures') }}</option>
+              <option value="6">{{ t('first_and_last_names') }}</option>
             </select><br><br>
 
-            <label for="culturalAera">Aire culturelle :</label>
+            <label for="culturalAera">{{ t('cultural_area') }}:</label>
             <select v-model="properNounDto.culturalArea" required>
-              <option value="1">Gaules</option>
-              <option value="2">Bretagne</option>
-              <option value="3">Pays de Galles</option>
-              <option value="4">Irlande et Écosse</option>
+              <option value="1">{{ t('gaule') }}</option>
+              <option value="2">{{ t('brittany') }}</option>
+              <option value="3">{{ t('wales') }}</option>
+              <option value="4">{{ t('ireland_and_scotland') }}</option>
             </select><br><br>
 
-            <label for="litTransType">Type de traduction :</label>
+            <label for="litTransType">{{ t('translation_type') }}:</label>
             <select v-model="properNounDto.litTrans.litTransType" required>
-              <option value="1">Nom de personne masculin</option>
-              <option value="2">Nom de personne féminin</option>
-              <option value="3">Nom d'un clan ou d'une tribu</option>
-              <option value="4">Nom singulier masculin d'un lieu</option>
-              <option value="5">Nom singulier féminin d'un lieu</option>
-              <option value="6">Nom pluriel d'un lieu</option>
-              <option value="10">Nom d'arme ou objet</option>
+              <option value="1">{{ t('masculine_person_name') }}</option>
+              <option value="2">{{ t('feminine_person_name') }}</option>
+              <option value="3">{{ t('clan_or_tribe_name') }}</option>
+              <option value="4">{{ t('singular_masculine_place_name') }}</option>
+              <option value="5">{{ t('singular_feminine_place_name') }}</option>
+              <option value="6">{{ t('plural_place_name') }}</option>
+              <option value="10">{{ t('weapon_or_object_name') }}</option>
             </select><br><br>
 
-            <label for="pNEtymoName">Forme ancienne ou étymologique :</label>
+            <label for="pNEtymoName">{{ t('etymological_form') }}:</label>
             <input type="text" v-model="properNounDto.etymoName" required><br><br>
 
-            <label for="radicalPCInput">Radicaux proto-celtique :</label>
+            <label for="radicalPCInput">{{ t('proto_celtic_radicals') }}:</label>
             <input type="text" v-model="pcRadicalInputValue">
             <div class="searchResult">
-              <div v-for="result in resultList(pcRadicalInputValue).slice(0, 5)" :key="result.id" :value="result.id">
-                <div @click="addPcRadical(result.id)"> {{ result.name }}
-                </div>
+              <div v-for="result in resultList().slice(0, 5)" :key="result.id" @click="addPcRadical(result)">
+                {{ result.name }}
               </div>
             </div>
             <div style="display: flex;">
-              <div style="border: 1px solid black; padding: 5px; margin: 5px; background-color: azure;"
-                v-for="selectedRadicalPC in properNounDto.wordStemsPC" :key="selectedRadicalPC">
+              <div style="border: 1px solid black; padding: 5px; margin: 5px; background-color: azure;" v-for="selectedRadicalPC in properNounDto.wordStemsPC" :key="selectedRadicalPC">
                 {{ selectedRadicalPC }}
               </div>
             </div><br>
 
-            <label for="period">Epoque :</label>
+            <label for="period">{{ t('period') }}:</label>
             <input type="text" v-model="properNounDto.period" required><br>
 
-            <label for="year">Equivalent année approximative:</label>
+            <label for="year">{{ t('approximate_year') }}:</label>
             <input type="text" v-model="properNounDto.year" required><br>
-
           </div>
         </div>
-        <label for="descrFr">Description (une cinquantaine de mots au plus) :</label>
-        <textarea type="text" v-model="properNounDto.descrFr" rows="5" cols="90"
-          style="max-width: 90%;"></textarea><br><br>
+        <label for="descrFr">{{ t('description') }}:</label>
+        <textarea type="text" v-model="properNounDto.descrFr" rows="5" cols="90" style="max-width: 90%;"></textarea><br><br>
 
-        <label for="descrEng">Legende de l'image: (une vingtaine de mots au plus) :</label>
+        <label for="descrEng">{{ t('image_caption') }}:</label>
         <textarea type="text" v-model="properNounDto.imgCaption" rows="3" cols="90" style="max-width: 90%;"></textarea>
 
-        <input type="submit" value="Ajouter">
+        <input type="submit" value="{{ t('add') }}">
       </form>
     </div>
   </div>
-
 </template>
-
-<script>
-
-import { host } from '../Config/Config';
-
-export default {
-
-  data() {
-    return {
-      properNounDto: {
-        currentName: '',
-        etymoName: '',
-        wordStemsPC: [],
-        descrFr: 'Nom de famille breton essentiellement porté dans le pays de Quimper.',
-        descrEng: '',
-        shortDescrFr: '',
-        shortDescrEng: '',
-        wordTheme: '',
-        culturalArea: '',
-        litTrans: {
-          litTransFr: '',
-          litTransEng: '',
-          litTransType: ''
-        },
-        place: '',
-        country: 'Bretagne',
-        period: 'XIIIème s.',
-        year: 1200,
-        imgCaption:''
-      },
-      pcRadicalInputValue: '',
-      pcRadicals: [],
-      message: '',
-      source: '',
-    };
-  },
-
-  created() {
-    fetch(host + "/wordstems/Str/", {
-      method: "GET"
-    }
-    ).then(response => response.json())
-      .then(pcRadicals => {
-        this.pcRadicals = pcRadicals;
-        console.log(this.pcRadicals)
-      })
-
-  },
-
-  methods: {
-
-    async submit() {
-      console.log(this.properNounDto)
-      try {
-        await fetch(host + "/properNouns/", {
-          body: JSON.stringify(this.properNounDto),
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          }
-        });
-        this.message = 'Word Stem added successfully!';
-        this.close();
-      } catch (error) {
-        this.message = 'There was an error while adding the noun.';
-        console.error(error);
-      }
-    },
-
-    close() {
-      this.$emit('handleAddProperNoun', false);
-    },
-    resultList() {
-      if (!this.pcRadicalInputValue) {
-        return [];
-      }
-      const inputValue = this.pcRadicalInputValue.toLowerCase();
-      return this.pcRadicals.filter((pcRad) =>
-        pcRad.name.toLowerCase().includes(inputValue)
-      );
-
-    },
-    addPcRadical(result) {
-      this.properNounDto.wordStemsPC.push(result)
-      console.log(this.properNounDto.wordStemsPC)
-      this.pcRadicalInputValue = '';
-    }
-  }
-
-}
-
-
-</script>
