@@ -17,3 +17,4 @@ export interface Propernoun {
   image: string;
   imgCaption: string | null;
 }
+
