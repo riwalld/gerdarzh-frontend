@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { host, pageSize } from "../Config/Config";
 import ProperNounRow from "./PropernounRow.vue";
 import CreateProperNoun from "./CreateProperNoun.vue";
 import ProperNounArticle from "./ProperNounArticle.vue";
@@ -18,7 +17,7 @@ const currentName = ref<string | null>(null);
 onMounted(async () => {
   
   try {
-    const response = await fetch(`${host}/properNouns/`, { method: "GET" });
+    const response = await fetch(`http://localhost:8000/properNouns/`, { method: "GET" });
     const data = await response.json();
     properNouns.value = data;
   } catch (error) {
@@ -27,8 +26,8 @@ onMounted(async () => {
 });
 
 const pageableProperNouns = computed(() => {
-  const start = (pageNum.value - 1) * pageSize;
-  const end = pageNum.value * pageSize;
+  const start = (pageNum.value - 1) * 10;
+  const end = pageNum.value * 10;
   return properNouns.value.slice(start, end);
 });
 

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, defineProps, defineEmits } from 'vue';
-import { host } from '../Config/Config';
 
 const wordstemDto = ref({
   gender: '',
@@ -27,7 +26,7 @@ const handleAddWordstem = (value: boolean) => {
 const submit = async () => {
   try {
     wordstemDto.value.sources.push(source.value); 
-    await fetch(host + "/wordstems/", {
+    await fetch("http://localhost:8000" + "/wordstems/", {
       body: JSON.stringify(wordstemDto.value),
       method: "POST",
       headers: {

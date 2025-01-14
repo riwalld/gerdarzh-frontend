@@ -1,8 +1,19 @@
+<script setup>
+import { ref } from 'vue';
+import News from './News.vue';
+import UnlockFeatures from './UnlockFeatures.vue';
+import EtymoTree from '../../images/flc.jpg';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+const etymotree = ref(EtymoTree);
+</script>
+
 <template>
     <section>
         <div class="banner">
             <!--<Vue3Lottie style="margin:0"   :animationData="playJSON" :height="300" :width="300" />-->
-            <h1>- Bienvenue sur Gerdarzh -</h1>
+            <h1>- {{ t('welcome_gerdarzh')}} -</h1>
         </div>
     </section>
     <div class="home">
@@ -70,22 +81,3 @@
         <news></news>
     </div>
 </template>
-<script>
-import News from "./News.vue";
-import UnlockFeatures from "./UnlockFeatures.vue";
-import EtymoTree from '../../images/flc.jpg'
-import { Vue3Lottie } from "vue3-lottie";
-import playJSON from "../../images/gaul_lottie.json";
-
-export default {
-    components: { News, UnlockFeatures, Vue3Lottie },
-
-    data() {
-        return {
-            etymotree: EtymoTree,
-            gaulLottie : null,
-            playJSON,
-        }
-    },
-}
-</script>

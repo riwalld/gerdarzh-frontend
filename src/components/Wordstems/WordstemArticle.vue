@@ -1,6 +1,5 @@
 
 <script setup>
-import { setLanguages } from '../Config/Config.js';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -12,8 +11,6 @@ defineProps({
 });
 
 const emit = defineEmits(['handleShowWordstem']);
-
-setLanguages();
 
 function close() {
   emit('handleShowWordstem', null);

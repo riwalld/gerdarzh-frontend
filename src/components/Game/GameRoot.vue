@@ -10,7 +10,6 @@
 import ConfigSession from './ConfigSession.vue';
 import Session from './Session.vue';
 import EndSession from './EndSession.vue';
-import { host } from "../Config/Config.js";
 import failImg from '../../images/fail_king_arthur.png'
 
 export default {
@@ -30,7 +29,7 @@ export default {
 
     methods: {
         async handleSession(wordTheme) {
-            await fetch(host + '/sessionGameData/?wordTheme=' + wordTheme, {
+            await fetch("http://localhost:8000" + '/sessionGameData/?wordTheme=' + wordTheme, {
                 method: "GET"
             }
             )

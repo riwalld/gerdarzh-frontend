@@ -57,7 +57,6 @@
 <script>
 import WordstemRow from "./WordstemRow.vue";
 import CreateWordstem from "./CreateWordstem.vue";
-import { host, pageSize } from "../Config/Config.js";
 import WordstemArticle from "./WordstemArticle.vue";
 
 
@@ -84,7 +83,7 @@ export default {
   },
 
   created() {
-    fetch(host + '/wordstems/', {
+    fetch("http://localhost:8000" + '/wordstems/', {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -102,7 +101,7 @@ export default {
 
   computed: {
     pageableWordstems() {
-      return this.wordStems.slice((this.pageNum - 1) * pageSize, (this.pageNum) * pageSize)
+      return this.wordStems.slice((this.pageNum - 1) * 10, (this.pageNum) * 10)
     }
   },
 
@@ -119,7 +118,7 @@ export default {
     },
     async getSemanticField() {
       try {
-        const response = await fetch(host + "/semanticFields/", {
+        const response = await fetch("http://localhost:8000" + "/semanticFields/", {
           method: "GET"
         }
         );
@@ -134,7 +133,7 @@ export default {
     },
     async getSources() {
       try {
-        const response = await fetch(host + "/sources/", {
+        const response = await fetch("http://localhost:8000" + "/sources/", {
           method: "GET"
         }
         );

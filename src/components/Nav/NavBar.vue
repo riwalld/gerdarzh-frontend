@@ -18,8 +18,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <header>
-    <img style="top: 30px;" :src="navLogo" width="80" height="80" alt="test">
+  <header style="justify-content:center ;  margin: 0 auto;">
+    <div style="display: flex; justify-content:center ; max-width: 1100px; width: 100%;">
+    <!--<img style="top: 30px;" :src="navLogo" width="80" height="80" alt="test">-->
     <h1 style="color: rgb(51, 51, 51); font-size: 32px;">
       <a href="/">{{ t('title') }}</a>
     </h1>
@@ -45,6 +46,6 @@ onMounted(() => {
         <div class="summary-btn"><a :href="$router.resolve({ name: 'UserProfile' }).href">{{ t('profile') }}</a></div>
         <div class="language"></div>
       </div>
-    </div>
+    </div></div>
   </header>
 </template>
