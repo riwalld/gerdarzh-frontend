@@ -97,6 +97,10 @@ a {
     text-decoration: inherit;
 }
 
+li {
+    font-family: sans-serif;
+}
+
 h1 {
     margin: 0px;
     font-family: 'Trajan';
@@ -621,9 +625,11 @@ li {
 .weapons {
     background-image: url("./images/weapons_ico.jpg");
 }
+
 .family {
     background-image: url("./images/family.jpg");
 }
+
 .themebtn:hover {
     box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0);
 }
