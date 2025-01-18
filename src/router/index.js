@@ -2,6 +2,7 @@
 
 import { createWebHistory, createRouter } from 'vue-router'
 import Wordstems from "../components/Wordstems/Wordstems.vue";
+import WordstemArticle from "../components/Wordstems/WordstemArticle.vue";
 import ProperNouns from "../components/Propernouns/ProperNounsList.vue";
 import NotImplemented from "../components/Profile/NotImplemented.vue";
 import Home from "../components/Home/Home.vue";
@@ -18,6 +19,11 @@ const routes = [
     path: '/wordstems/list',
     name: 'Worsdtems',
     component: Wordstems
+  },
+  {
+    path: '/wordstems/:wordStemName/',
+    name: 'wordstem-detail',
+    component: WordstemArticle,
   }
   ,
   {

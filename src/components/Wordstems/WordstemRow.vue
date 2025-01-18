@@ -1,20 +1,19 @@
 <script setup lang='ts'>
-import { defineProps, defineEmits, ref, onMounted } from 'vue';
+import { defineProps, defineEmits } from 'vue';
 import { useI18n } from 'vue-i18n';
-
+import { useRoute } from "vue-router";
 const { t } = useI18n();
-
 
 const props = defineProps({
   wordstem: Object,
-    semfields: {
+  semfields: {
     type: Array as () => Object[], // Typage explicite ici
     required: true
   }
 });
 const emit = defineEmits(['handleShowWordstem']);
 
-const handleShowWordstem = (wordstem : Object) => {
+const handleShowWordstem = (wordstem: Object) => {
   console.log(wordstem);
   emit('handleShowWordstem', wordstem);
 };
@@ -25,13 +24,15 @@ const handleShowWordstem = (wordstem : Object) => {
 <template>
   <tr v-if="wordstem">
     <td>
-      <span class="langws" :title="t(wordstem.wordStemLanguage)"> {{ t(wordstem.wordStemLanguage+'_abbr') }} </span>
+      <span class="langws" :title="t(wordstem.wordStemLanguage)"> {{ t(wordstem.wordStemLanguage + '_abbr') }} </span>
     </td>
-    <td> <b><a class="entry" @click="handleShowWordstem(wordstem)">{{
-      wordstem.wordStemName }} </a></b></td>
+    <td> <router-link :to="{ name: 'wordstem-detail', params: { wordStemName: wordstem.wordStemName } }"
+        class="bg-gray-200 p-2 m-1 rounded-md"><b>{{ wordstem.wordStemName }}</b></router-link>
+
+    </td>
     <td>
-      <span class="langws" :title="t(wordstem.wordClass)">{{ t(wordstem.wordClass+'_abbr') }}</span>
-      <span class="langws" :title="t(wordstem.gender)">{{ t(wordstem.gender+'_abbr') }}</span>
+      <span class="langws" :title="t(wordstem.wordClass)">{{ t(wordstem.wordClass + '_abbr') }}</span>
+      <span class="langws" :title="t(wordstem.gender)">{{ t(wordstem.gender + '_abbr') }}</span>
     </td>
     <td>
       <span class="langws" title="français">fr.</span>
@@ -40,6 +41,6 @@ const handleShowWordstem = (wordstem : Object) => {
       : <i>{{ wordstem.engTranslation }}</i>
     </td>
     <td>{{ wordstem.firstOccurrence }}</td>
-    <td v-if="semfields">{{ semfields[wordstem.semanticField-1].frName }}</td>
+    <td v-if="semfields">{{ semfields[wordstem.semanticField - 1].frName }}</td>
   </tr>
 </template>
