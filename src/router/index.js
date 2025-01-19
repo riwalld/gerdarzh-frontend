@@ -21,7 +21,7 @@ const routes = [
     component: Wordstems
   },
   {
-    path: '/wordstems/:wordStemName/',
+    path: '/wordstems/:wordStemName/:wordStemId/',
     name: 'wordstem-detail',
     component: WordstemArticle,
   }
