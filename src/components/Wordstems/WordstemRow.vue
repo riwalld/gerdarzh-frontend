@@ -18,7 +18,6 @@ const handleShowWordstem = (wordstem: Object) => {
   emit('handleShowWordstem', wordstem);
 };
 
-
 </script>
 
 <template>
@@ -26,7 +25,7 @@ const handleShowWordstem = (wordstem: Object) => {
     <td>
       <span class="langws" :title="t(wordstem.wordStemLanguage)"> {{ t(wordstem.wordStemLanguage + '_abbr') }} </span>
     </td>
-    <td> <router-link :to="{ name: 'wordstem-detail', params: { wordStemName: wordstem.wordStemName } }"
+    <td> <router-link :to="{ name: 'wordstem-detail', params: { wordStemName: wordstem.wordStemName, wordStemId: wordstem.id } }"
         class="bg-gray-200 p-2 m-1 rounded-md"><b>{{ wordstem.wordStemName }}</b></router-link>
 
     </td>

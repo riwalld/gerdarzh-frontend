@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, defineProps, defineEmits } from 'vue';
+import {postAPI } from "../../utils/APIRequests"
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const wordstemDto = ref({
   gender: '',
@@ -13,38 +16,25 @@ const wordstemDto = ref({
   phonetic: '',
   engTranslation: '',
   frTranslation: '',
-  sources: []
+  sources: [] as string[],
 });
-const message = ref('');
-const source = ref('');
+const source = ref<string>('');
 
 const emit = defineEmits();
 const handleAddWordstem = (value: boolean) => {
   emit('handleAddWordstem', value);
 };
 
-const submit = async () => {
-  try {
-    wordstemDto.value.sources.push(source.value); 
-    await fetch("http://localhost:8000" + "/wordstems/", {
-      body: JSON.stringify(wordstemDto.value),
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      }
-    });
-    message.value = 'Word Stem added successfully!';
-    close(); 
-  } catch (error) {
-    message.value = 'There was an error adding the Word Stem.';
-    console.error(error);
-  }
-};
-
 const close = () => {
   handleAddWordstem(false);
 };
+
+const postWordstem = async () => {
+  wordstemDto.value.sources.push(source.value);
+  postAPI('/wordstems/',wordstemDto);
+};
+
+
 </script>
 <template>
   <div id="modal-bg" class="modal">
@@ -52,7 +42,7 @@ const close = () => {
     <div class="modal-content">
       <span class="close" @click="close()">&times;</span>
       <h2>{{ t('propose_new_term') }}</h2>
-<form @submit.prevent="submit">
+<form @submit.prevent="postWordstem">
   <label for="wordStemName">{{ t('term') }}</label>
   <input type="text" v-model="wordstemDto.wordStemName" required><br><br>
 
