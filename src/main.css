@@ -53,7 +53,7 @@
 
     header {
         padding-left: 20px !important;
-        line-height: 25px !important;
+        margin-top: 25px !important;
     }
 
     .summary {
@@ -130,6 +130,13 @@ p {
     font-family: Calibri, sans-serif;
 }
 
+.definition-box {
+    margin: 10px;
+    background-color: white;
+    padding: 10px;
+    width: 300px
+}
+
 input {
     display: block;
     width: 350px;
@@ -174,23 +181,27 @@ input {
 
 body {
     position: relative;
-    background: #e6e6e6;
+    background: rgb(242, 242, 247);
     margin: 0;
     padding: 0;
     width: 100vw;
     max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 header {
-    line-height: 75px;
+    margin-top: 75px;
     box-sizing: border-box;
     display: flex;
     width: 100vw;
-    background: rgb(239, 247, 248);
+    background: rgb(46, 46, 46);
     position: relative;
     top: 0;
     padding: 20px;
     padding-left: 30px;
+    padding-top: 40px;
     height: 110px;
     margin: 0;
     max-width: 100%;
@@ -366,7 +377,7 @@ li {
 
 .summary {
     font-family: "Lato", "Calibri";
-    color: black;
+    color: rgb(255, 255, 255);
     display: flex;
     flex-direction: row;
     padding: 0px;
@@ -434,6 +445,29 @@ li {
     background-color: #f5d375;
     border-radius: 12px;
     transition: width 0.3s ease-in-out;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.change-lang {
+    color: #212121;
+    text-decoration: none;
+    cursor: pointer;
+    height: 20px;
+}
+
+.change-lang:hover {
+    text-decoration: underline;
+    text-decoration-color: #212121;
+    text-underline-offset: 4px;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .progress-bar-in {
