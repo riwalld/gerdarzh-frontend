@@ -1,31 +1,37 @@
 <script setup lang='ts'>
-import { defineProps, defineEmits } from 'vue';
+import { defineProps, PropType } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from "vue-router";
+import { SemanticField, WordStemDto } from '../../utils/types';
 const { t } = useI18n();
 
 const props = defineProps({
-  wordstem: Object,
+  wordstem: {
+    type: Object as PropType<WordStemDto>,
+    required: true
+  },
   semfields: {
-    type: Array as () => Object[], // Typage explicite ici
+    type: Array as PropType<SemanticField[]>,
     required: true
   }
 });
+/*
 const emit = defineEmits(['handleShowWordstem']);
 
 const handleShowWordstem = (wordstem: Object) => {
   console.log(wordstem);
   emit('handleShowWordstem', wordstem);
 };
-
+*/
 </script>
 
 <template>
   <tr v-if="wordstem">
     <td>
-      <span class="langws" :title="t(wordstem.wordStemLanguage)"> {{ t(wordstem.wordStemLanguage + '_abbr') }} </span>
+      <span class="langws" :title="t(props.wordstem.wordStemLanguage)"> {{ t(wordstem.wordStemLanguage + '_abbr') }}
+      </span>
     </td>
-    <td> <router-link :to="{ name: 'wordstem-detail', params: { wordStemName: wordstem.wordStemName, wordStemId: wordstem.id } }"
+    <td> <router-link
+        :to="{ name: 'wordstem-detail', params: { wordStemName: wordstem.wordStemName, wordStemId: wordstem.id } }"
         class="bg-gray-200 p-2 m-1 rounded-md"><b>{{ wordstem.wordStemName }}</b></router-link>
 
     </td>
@@ -40,6 +46,6 @@ const handleShowWordstem = (wordstem: Object) => {
       : <i>{{ wordstem.engTranslation }}</i>
     </td>
     <td>{{ wordstem.firstOccurrence }}</td>
-    <td v-if="semfields">{{ semfields[wordstem.semanticField - 1].frName }}</td>
+    <td v-if="semfields">{{ semfields[wordstem.semanticField.id - 1].frName }}</td>
   </tr>
 </template>

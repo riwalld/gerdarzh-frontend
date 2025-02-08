@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n';
 import { onBeforeMount, ref } from 'vue';
 import { useRoute } from "vue-router";
 import { getAPI } from "../../utils/APIRequests"
-import navLogo from '../../images/bzhg.png';
+import navLogo from '../../images/flag_bzhg.png';
 const route = useRoute();
 const { t } = useI18n();
 const wordstem = ref(null);
