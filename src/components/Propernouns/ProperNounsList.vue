@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import ProperNounRow from "./PropernounRow.vue";
 import CreateProperNoun from "./CreateProperNoun.vue";
 import ProperNounArticle from "./ProperNounArticle.vue";
 import { useI18n } from 'vue-i18n';
+
+import { BACKEND_URL } from "../../utils/utils"
+import PropernounRow from '@/components/Propernouns/PropernounRow.vue';
 const { t } = useI18n();
 defineProps({});
 defineEmits([]);
@@ -15,9 +17,9 @@ const showProperNoun = ref(false);
 const currentName = ref<string | null>(null);
 
 onMounted(async () => {
-  
+
   try {
-    const response = await fetch(`http://localhost:8000/properNouns/`, { method: "GET" });
+    const response = await fetch(BACKEND_URL + `/properNouns/`, { method: "GET" });
     const data = await response.json();
     properNouns.value = data;
   } catch (error) {
@@ -78,13 +80,13 @@ function handleShowProperNoun(properNoun: any | null) {
 
 <template>
   <section class="showWS">
-    <h2>{{t('characters_places_and_demonym')}}</h2>
-    <h3>{{t('word_count')}}: {{ properNouns.length }}</h3>
+    <h2>{{ t('characters_places_and_demonym') }}</h2>
+    <h3>{{ t('word_count') }}: {{ properNouns.length }}</h3>
     <div style="margin: 50px;">
       <table class="wstable" id="wstable">
         <thead style="background-color: rgb(204, 202, 195);">
           <tr>
-            <th><a href="#" @click="sortTable(0);"> {{t('word')}}</a></th>
+            <th><a href="#" @click="sortTable(0);"> {{ t('word') }}</a></th>
             <th><a href="#" @click="sortTable(1);"> Thème lexical</a></th>
             <th style="max-width: 50px;"><a href="#" @click="sortTable(2);"> Période</a></th>
             <th><a href="#" @click="sortTable(3);"> Lieu</a></th>
@@ -93,20 +95,19 @@ function handleShowProperNoun(properNoun: any | null) {
           </tr>
         </thead>
         <tbody>
-          <properNoun-row v-for="propernoun in pageableProperNouns" :key="propernoun.currentName"
+          <PropernounRow v-for="propernoun in pageableProperNouns" :key="propernoun.currentName"
             :propernoun="propernoun" @handleShowProperNoun="handleShowProperNoun">
-          </properNoun-row>
+          </PropernounRow>
         </tbody>
       </table>
       <div id="pagesbutton">
-        <button @click=changePage(pageNum-1)>{{t('previous')}}</button>
-        <span>{{t('page')}}: {{pageNum}}</span>
-        <button @click=changePage(pageNum+1)>{{t('next')}}</button>
+        <button @click=changePage(pageNum)>{{ t('previous') }}</button>
+        <span>{{ t('page') }}: {{ pageNum }}</span>
+        <button @click=changePage(pageNum)>{{ t('next') }}</button>
       </div>
-      <button @click="handleAddProperNoun(true)">{{t('add_name')}}</button>
+      <button @click="handleAddProperNoun(true)">{{ t('add_name') }}</button>
     </div>
-    <ProperNounArticle v-if="showProperNoun" :currentName="currentName"
-      @handleShowProperNoun="handleShowProperNoun">
+    <ProperNounArticle v-if="showProperNoun" :currentName="currentName" @handleShowProperNoun="handleShowProperNoun">
     </ProperNounArticle>
     <create-proper-noun v-if="addProperNounModal" @handleAddProperNoun="handleAddProperNoun"></create-proper-noun>
   </section>

@@ -1,35 +1,38 @@
 <script setup lang="ts">
 import { ref, defineEmits, onMounted } from 'vue';
-import { BACKEND_URL } from '/src/utils/utils';
+import { BACKEND_URL } from '../../utils/utils';
+import { LitTrans, PcRadicals, Propernoun } from '../../utils/types';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
-const properNounDto = ref({
+const litTransl = ref<LitTrans>({
+  litTransFr: '',
+  litTransEng: '',
+  litTransType: ''
+})
+const properNounDto = ref<Propernoun>({
+  litTrans: litTransl.value,
   currentName: '',
   etymoName: '',
-  wordStemsPC: [],
   descrFr: '',
   descrEng: '',
   shortDescrFr: '',
   shortDescrEng: '',
-  wordTheme: '',
-  culturalArea: '',
-  litTrans: {
-    litTransFr: '',
-    litTransEng: '',
-    litTransType: ''
-  },
+  wordTheme: null,
+  culturalArea: null,
   place: '',
-  country: 'Bretagne',
+  country: '',
   period: 'XIIIème s.',
   year: 1200,
-  imgCaption: ''
+  image: '',
+  imgCaption: '',
+  wordStemsPC: [],
 });
 const pcRadicalInputValue = ref('');
-const pcRadicals = ref([]);
+const pcRadicals = ref<PcRadicals[]>([]);
 const message = ref('');
 
-const emit = defineEmits();
+const emit = defineEmits(['handleAddProperNoun']);
 const handleAddProperNoun = (value: boolean) => {
   emit('handleAddProperNoun', value);
 };
@@ -56,7 +59,7 @@ const close = () => {
   handleAddProperNoun(false);
 };
 
-const resultList = () => {
+const pcRadicalsSearchResultList = () => {
   if (!pcRadicalInputValue.value) {
     return [];
   }
@@ -154,12 +157,13 @@ onMounted(() => {
               <label for="radicalPCInput">{{ t('proto_celtic_radicals') }}:</label>
               <input type="text" v-model="pcRadicalInputValue">
               <div class="searchResult">
-                <div v-for="result in resultList().slice(0, 5)" :key="result.id" @click="addPcRadical(result)">
-                  {{ result.name }}
+                <div v-for="proposedPcRadicals in pcRadicalsSearchResultList().slice(0, 5)" :key="proposedPcRadicals.id"
+                  @click="addPcRadical(proposedPcRadicals)">
+                  {{ proposedPcRadicals.name }}
                 </div>
               </div>
               <div style="display: flex;">
-                <div v-for="selectedRadicalPC in properNounDto.wordStemsPC" :key="selectedRadicalPC"
+                <div v-for="selectedRadicalPC in properNounDto.wordStemsPC" :key="selectedRadicalPC.id"
                   style="border: 1px solid black; padding: 5px; margin: 5px; background-color: azure;">
                   {{ selectedRadicalPC.name }}
                 </div>
