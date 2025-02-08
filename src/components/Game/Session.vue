@@ -1,3 +1,139 @@
+<script setup>
+import { ref, watch, onMounted, onUnmounted } from 'vue';
+import trumpet from '../../sound/good_answer.mp3';
+import breakshield from '../../sound/answer_bad.mp3';
+import shield from '../../images/celtic-icon2.png';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
+const props = defineProps({
+    sessionGameData: Array
+});
+const emit = defineEmits(['generateEndSession'])
+const currentSessionStep = ref(null);
+const step = ref(0);
+const score = ref(0);
+const isCorrect = ref(true);
+const selectedResponse = ref(-1);
+const done = ref(false);
+const imageURL = ref(null);
+const progressbarWidth = ref(0);
+const correctAudio = new Audio(trumpet);
+const badAudio = new Audio(breakshield);
+const transitionQuiz = ref("quiz transquiz2");
+const shields = ref([shield, shield, shield]);
+const clue = ref(false);
+
+watch(step, (newStep) => {
+    currentSessionStep.value = props.sessionGameData[newStep];
+    if (currentSessionStep.value.properName.image !== null) {
+        import(`@/images/nouns/${currentSessionStep.value.properName.image}.jpg`).then(imageUrl => {
+            imageURL.value = imageUrl.default;
+        });
+    } else {
+        imageURL.value = null;
+    }
+});
+
+const onPressEnter = (event) => {
+    if (event.key === "Enter") {
+        if (selectedResponse.value > -1) {
+            if (!done.value) {
+                verifyResponse();
+            } else {
+                nextStep();
+            }
+        }
+    }
+};
+
+const nextStep = () => {
+    step.value++;
+    isCorrect.value = true;
+    if (shields.value.length > 0) {
+        if (step.value < props.sessionGameData.length) {
+            transitionQuiz.value = "quiz transquiz";
+            if (currentSessionStep.value.properName.image !== null) {
+                import(`@/images/nouns/${currentSessionStep.value.properName.image}.jpg`).then(imageUrl => {
+                    imageURL.value = imageUrl.default;
+                });
+            } else {
+                imageURL.value = null;
+            }
+            setTimeout(() => setQuizTranslation(), 300);
+        } else {
+            generateEndSession();
+        }
+    } else {
+        generateEndSession();
+    }
+};
+
+const setStyle = (index) => {
+    if (index === selectedResponse.value) {
+        if (done.value) {
+            return currentSessionStep.value.proposedLiteralTranslationList[selectedResponse.value].correctness ? "correct" : "incorrect";
+        } else {
+            return "selected";
+        }
+    } else if (done.value) {
+        if (currentSessionStep.value.proposedLiteralTranslationList[index].correctness) {
+            return "correct";
+        }
+    }
+};
+
+const setQuizTranslation = () => {
+    done.value = false;
+    selectedResponse.value = -1;
+    progressbarWidth.value = step.value * 10;
+    transitionQuiz.value = "quiz transquiz2";
+    setTimeout(() => transitionQuiz.value = "quiz initquiz", 50);
+};
+
+const isLast = (index) => {
+    if (index === shields.value.length - 1) {
+        return "lastShield";
+    }
+};
+
+const setValidateBtn = () => {
+    return selectedResponse.value === -1 ? "btn validate frozen" : "btn validate";
+};
+
+const selectResponse = (index) => {
+    selectedResponse.value = index;
+};
+
+const verifyResponse = () => {
+    if (currentSessionStep.value.proposedLiteralTranslationList[selectedResponse.value].correctness) {
+        score.value++;
+        correctAudio.play();
+    } else {
+        badAudio.play();
+        const lastShieldClass = document.getElementById('lastShield');
+        lastShieldClass?.classList.add("shieldHeartsBroken");
+        shields.value.pop();
+    }
+    done.value = true;
+};
+
+const toggleClue = () => {
+    clue.value = !clue.value;
+};
+
+const generateEndSession = () => {
+    const victory = score.value >= 5;
+    emit('generateEndSession', score.value, victory);
+};
+onMounted(() => {
+    document.addEventListener("keydown", onPressEnter);
+});
+onUnmounted(() => {
+    document.removeEventListener("keydown", onPressEnter);
+});
+</script>
+
+
 <template>
     <div class="gamePage">
         <div style="display: flex; justify-content: center;">
@@ -19,21 +155,22 @@
                     <img :src="imageURL" />
                 </div>
                 <div style="display: flex; flex-direction: column;">
-                <div style="padding: 30px;">
-                    <h2 style="padding-bottom: 20px;">{{ currentSessionStep.properName.currentName }} </h2>
-                    <div class="description" style="font-size: larger; font-weight: bold;">{{ currentSessionStep.properName.descr }}</div>
+                    <div style="padding: 30px;">
+                        <h2 style="padding-bottom: 20px;">{{ currentSessionStep.properName.currentName }} </h2>
+                        <div class="description" style="font-size: larger; font-weight: bold;">{{
+                            currentSessionStep.properName.descr }}</div>
+                    </div>
+                    <div style="margin-top: auto; text-align: left; padding: 5px; max-width: 250px;">
+                        <div class="description">{{ currentSessionStep.properName.imgCaption }}</div>
+                    </div>
                 </div>
-                <div style="margin-top: auto; text-align: left; padding: 5px; max-width: 250px;">
-                    <div class="description">{{ currentSessionStep.properName.imgCaption }}</div>
-                </div>
-            </div>
             </div>
             <div style="display: flex; padding-left: 100px; height: 105px;">
                 <button @click="toggleClue()" style="height: 30px; margin-top: 60px;">
-                    <h3>Indice ▶</h3>
+                    <h3>{{ t('clue') }} ▶</h3>
                 </button>
                 <div class="etymoForm" id="etymoForm" v-show="clue">
-                    <div id="pres">Radicaux composant le nom:</div>
+                    <div id="pres">{{ t('radicals_for_name') }}:</div>
                     <div id="etymoName">
                         <button class="etymoBtn2" v-for="etymo in currentSessionStep.celticRadicals" :key="etymo.name"
                             :alt="etymo.translation">
@@ -48,172 +185,10 @@
                         responseChoice.responseChoice }}</button>
             </div>
 
-            <button :class="setValidateBtn()" @click="selectedResponse > -1 ? verifyResponse() : null"
-                v-if="!done">Valider</button>
+            <button :class="setValidateBtn()" @click="selectedResponse > -1 ? verifyResponse() : null" v-if="!done">{{
+                t('validate') }}</button>
 
-            <button class="btn validate" @click="nextStep" v-if="done">Suivant</button>
+            <button class="btn validate" @click="nextStep" v-if="done">{{ t('next') }}</button>
         </section>
     </div>
 </template>
-<script>
-
-import trumpet from '../../sound/good_answer.mp3'
-import breakshield from '../../sound/answer_bad.mp3'
-import shield from '../../images/celtic-icon2.png'
-export default {
-    props: {
-        sessionGameData: Array
-    },
-
-    data() {
-        return {
-            currentSessionStep: null,
-            step: 0,
-            score: 0,
-            isCorrect: true,
-            selectedResponse: -1,
-            done: false,
-            imageURL: null,
-            progressbarWidth: 0,
-            correctAudio: new Audio(trumpet),
-            badAudio: new Audio(breakshield),
-            transitionQuiz: "quiz transquiz2",
-            shields: [shield, shield, shield],
-            clue: false
-        }
-    },
-
-    created() {
-        this.done = false;
-        this.selectedResponse = -1;
-        this.progressbarWidth = this.step * 10
-        this.currentSessionStep = this.sessionGameData[this.step];
-        this.transitionQuiz = "quiz init"
-        if(this.sessionGameData[this.step].properName.image !== null){
-        import(`@/images/nouns/${this.sessionGameData[this.step].properName.image}.jpg`).then(imageUrl => {
-            this.imageURL = imageUrl.default;
-        })}
-        else{
-            this.imageURL =null;
-        }
-
-        document.addEventListener("keydown", (event) => { this.onPressEnter(event) })
-    },
-
-    methods: {
-
-        onPressEnter(event) {
-
-            if (event.key === "Enter") {
-                if (this.selectedResponse > -1) {
-                    if (!this.done) {
-                        this.verifyResponse();
-                    }
-                    else {
-                        this.nextStep();
-                    }
-
-                }
-            }
-        },
-
-        nextStep() {
-            this.step++;
-            this.isCorrect = true;
-            if (this.shields.length > 0) {
-                if (this.step < this.sessionGameData.length) {
-                    this.transitionQuiz = "quiz transquiz"
-                    if(this.sessionGameData[this.step].properName.image !== null){
-                        import(`@/images/nouns/${this.sessionGameData[this.step].properName.image}.jpg`).then(imageUrl => {
-                        this.imageURL = imageUrl.default;
-                        })}
-                    else{
-                        this.imageURL =null;
-                    }
-                    setTimeout(() =>
-                        this.setQuizTranslation()
-                        , 300)
-                }
-                else {
-                    this.generateEndSession();
-                }
-            }
-            else {
-                this.generateEndSession();
-            }
-        },
-
-        setStyle(index) {
-            if (index == this.selectedResponse) {
-                if (this.done) {
-                    if (this.currentSessionStep.proposedLiteralTranslationList[this.selectedResponse].correctness == true) {
-                        return "correct";
-                    }
-                    else return "incorrect";
-                }
-                else return "selected";
-            }
-            else if (this.done) {
-                if (this.currentSessionStep.proposedLiteralTranslationList[index].correctness == true) {
-                    return "correct";
-                }
-            }
-        },
-        setQuizTranslation() {
-            this.done = false;
-            this.selectedResponse = -1;
-            this.progressbarWidth = this.step * 10
-            this.currentSessionStep = this.sessionGameData[this.step];
-            this.transitionQuiz = "quiz transquiz2"
-            setTimeout(() =>
-                this.transitionQuiz = "quiz initquiz"
-                , 50)
-
-        },
-
-        isLast(index) {
-            if (index === this.shields.length - 1) {
-                return "lastShield";
-            }
-
-        },
-
-        setValidateBtn() {
-            if (this.selectedResponse == -1) {
-                return "btn validate frozen";
-            }
-            else return "btn validate"
-        },
-
-        selectResponse(index) {
-            this.selectedResponse = index;
-        },
-
-        verifyResponse() {
-            if (this.currentSessionStep.proposedLiteralTranslationList[this.selectedResponse].correctness == true) {
-                this.score++;
-                this.correctAudio.play();
-            }
-            else {
-                this.badAudio.play();
-                let lastShieldClass = document.getElementById('lastShield')
-                console.log(lastShieldClass)
-                lastShieldClass.classList.add("shieldHeartsBroken")
-                this.shields.pop()
-            }
-            this.done = true;
-        },
-        toggleClue() {
-            this.clue = !this.clue
-        },
-        generateEndSession() {
-            if (this.score < 5) {
-                this.$emit('generateEndSession', this.score, false);
-            }
-            else {
-                this.$emit('generateEndSession', this.score, true);
-            }
-        }
-    }
-}
-</script>
