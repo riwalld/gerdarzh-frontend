@@ -162,5 +162,12 @@
   "clue": "Indice",
   "radicals_for_name": "Radicaux composant le nom",
   "validate": "Valider",
-  "back-to-menu": "Retourner au menu"
+  "back-to-menu": "Retourner au menu",
+  "celtic_language_history": "Epopée des langues celtiques",
+  "etymolgical_lexic": "Lexique etymologique",
+  "number_words": "Nombre de mots",
+  "add_term": "Ajouter un terme",
+  "translation": "traduction",
+  "lexical_field": "Champs Lexical",
+  "occurence_year": "Année d'occurence"
 }
