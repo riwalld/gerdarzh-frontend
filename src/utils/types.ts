@@ -34,7 +34,7 @@ export interface WordStemDto {
   wordStemLanguage: string;
   wordStemName: string;
   firstOccurrence: string;
-  semanticField: SemanticField;
+  semanticField: number;
   descrEng: string | null;
   descrFr: string | null;
   phonetic: string;
