@@ -104,7 +104,8 @@ li {
 h1 {
     margin: 0px;
     font-family: 'Trajan';
-    font-size: 250%;
+    font-size: 25px !important;
+    ;
     padding: 5px;
     color: rgb(233, 233, 233);
     text-align: center;
