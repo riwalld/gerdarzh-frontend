@@ -40,15 +40,3 @@
     </p>
   </section>
 </template>
-<script>
-import Schema from '../../images/architecture_project.jpg'
-export default {
-  components: { Schema },
-
-  data() {
-    return {
-      schema: Schema
-    }
-  }
-}
-</script>

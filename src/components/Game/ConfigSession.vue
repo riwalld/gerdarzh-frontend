@@ -58,6 +58,8 @@ const setValidateBtn = () => {
             </div>
 
             <div style="padding:30px">
+                <button :class="setValidateBtn()" id="validate" @click="generateSession()">{{ t('validate')
+                    }}</button>
                 <h3>{{ t('lexical_theme_choice') }}</h3>
                 <button :class="styleBtn" class="places" id="1" @click="setWordTheme(1)">{{ t('places') }}</button>
                 <button :class="styleBtn" class="family" id="6" @click="setWordTheme(6)">{{ t('family_names')
@@ -77,8 +79,7 @@ const setValidateBtn = () => {
                 <button :class="styleFrozenbtn" id="2">{{ t('britain') }}</button>
                 <button :class="styleFrozenbtn" id="4">{{ t('all') }}</button>
             </div>
-            <button :class="setValidateBtn()" id="validate" @click="generateSession()">{{ t('validate')
-                }}</button>
+
         </section>
     </div>
 </template>

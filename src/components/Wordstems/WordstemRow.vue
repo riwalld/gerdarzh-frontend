@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { defineProps, PropType } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { SemanticField, WordStemDto } from '../../utils/types';
+import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const props = defineProps({
@@ -25,7 +25,7 @@ const handleShowWordstem = (wordstem: Object) => {
 </script>
 
 <template>
-  <tr v-if="wordstem">
+  <tr v-if="wordstem && semfields">
     <td>
       <span class="langws" :title="t(props.wordstem.wordStemLanguage)"> {{ t(wordstem.wordStemLanguage + '_abbr') }}
       </span>
@@ -46,6 +46,7 @@ const handleShowWordstem = (wordstem: Object) => {
       : <i>{{ wordstem.engTranslation }}</i>
     </td>
     <td>{{ wordstem.firstOccurrence }}</td>
-    <td v-if="semfields">{{ semfields[wordstem.semanticField - 1].frName }}</td>
+    <td v-if="semfields && wordstem.semanticField > 0 && wordstem.semanticField <= semfields.length">{{
+      semfields[wordstem.semanticField - 1].frName }}</td>
   </tr>
 </template>

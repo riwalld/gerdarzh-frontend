@@ -1,50 +1,174 @@
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+import WordstemRow from "@/components/Wordstems/WordstemRow.vue";
+import CreateWordstem from "@/components/Wordstems/CreateWordstem.vue";
+import WordstemArticle from "@/components/Wordstems/WordstemArticle.vue";
+import { getAPI } from '@/utils/APIRequests';
+import { SemanticField, WordStemDto } from '@/utils/types';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
+
+const wordStems = ref<WordStemDto[]>([]);
+const inputValue = ref('');
+const pageNum = ref<number>(1);
+const addWordstemModal = ref(false);
+const showWordstem = ref<WordStemDto | null>(null);
+const semfields = ref<SemanticField[]>([]);
+const sources = ref<any[]>([]);
+const lgColumun = ref(true);
+const wordColumun = ref(true);
+const wordclassColumun = ref(true);
+const translationColumun = ref(true);
+const occurrenceColumun = ref(true);
+const semfieldColumun = ref(true);
+const searchResult = ref(false);
+
+const resultList = computed(() => {
+  if (!inputValue.value) {
+    return [];
+  }
+  const inputValueLower = inputValue.value.toLowerCase();
+  return wordStems.value.filter((ws) =>
+    ws.wordStemName.toLowerCase().includes(inputValueLower)
+  );
+});
+
+const pageableWordstems = computed(() => {
+  return wordStems.value.slice((pageNum.value - 1) * 10, pageNum.value * 10);
+});
+
+const handleAddWordstem = (boolean: boolean) => {
+  addWordstemModal.value = boolean;
+};
+
+const handleShowWordstem = (wordstem: WordStemDto) => {
+  inputValue.value = '';
+  searchResult.value = false;
+  showWordstem.value = wordstem;
+};
+
+const checkOrder = (nameA: string, nameB: string) => {
+  if (nameA < nameB) {
+    return -1;
+  }
+  if (nameA > nameB) {
+    return 1;
+  }
+  return 0;
+};
+
+const changePage = (page: number) => {
+  pageNum.value = page;
+};
+
+const sortTable = (columnIndex: number) => {
+  switch (columnIndex) {
+    case 0:
+      if (lgColumun.value) {
+        wordStems.value.sort((a, b) => checkOrder(a.wordStemLanguage, b.wordStemLanguage));
+        lgColumun.value = false;
+      } else {
+        wordStems.value.sort((a, b) => checkOrder(b.wordStemLanguage, a.wordStemLanguage));
+        lgColumun.value = true;
+      }
+      break;
+    case 1:
+      if (wordColumun.value) {
+        wordStems.value.sort((a, b) => checkOrder(a.wordStemName, b.wordStemName));
+        wordColumun.value = false;
+      } else {
+        wordStems.value.sort((a, b) => checkOrder(b.wordStemName, a.wordStemName));
+        wordColumun.value = true;
+      }
+      break;
+    case 2:
+      if (wordclassColumun.value) {
+        wordStems.value.sort((a, b) => checkOrder(a.wordClass, b.wordClass));
+        wordclassColumun.value = false;
+      } else {
+        wordStems.value.sort((a, b) => checkOrder(b.wordClass, a.wordClass));
+        wordclassColumun.value = true;
+      }
+      break;
+    case 3:
+      if (translationColumun.value) {
+        wordStems.value.sort((a, b) => checkOrder(a.frTranslation, b.frTranslation));
+        translationColumun.value = false;
+      } else {
+        wordStems.value.sort((a, b) => checkOrder(b.frTranslation, a.frTranslation));
+        translationColumun.value = true;
+      }
+      break;
+    case 4:
+      if (occurrenceColumun.value) {
+        wordStems.value.sort((a, b) => checkOrder(a.firstOccurrence, b.firstOccurrence));
+        occurrenceColumun.value = false;
+      } else {
+        wordStems.value.sort((a, b) => checkOrder(b.firstOccurrence, a.firstOccurrence));
+        occurrenceColumun.value = true;
+      }
+      break;
+    case 5:
+      if (semfieldColumun.value) {
+        wordStems.value.sort((a, b) => checkOrder(semfields.value[a.semanticField - 1].frName, semfields.value[b.semanticField - 1].frName));
+        semfieldColumun.value = false;
+      } else {
+        wordStems.value.sort((a, b) => checkOrder(semfields.value[b.semanticField - 1].frName, semfields.value[a.semanticField - 1].frName));
+        semfieldColumun.value = true;
+      }
+      break;
+    default:
+      console.log(`No corresponding column to sort.`);
+  }
+  pageNum.value = 1;
+};
+
+onMounted(async () => {
+  wordStems.value = await getAPI("/wordstems", '')
+  semfields.value = await getAPI("/semanticFields/", '')
+  sources.value = await getAPI("/sources/", '')
+  wordStems.value.sort((a, b) => checkOrder(a.wordStemName, b.wordStemName));
+});
+</script>
+
 <template>
   <section class="showWS">
-    <h2>Lexique etymologique</h2>
-    <h3>Nombre de mots: {{ wordStems.length }}</h3>
-    <div class="searchBar" 
-      >
-      <input 
-      type="text" 
-      v-model="inputValue" 
-      placeholder="Search..." 
-      @focus="searchResult = true"/>
-      
+    <h2>{{ t('etymolgical_lexic') }}</h2>
+    <h3>{{ t('number_words') }}: {{ wordStems.length }}</h3>
+    <div class="searchBar">
+      <input type="text" v-model="inputValue" placeholder="Search..." @focus="searchResult = true" />
+
       <div class="searchResult" v-show=searchResult>
-        <div 
-        v-for="result in resultList(inputValue).slice(0, 5)" 
-        :key="result.wordStemName" 
-        :value="result">
-          <div
-          @click="handleShowWordstem(result)"> {{ result.wordStemName }}
+        <div v-for="result in resultList.slice(0, 5)" :key="result.wordStemName" :value="result">
+          <div @click="handleShowWordstem(result)"> {{ result.wordStemName }}
           </div>
         </div>
       </div>
     </div>
-    <div style="margin: 50px;">
+    <div v-if="pageableWordstems" style="margin: 50px;">
       <table class="wstable" id="wstable">
         <thead style="background-color: rgb(204, 202, 195);">
           <tr>
             <th style="width: 20px;"><a href="#" @click="sortTable(0);"> Lg.</a></th>
-            <th><a href="#" @click="sortTable(1);"> Mot</a></th>
-            <th><a href="#" @click="sortTable(2);"> Nature<br>grammaticale</a></th>
-            <th><a href="#" @click="sortTable(3);"> Traduction</a></th>
-            <th><a href="#" @click="sortTable(4);"> Année<br>d'occurence</a></th>
-            <th><a href="#" @click="sortTable(5);"> Champs Lexical</a></th>
+            <th><a href="#" @click="sortTable(1);"> {{ t('word') }}</a></th>
+            <th><a href="#" @click="sortTable(2);"> {{ t('grammatical_nature') }}</a></th>
+            <th><a href="#" @click="sortTable(3);"> {{ t('translation') }}</a></th>
+            <th><a href="#" @click="sortTable(4);"> {{ t('occurence_year') }}</a></th>
+            <th><a href="#" @click="sortTable(5);">{{ t('lexical_field') }} </a></th>
           </tr>
         </thead>
-        <tbody>
-          <wordstem-row v-for="wordstem in pageableWordstems" :key="wordstem.wordStemName" :wordstem="wordstem"
+        <tbody v-if="pageableWordstems && semfields">
+          <wordstem-row v-for="wordstem in pageableWordstems" :key="wordstem.id" :wordstem="wordstem"
             :semfields="semfields" @handleShowWordstem="handleShowWordstem">
           </wordstem-row>
         </tbody>
       </table>
       <div id="pagesbutton">
-        <button @click=changePage(pageNum-1)>Précédent</button>
+        <button v-if="pageNum > 1" @click="changePage(pageNum - 1)">{{ t('previous') }}</button>
         <span>Page: {{ pageNum }}</span>
-        <button @click=changePage(pageNum+1)>Suivant</button>
+        <button v-if="pageNum < wordStems.length / 10" @click="changePage(pageNum + 1)">{{ t('next') }}</button>
       </div>
-      <button @click="handleAddWordstem(true)">Ajouter un terme</button>
+      <button @click="handleAddWordstem(true)">{{ t('add_term') }}</button>
     </div>
     <create-wordstem v-if="addWordstemModal" :wordstem="showWordstem" :sources="sources" :semfields="semfields"
       @handleAddWordstem="handleAddWordstem"></create-wordstem>
@@ -53,190 +177,3 @@
     </WordstemArticle>
   </section>
 </template>
-
-<script>
-import WordstemRow from "./WordstemRow.vue";
-import CreateWordstem from "./CreateWordstem.vue";
-import WordstemArticle from "./WordstemArticle.vue";
-
-
-export default {
-  components: { WordstemRow, CreateWordstem, WordstemArticle },
-
-  data() {
-    return {
-      wordStems: [],
-      inputValue: '',
-      pageNum: 1,
-      addWordstemModal: false,
-      showWordstem: null,
-      semfields: [],
-      sources: [],
-      lgColumun: true,
-      wordColumun: true,
-      wordclassColumun: true,
-      translationColumun: true,
-      occurrenceColumun: true,
-      semfieldColumun: true,
-      searchResult: false
-    }
-  },
-
-  created() {
-    fetch("http://localhost:8000" + '/wordstems/', {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      }
-    })
-      .then(response => response.json())
-      .then(wordStems => {
-
-        this.wordStems = wordStems;
-      });
-    this.getSemanticField()
-    this.getSources()
-  },
-
-  computed: {
-    pageableWordstems() {
-      return this.wordStems.slice((this.pageNum - 1) * 10, (this.pageNum) * 10)
-    }
-  },
-
-  methods: {
-    resultList() {
-      if (!this.inputValue) {
-        return [];
-      }
-      const inputValue = this.inputValue.toLowerCase();
-      return this.wordStems.filter((ws) =>
-        ws.wordStemName.toLowerCase().includes(inputValue)
-      );
-
-    },
-    async getSemanticField() {
-      try {
-        const response = await fetch("http://localhost:8000" + "/semanticFields/", {
-          method: "GET"
-        }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        this.semfields = await response.json();
-        console.log(this.semfields)
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    async getSources() {
-      try {
-        const response = await fetch("http://localhost:8000" + "/sources/", {
-          method: "GET"
-        }
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        this.sources = await response.json();
-        console.log(this.sources)
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    changePage(page) {
-      this.pageNum = page;
-    },
-
-    handleAddWordstem(boolean) {
-      this.addWordstemModal = boolean;
-    },
-
-    handleShowWordstem(wordstem) {
-      this.inputValue ='';
-      this.searchResult = false;
-      this.showWordstem = wordstem;
-    },
-
-    checkOrder(nameA, nameB) {
-      if (nameA < nameB) {
-        return -1;
-      }
-      if (nameA > nameB) {
-        return 1;
-      }
-      return 0;
-    },
-
-    sortTable(columnIndex) {
-      switch (columnIndex) {
-        case 0:
-          if (this.lgColumun) {
-            this.wordStems.sort((a, b) => this.checkOrder(a.wordStemLanguage, b.wordStemLanguage));
-            this.lgColumun = false
-          }
-          else {
-            this.wordStems.sort((a, b) => this.checkOrder(b.wordStemLanguage, a.wordStemLanguage));
-            this.lgColumun = true
-          }
-          break;
-        case 1:
-          if (this.wordColumun) {
-            this.wordStems.sort((a, b) => this.checkOrder(a.wordStemName, b.wordStemName));
-            this.wordColumun = false
-          }
-          else {
-            this.wordStems.sort((a, b) => this.checkOrder(b.wordStemName, a.wordStemName));
-            this.wordColumun = true
-          }
-          break;
-        case 2:
-          if (this.wordclassColumun) {
-            this.wordStems.sort((a, b) => this.checkOrder(a.wordClass, b.wordClass));
-            this.wordclassColumun = false
-          }
-          else {
-            this.wordStems.sort((a, b) => this.checkOrder(b.wordClass, a.wordClass));
-            this.wordclassColumun = true
-          }
-          break;
-        case 3:
-          if (this.translationColumun) {
-            this.wordStems.sort((a, b) => this.checkOrder(a.frTranslation, b.frTranslation));
-            this.translationColumun = false
-          }
-          else {
-            this.wordStems.sort((a, b) => this.checkOrder(b.frTranslation, a.frTranslation));
-            this.translationColumun = true
-          }
-          break;
-        case 4:
-          if (this.occurrenceColumun) {
-            this.wordStems.sort((a, b) => this.checkOrder(a.firstOccurrence, b.firstOccurrence));
-            this.occurrenceColumun = false
-          }
-          else {
-            this.wordStems.sort((a, b) => this.checkOrder(b.firstOccurrence, a.firstOccurrence));
-            this.occurrenceColumun = true
-          }
-          break;
-        case 5:
-          if (this.semfieldColumun) {
-            this.wordStems.sort((a, b) => this.checkOrder(this.semfields[a.semanticField - 1].frName, this.semfields[b.semanticField - 1].frName));
-            this.semfieldColumun = false
-          }
-          else {
-            this.wordStems.sort((a, b) => this.checkOrder(this.semfields[b.semanticField - 1].frName, this.semfields[a.semanticField - 1].frName));
-            this.semfieldColumun = true
-          }
-          break;
-        default:
-          console.log(`No corresponding column to sort.`);
-      }
-      this.pageNum = 1
-    }
-  }
-}
-</script>

@@ -74,7 +74,6 @@ const addPcRadical = (result: any) => {
   pcRadicalInputValue.value = '';
 };
 onMounted(() => {
-  console.log(BACKEND_URL)
   fetch(BACKEND_URL + '/wordstems/Str/', {
     method: 'GET'
   })

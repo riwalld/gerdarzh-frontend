@@ -22,9 +22,12 @@ onMounted(() => {
   <header style="justify-content:center ;  margin: 0 auto;">
     <div style="display: flex; justify-content:center ; max-width: 1100px; width: 100%;">
       <!--<img style="top: 30px;" :src="navLogo" width="80" height="80" alt="test">-->
-      <h1 style="color: rgb(255,230,200); font-size: 32px;">
-        <a href="/">{{ t('title') }}</a>
-      </h1>
+      <div style="min-width: 500px;">
+        <h1 style="color: rgb(255,230,200); font-size: 32px;">
+          <a href="/">Gerdarzh | <span style="font-weight: 100; font-size: smaller;">{{ t('celtic_language_history')
+              }}</span></a>
+        </h1>
+      </div>
 
       <div class="summary" id="summary-menu">
         <div class="summary-btn"><a :href="$router.resolve({ name: 'Home' }).href">{{ t('home') }}</a></div>

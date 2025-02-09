@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import trumpet from '../../sound/good_answer.mp3';
 import breakshield from '../../sound/answer_bad.mp3';
 import shield from '../../images/celtic-icon2.png';
@@ -23,17 +23,6 @@ const transitionQuiz = ref("quiz initquiz");
 const shields = ref([shield, shield, shield]);
 const clue = ref(false);
 
-watch(step, (newStep) => {
-    currentSessionStep.value = props.sessionGameData[newStep];
-    if (currentSessionStep.value.properName.image !== null) {
-        import(`@/images/nouns/${currentSessionStep.value.properName.image}.jpg`).then(imageUrl => {
-            imageURL.value = imageUrl.default;
-        });
-    } else {
-        imageURL.value = null;
-    }
-});
-
 const onPressEnter = (event) => {
     if (event.key === "Enter") {
         if (selectedResponse.value > -1) {
@@ -48,14 +37,13 @@ const onPressEnter = (event) => {
 
 const nextStep = () => {
     step.value++;
+    currentSessionStep.value = props.sessionGameData[step.value];
     isCorrect.value = true;
     if (shields.value.length > 0) {
         if (step.value < props.sessionGameData.length) {
             transitionQuiz.value = "quiz transquiz";
             if (currentSessionStep.value.properName.image !== null) {
-                import(`@/images/nouns/${currentSessionStep.value.properName.image}.jpg`).then(imageUrl => {
-                    imageURL.value = imageUrl.default;
-                });
+                imageURL.value = `/media/images/${currentSessionStep.value.properName.image}.jpg`;
             } else {
                 imageURL.value = null;
             }
@@ -127,6 +115,7 @@ const generateEndSession = () => {
 };
 onMounted(() => {
     currentSessionStep.value = props.sessionGameData[0];
+    imageURL.value = `/media/images/${currentSessionStep.value.properName.image}.jpg`;
     document.addEventListener("keydown", onPressEnter);
 });
 onUnmounted(() => {
