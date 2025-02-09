@@ -36,9 +36,10 @@ const handleEndSession = (resultValue, isVictoryValue) => {
 </script>
 
 <template>
-    <component :is="configSession" v-if="configSession" @generateSession="handleSession">
-    </component>
-    <component :is="session" v-if="session" :sessionGameData="sessionGameData" @generateEndSession="handleEndSession">
-    </component>
-    <component :is="endSession" v-if="endSession" :result="result" :isVictory="isVictory"></component>
+    <configSession v-if="configSession" @generateSession="handleSession">
+    </configSession>
+    <session v-if="session" :sessionGameData="sessionGameData" @generateEndSession="handleEndSession">
+    </session>
+    <endSession v-if="endSession" :result="result" :isVictory="isVictory">
+    </endSession>
 </template>

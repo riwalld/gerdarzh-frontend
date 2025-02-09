@@ -77,7 +77,7 @@ const setValidateBtn = () => {
                 <button :class="styleFrozenbtn" id="2">{{ t('britain') }}</button>
                 <button :class="styleFrozenbtn" id="4">{{ t('all') }}</button>
             </div>
-            <button :class="setValidateBtn()" id="validate" @click="generateSession()">{{ t('validate_button ')
+            <button :class="setValidateBtn()" id="validate" @click="generateSession()">{{ t('validate')
                 }}</button>
         </section>
     </div>

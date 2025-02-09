@@ -16,7 +16,7 @@ const wordstemDto = ref<WordStemDto>({
   wordStemLanguage: '',
   wordStemName: '',
   firstOccurrence: '',
-  semanticField: semFieldl.value,
+  semanticField: semFieldl.value.id,
   descrEng: '',
   descrFr: '',
   phonetic: '',

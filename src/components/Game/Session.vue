@@ -19,7 +19,7 @@ const imageURL = ref(null);
 const progressbarWidth = ref(0);
 const correctAudio = new Audio(trumpet);
 const badAudio = new Audio(breakshield);
-const transitionQuiz = ref("quiz transquiz2");
+const transitionQuiz = ref("quiz initquiz");
 const shields = ref([shield, shield, shield]);
 const clue = ref(false);
 
@@ -126,6 +126,7 @@ const generateEndSession = () => {
     emit('generateEndSession', score.value, victory);
 };
 onMounted(() => {
+    currentSessionStep.value = props.sessionGameData[0];
     document.addEventListener("keydown", onPressEnter);
 });
 onUnmounted(() => {
@@ -149,7 +150,7 @@ onUnmounted(() => {
                 </span>
             </div>
         </div>
-        <section :class=transitionQuiz>
+        <section v-if="currentSessionStep" :class=transitionQuiz>
             <div class="etymoInfo">
                 <div>
                     <img :src="imageURL" />

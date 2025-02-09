@@ -46,6 +46,6 @@ const handleShowWordstem = (wordstem: Object) => {
       : <i>{{ wordstem.engTranslation }}</i>
     </td>
     <td>{{ wordstem.firstOccurrence }}</td>
-    <td v-if="semfields">{{ semfields[wordstem.semanticField.id - 1].frName }}</td>
+    <td v-if="semfields">{{ semfields[wordstem.semanticField - 1].frName }}</td>
   </tr>
 </template>
