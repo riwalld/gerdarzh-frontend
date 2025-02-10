@@ -17,6 +17,33 @@ export interface Propernoun {
   wordStemsPC: PcRadicals[];
 }
 
+
+export interface WordStemDto {
+  gender: string;
+  id: number;
+  wordClass: string;
+  wordStemLanguage: string;
+  wordStemName: string;
+  wordStemParents: parentWordstemDTO[];
+  firstOccurrence: string;
+  semanticField: number;
+  descrEng: string | null;
+  descrFr: string | null;
+  phonetic: string;
+  engTranslation: string;
+  frTranslation: string;
+  sources: Source[];
+}
+export interface parentWordstemDTO {
+  id: number;
+  wordStemLanguage: string;
+  wordStemName: string;
+  wordStemParents: parentWordstemDTO[];
+  firstOccurrence: string;
+  phonetic: string;
+  engTranslation: string;
+  frTranslation: string;
+}
 export interface LitTrans {
   litTransFr: string;
   litTransEng: string;
@@ -27,24 +54,18 @@ export interface SemanticField {
   engName: string;
   frName: string;
 }
-export interface WordStemDto {
-  gender: string;
-  id: number;
-  wordClass: string;
-  wordStemLanguage: string;
-  wordStemName: string;
-  firstOccurrence: string;
-  semanticField: number;
-  descrEng: string | null;
-  descrFr: string | null;
-  phonetic: string;
-  engTranslation: string;
-  frTranslation: string;
-  sources: string[];
+export interface Source {
+  source_id: number;
+  date_publication: number;
+  language: number;
+  type_source: number;
+  abbreviation: string;
+  sourceEngName: string;
+  sourceOriginalName: string | null;
+  description?: string | null;
 }
 
 export interface PcRadicals {
-
   id: number;
   name: string;
 }
