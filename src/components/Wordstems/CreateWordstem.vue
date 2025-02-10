@@ -2,7 +2,7 @@
 import { ref, defineEmits, onMounted } from 'vue';
 import { getAPI, postAPI } from "../../utils/APIRequests"
 import { useI18n } from 'vue-i18n';
-import { SemanticField, WordStemDto } from '../../utils/types';
+import { SemanticField, Source, WordStemDto } from '../../utils/types';
 const { t } = useI18n();
 const semFieldl = ref<SemanticField>({
   id: 0,
@@ -15,6 +15,7 @@ const wordstemDto = ref<WordStemDto>({
   wordClass: '',
   wordStemLanguage: '',
   wordStemName: '',
+  wordStemParents: [],
   firstOccurrence: '',
   semanticField: semFieldl.value.id,
   descrEng: '',
@@ -22,11 +23,11 @@ const wordstemDto = ref<WordStemDto>({
   phonetic: '',
   engTranslation: '',
   frTranslation: '',
-  sources: [] as string[],
+  sources: [],
 });
 
 
-const source = ref<string>('');
+const sourceList = ref<Source[]>();
 const semfields = ref<SemanticField[]>([]);
 
 const emit = defineEmits(['handleAddWordstem']);
@@ -39,13 +40,11 @@ const close = () => {
 };
 
 const postWordstem = async () => {
-  if (source.value.length > 0) {
-    wordstemDto.value.sources.push(source.value);
-    postAPI('/wordstems/', wordstemDto);
-  }
+  postAPI('/wordstems/', wordstemDto);
 };
 onMounted(async () => {
   semfields.value = await getAPI('/semanticFields/', '');
+  sourceList.value = await getAPI('/sources/', '');
 });
 
 </script>
@@ -119,6 +118,11 @@ onMounted(async () => {
         <input type="number" v-model="wordstemDto.firstOccurrence" required><br><br>
 
         <label for="source">{{ t('reference_book') }}</label>
+        <select v-if="sourceList" v-model="wordstemDto.sources" required>
+          <option v-for="source in sourceList" :key="source.source_id" :value="source">{{ source.sourceOriginalName }}
+
+          </option>
+        </select>
       </form>
     </div>
   </div>

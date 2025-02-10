@@ -1,14 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { onBeforeMount, ref } from 'vue';
 import { useRoute } from "vue-router";
 import { getAPI } from "../../utils/APIRequests"
 import navLogo from '../../images/flag_bzhg.png';
+import { SemanticField, Source, WordStemDto } from '@/utils/types';
 const route = useRoute();
 const { t } = useI18n();
-const wordstem = ref(null);
-const semfields = ref(null);
-const sources = ref(null);
+const wordstem = ref<WordStemDto>();
+const semfields = ref<SemanticField[]>();
+const sources = ref<Source>();
 
 
 const emit = defineEmits(['handleShowWordstem']);
@@ -18,14 +19,14 @@ function close() {
 }
 
 onBeforeMount(async () => {
-  wordstem.value = await getAPI('/wordstems/', route.params.wordStemId);
+  wordstem.value = await getAPI('/wordstems/', String(route.params.wordStemId));
   semfields.value = await getAPI('/semanticFields/', '');
   sources.value = await getAPI('/sources/', '');
 });
 </script>
 <template>
   <div style="width:70%; margin: auto;">
-    <div style="width: 100%;">
+    <div v-if="wordstem" style="width: 100%;">
       <span class="close" @click="close()">&times;</span>
 
       <div style="display: flex; flex-direction: row; align-items: center; position: relative;">
@@ -67,9 +68,10 @@ onBeforeMount(async () => {
         <div>
           <div class="definition-box">
             <h3>{{ t('etymology') }}</h3>
-            wordstem.parent
+            <p>{{ wordstem.wordStemParents }}</p>
           </div>
-          <div class="definition-box">
+          <div v-if="semfields && wordstem.semanticField > 0 && wordstem.semanticField <= semfields.length"
+            class="definition-box">
             <h3>{{ t('semantic_field') }}</h3>
             <p>{{ semfields[wordstem.semanticField - 1].frName }}</p>
           </div>
@@ -81,10 +83,11 @@ onBeforeMount(async () => {
 
       <div style="display:flex; flex-direction: row; align-items: center;">
         <div>{{ t('sources') }}</div>
-        <ul>
-          <li v-for="src in wordstem.sources" :key="src.id - 1">
-            {{ sources[src - 1].sourceAbbreviation }} :
-            {{ sources[src - 1].sourceOriginalName }} ({{ sources[src - 1].sourceEngName }})
+        <ul v-if="wordstem?.sources">
+          <li v-for="src in wordstem.sources" :key="src.source_id - 1">
+            <div>
+              {{ src.abbreviation }} :
+              {{ src.sourceOriginalName }} ({{ src.sourceEngName }})</div>
           </li>
         </ul>
       </div>
