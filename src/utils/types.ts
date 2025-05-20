@@ -20,11 +20,12 @@ export interface Propernoun {
 
 export interface WordStemDto {
   gender: string;
-  id: number;
+  id?: number;
   wordClass: string;
   wordStemLanguage: string;
   wordStemName: string;
-  wordStemParents: parentWordstemDTO[];
+  parents: relatedWordstemDTO[];
+  children: relatedWordstemDTO[];
   firstOccurrence: string;
   semanticField: number;
   descrEng: string | null;
@@ -32,17 +33,18 @@ export interface WordStemDto {
   phonetic: string;
   engTranslation: string;
   frTranslation: string;
-  sources: Source[];
+  sources: number[];
 }
-export interface parentWordstemDTO {
-  id: number;
-  wordStemLanguage: string;
-  wordStemName: string;
-  wordStemParents: parentWordstemDTO[];
+export interface relatedWordstemDTO {
+  word_stem_id: number;
+  word_stem_language: string;
+  word_stem_name: string;
   firstOccurrence: string;
   phonetic: string;
-  engTranslation: string;
-  frTranslation: string;
+  ref_words_eng: string;
+  ref_words_fr: string;
+  parent_stems: relatedWordstemDTO[];
+  child_stems: relatedWordstemDTO[];
 }
 export interface LitTrans {
   litTransFr: string;
@@ -55,7 +57,7 @@ export interface SemanticField {
   frName: string;
 }
 export interface Source {
-  source_id: number;
+  sourceId: number;
   date_publication: number;
   language: number;
   type_source: number;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineEmits, onMounted } from 'vue';
+import { ref, defineEmits, onMounted, watch } from 'vue';
 import { getAPI, postAPI } from "../../utils/APIRequests"
 import { useI18n } from 'vue-i18n';
 import { SemanticField, Source, WordStemDto } from '../../utils/types';
@@ -10,12 +10,12 @@ const semFieldl = ref<SemanticField>({
   engName: ''
 });
 const wordstemDto = ref<WordStemDto>({
-  id: 0,
   gender: '',
   wordClass: '',
   wordStemLanguage: '',
   wordStemName: '',
-  wordStemParents: [],
+  parents: [],
+  children: [],
   firstOccurrence: '',
   semanticField: semFieldl.value.id,
   descrEng: '',
@@ -40,8 +40,17 @@ const close = () => {
 };
 
 const postWordstem = async () => {
-  postAPI('/wordstems/', wordstemDto);
+  postAPI('/wordstems/', wordstemDto.value);
 };
+
+watch(
+  () => wordstemDto.value.sources,
+  (val) => {
+    if (!Array.isArray(val)) {
+      wordstemDto.value.sources = [val]
+    }
+  }
+)
 onMounted(async () => {
   semfields.value = await getAPI('/semanticFields/', '');
   sourceList.value = await getAPI('/sources/', '');
@@ -117,12 +126,13 @@ onMounted(async () => {
         <label for="firstOccurence">{{ t('first_occurrence') }}</label>
         <input type="number" v-model="wordstemDto.firstOccurrence" required><br><br>
 
-        <label for="source">{{ t('reference_book') }}</label>
-        <select v-if="sourceList" v-model="wordstemDto.sources" required>
-          <option v-for="source in sourceList" :key="source.source_id" :value="source">{{ source.sourceOriginalName }}
-
+        <label for="sources">{{ t('reference_book') }}</label>
+        <select v-if="sourceList" v-model="wordstemDto.sources" multiple required>
+          <option v-for="source in sourceList" :key="source.sourceId" :value="source.sourceId">{{
+            source.sourceOriginalName }}
           </option>
         </select>
+        <button type="submit">Envoyer</button>
       </form>
     </div>
   </div>
