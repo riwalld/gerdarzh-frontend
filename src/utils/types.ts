@@ -28,8 +28,8 @@ export interface WordStemDto {
   children: relatedWordstemDTO[];
   firstOccurrence: string;
   semanticField: number;
-  descrEng: string | null;
-  descrFr: string | null;
+  engDescription: string | null;
+  frDescription: string | null;
   phonetic: string;
   engTranslation: string;
   frTranslation: string;
