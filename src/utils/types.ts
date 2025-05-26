@@ -23,7 +23,7 @@ export interface WordStemDto {
   id?: number;
   wordClass: string;
   wordStemLanguage: string;
-  wordStemName: string;
+  name: string;
   parents: relatedWordstemDTO[];
   children: relatedWordstemDTO[];
   firstOccurrence: string;
@@ -41,7 +41,7 @@ export interface WordStemPayload {
   id?: number;
   wordClass: string;
   wordStemLanguage: string;
-  wordStemName: string;
+  name: string;
   parents_ids: number[];
   children_ids: number[];
   firstOccurrence: string;
@@ -57,7 +57,7 @@ export interface WordStemPayload {
 export interface relatedWordstemDTO {
   word_stem_id: number;
   word_stem_language: string;
-  wordStemName: string;
+  name: string;
   firstOccurrence: string;
   phonetic: string;
   ref_words_eng: string;
@@ -76,12 +76,12 @@ export interface SemanticField {
   frName: string;
 }
 export interface Source {
-  sourceId: number;
+  id: number;
   date_publication: number;
   language: number;
   type_source: number;
   abbreviation: string;
-  sourceEngName: string;
+  name: string;
   sourceOriginalName: string | null;
   description?: string | null;
 }
