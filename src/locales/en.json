@@ -122,5 +122,7 @@
   "image_caption": "Image Caption (around twenty words max)",
   "add": "Add",
   "etymological_links": "etymological links",
-  "etymology": "etymology"
+  "etymology": "etymology",
+  "children_wordstems": "Children's wordstems",
+  "parents_wordstems": "Parent's wordtems"
 }

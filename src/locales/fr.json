@@ -169,5 +169,7 @@
   "add_term": "Ajouter un terme",
   "translation": "traduction",
   "lexical_field": "Champs Lexical",
-  "occurence_year": "Année d'occurence"
+  "occurence_year": "Année d'occurence",
+  "parents_wordstems": "Mots parents",
+  "children_wordstems": "Mots enfant"
 }
