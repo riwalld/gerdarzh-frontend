@@ -31,8 +31,8 @@ const handleShowWordstem = (wordstem: Object) => {
       </span>
     </td>
     <td> <router-link
-        :to="{ name: 'wordstem-detail', params: { wordStemName: wordstem.wordStemName, wordStemId: wordstem.id } }"
-        class="bg-gray-200 p-2 m-1 rounded-md"><b>{{ wordstem.wordStemName }}</b></router-link>
+        :to="{ name: 'wordstem-detail', params: { wordStemName: wordstem.name, wordStemId: wordstem.id } }"
+        class="bg-gray-200 p-2 m-1 rounded-md"><b>{{ wordstem.name }}</b></router-link>
 
     </td>
     <td>

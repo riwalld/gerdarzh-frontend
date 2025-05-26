@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { ref, defineEmits, onMounted, watch } from 'vue';
+import { ref, defineEmits, onMounted, watch, reactive } from 'vue';
 import { getAPI, postAPI } from "../../utils/APIRequests"
 import { useI18n } from 'vue-i18n';
 import { SemanticField, Source, WordStemDto, WordStemPayload } from '../../utils/types';
+import MultipleSelection from '../MultipleSelection.vue';
 const { t } = useI18n();
 const semFieldl = ref<SemanticField>({
   id: 0,
   frName: '',
   engName: ''
 });
-const wordstemDto = ref<WordStemPayload>({
+const wordstemDto = reactive<WordStemPayload>({
   gender: '',
   wordClass: '',
   wordStemLanguage: '',
-  wordStemName: '',
+  name: '',
   parents_ids: [],
   children_ids: [],
   firstOccurrence: '',
@@ -29,8 +30,6 @@ const wordstemDto = ref<WordStemPayload>({
 
 const sourceList = ref<Source[]>();
 const semfields = ref<SemanticField[]>([]);
-const childrenInputValue = ref('');
-const parentInputValue = ref('');
 const wordstems = ref<WordStemDto[]>([]);
 
 const emit = defineEmits(['handleAddWordstem']);
@@ -43,51 +42,29 @@ const close = () => {
 };
 
 const postWordstem = async () => {
-  postAPI('/wordstems/', wordstemDto.value);
+  postAPI('/wordstems/', wordstemDto);
 };
 
-const parentSearchResultList = () => {
-  if (!parentInputValue.value) {
-    return [];
-  }
-  const inputValue = parentInputValue.value.toLowerCase();
-  return wordstems.value.filter((pcRad) =>
-    pcRad.wordStemName.toLowerCase().includes(inputValue)
-  );
-};
-
-const childrenSearchResultList = () => {
-  if (!childrenInputValue.value) {
-    return [];
-  }
-  const inputValue = childrenInputValue.value.toLowerCase();
-  return wordstems.value.filter((pcRad) =>
-    pcRad.wordStemName.toLowerCase().includes(inputValue)
-  );
-};
-
-const addWordstem = (result: any, parent: boolean) => {
-  if (parent) {
-    wordstemDto.value.parents_ids.push(result);
-    parentInputValue.value = '';
+function addParent(val: number) {
+  if (val == null) {
+    wordstemDto.parents_ids = [];
   } else {
-    wordstemDto.value.children_ids.push(result);
-    childrenInputValue.value = '';
+    wordstemDto.parents_ids.push(val);
   }
-
-};
-
-const deleteParents = () => {
-  wordstemDto.value.parents_ids = [];
 }
-const deleteChildren = () => {
-  wordstemDto.value.children_ids = [];
+
+function addChild(val: number) {
+  wordstemDto.children_ids.push(val);
+}
+
+function addSource(val: number) {
+  wordstemDto.sources.push(val);
 }
 watch(
-  () => wordstemDto.value.sources,
+  () => wordstemDto.sources,
   (val) => {
     if (!Array.isArray(val)) {
-      wordstemDto.value.sources = [val]
+      wordstemDto.sources = [val]
     }
   }
 )
@@ -108,8 +85,8 @@ onMounted(async () => {
       <form @submit.prevent="postWordstem">
         <div style="display: flex; flex-direction: row; gap: 40px;">
           <div>
-            <label for="wordStemName">{{ t('term') }}</label>
-            <input type="text" v-model="wordstemDto.wordStemName" required><br><br>
+            <label for="name">{{ t('term') }}</label>
+            <input type="text" v-model="wordstemDto.name" required><br><br>
 
             <label for="wordStemLanguage">{{ t('language_of_word') }}</label>
             <select v-model="wordstemDto.wordStemLanguage" required>
@@ -176,46 +153,18 @@ onMounted(async () => {
 
             <label for="firstOccurence">{{ t('first_occurrence') }}</label>
             <input type="number" v-model="wordstemDto.firstOccurrence" required><br><br>
-            <div>
-              <label for="parentsInput">{{ t('parents_wordstems') }}:</label>
-              <input type="text" v-model="parentInputValue">
-              <div class="searchResult">
-                <div v-for="proposedWordstems in parentSearchResultList().slice(0, 5)" :key="proposedWordstems.id"
-                  @click="addWordstem(proposedWordstems, true)">
-                  {{ proposedWordstems.wordStemName }}
-                </div>
-              </div>
-              <div style="display: flex;">
-                <div v-for="parentId in wordstemDto.parents_ids" :key="parentId"
-                  style="border: 1px solid black; padding: 5px; margin: 5px; background-color: azure;">
-                  {{ wordstems[parentId].wordStemName }}
-                </div>
-                <div @click="deleteParents()">X</div>
-              </div>
-            </div>
-            <div>
-              <label for=" childrenInput">{{ t('children_wordstems') }}:</label>
-              <input type="text" v-model="childrenInputValue">
-              <div class="searchResult">
-                <div v-for="proposedWordstems in childrenSearchResultList().slice(0, 5)" :key="proposedWordstems.id"
-                  @click="addWordstem(proposedWordstems, false)">
-                  {{ proposedWordstems.wordStemName }}
-                </div>
-              </div>
-              <div style="display: flex;">
-                <div v-for="childrenId in wordstemDto.children_ids" :key="childrenId"
-                  style="border: 1px solid black; padding: 5px; margin: 5px; background-color: azure;">
-                  {{ wordstems[childrenId].wordStemName }}
-                </div>
-                <div @click="deleteChildren()">X</div>
-              </div>
-            </div>
+            <label for="parentsInput">{{ t('parents_wordstems') }}:</label>
+
+            <MultipleSelection :currentPayload="wordstemDto" :object-list="wordstems"
+              :selected-list="wordstemDto.parents_ids" @update="addParent" />
+
+            <label for="parentsInput">{{ t('children_wordstems') }}:</label>
+            <MultipleSelection :currentPayload="wordstemDto" :object-list="wordstems"
+              :selected-list="wordstemDto.children_ids" @update="addChild" />
+
             <label for="sources">{{ t('reference_book') }}</label>
-            <select v-if="sourceList" v-model="wordstemDto.sources" multiple required>
-              <option v-for="source in sourceList" :key="source.sourceId" :value="source.sourceId">{{
-                source.sourceOriginalName }}
-              </option>
-            </select>
+            <MultipleSelection v-if="sourceList" :currentPayload="wordstemDto" :object-list="sourceList"
+              :selected-list="wordstemDto.sources" @update="addSource" />
             <button type="submit">Envoyer</button>
           </div>
         </div>

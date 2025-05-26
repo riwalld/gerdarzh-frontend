@@ -29,7 +29,7 @@ const resultList = computed(() => {
   }
   const inputValueLower = inputValue.value.toLowerCase();
   return wordStems.value.filter((ws) =>
-    ws.wordStemName.toLowerCase().includes(inputValueLower)
+    ws.name.toLowerCase().includes(inputValueLower)
   );
 });
 
@@ -74,10 +74,10 @@ const sortTable = (columnIndex: number) => {
       break;
     case 1:
       if (wordColumun.value) {
-        wordStems.value.sort((a, b) => checkOrder(a.wordStemName, b.wordStemName));
+        wordStems.value.sort((a, b) => checkOrder(a.name, b.name));
         wordColumun.value = false;
       } else {
-        wordStems.value.sort((a, b) => checkOrder(b.wordStemName, a.wordStemName));
+        wordStems.value.sort((a, b) => checkOrder(b.name, a.name));
         wordColumun.value = true;
       }
       break;
@@ -127,7 +127,7 @@ onMounted(async () => {
   wordStems.value = await getAPI("/wordstems", '')
   semfields.value = await getAPI("/semanticFields/", '')
   sources.value = await getAPI("/sources/", '')
-  wordStems.value.sort((a, b) => checkOrder(a.wordStemName, b.wordStemName));
+  wordStems.value.sort((a, b) => checkOrder(a.name, b.name));
 });
 </script>
 
@@ -139,8 +139,8 @@ onMounted(async () => {
       <input type="text" v-model="inputValue" placeholder="Search..." @focus="searchResult = true" />
 
       <div class="searchResult" v-show=searchResult>
-        <div v-for="result in resultList.slice(0, 5)" :key="result.wordStemName" :value="result">
-          <div @click="handleShowWordstem(result)"> {{ result.wordStemName }}
+        <div v-for="result in resultList.slice(0, 5)" :key="result.name" :value="result">
+          <div @click="handleShowWordstem(result)"> {{ result.name }}
           </div>
         </div>
       </div>
