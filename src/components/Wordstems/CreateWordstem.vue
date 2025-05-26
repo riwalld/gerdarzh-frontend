@@ -2,20 +2,20 @@
 import { ref, defineEmits, onMounted, watch } from 'vue';
 import { getAPI, postAPI } from "../../utils/APIRequests"
 import { useI18n } from 'vue-i18n';
-import { SemanticField, Source, WordStemDto } from '../../utils/types';
+import { SemanticField, Source, WordStemDto, WordStemPayload } from '../../utils/types';
 const { t } = useI18n();
 const semFieldl = ref<SemanticField>({
   id: 0,
   frName: '',
   engName: ''
 });
-const wordstemDto = ref<WordStemDto>({
+const wordstemDto = ref<WordStemPayload>({
   gender: '',
   wordClass: '',
   wordStemLanguage: '',
   wordStemName: '',
-  parents: [],
-  children: [],
+  parents_ids: [],
+  children_ids: [],
   firstOccurrence: '',
   semanticField: semFieldl.value.id,
   engDescription: '',
@@ -29,6 +29,9 @@ const wordstemDto = ref<WordStemDto>({
 
 const sourceList = ref<Source[]>();
 const semfields = ref<SemanticField[]>([]);
+const childrenInputValue = ref('');
+const parentInputValue = ref('');
+const wordstems = ref<WordStemDto[]>([]);
 
 const emit = defineEmits(['handleAddWordstem']);
 const handleAddWordstem = (value: boolean) => {
@@ -43,6 +46,43 @@ const postWordstem = async () => {
   postAPI('/wordstems/', wordstemDto.value);
 };
 
+const parentSearchResultList = () => {
+  if (!parentInputValue.value) {
+    return [];
+  }
+  const inputValue = parentInputValue.value.toLowerCase();
+  return wordstems.value.filter((pcRad) =>
+    pcRad.wordStemName.toLowerCase().includes(inputValue)
+  );
+};
+
+const childrenSearchResultList = () => {
+  if (!childrenInputValue.value) {
+    return [];
+  }
+  const inputValue = childrenInputValue.value.toLowerCase();
+  return wordstems.value.filter((pcRad) =>
+    pcRad.wordStemName.toLowerCase().includes(inputValue)
+  );
+};
+
+const addWordstem = (result: any, parent: boolean) => {
+  if (parent) {
+    wordstemDto.value.parents_ids.push(result);
+    parentInputValue.value = '';
+  } else {
+    wordstemDto.value.children_ids.push(result);
+    childrenInputValue.value = '';
+  }
+
+};
+
+const deleteParents = () => {
+  wordstemDto.value.parents_ids = [];
+}
+const deleteChildren = () => {
+  wordstemDto.value.children_ids = [];
+}
 watch(
   () => wordstemDto.value.sources,
   (val) => {
@@ -51,15 +91,17 @@ watch(
     }
   }
 )
+
 onMounted(async () => {
   semfields.value = await getAPI('/semanticFields/', '');
   sourceList.value = await getAPI('/sources/', '');
+  wordstems.value = await getAPI('/wordstems/', '');
 });
-
 </script>
+
 <template>
   <div id="modal-bg" class="modal">
-
+    {{ }}
     <div class="modal-content">
       <span class="close" @click="close()">&times;</span>
       <h2>{{ t('propose_new_term') }}</h2>
@@ -134,7 +176,40 @@ onMounted(async () => {
 
             <label for="firstOccurence">{{ t('first_occurrence') }}</label>
             <input type="number" v-model="wordstemDto.firstOccurrence" required><br><br>
-
+            <div>
+              <label for="parentsInput">{{ t('parents_wordstems') }}:</label>
+              <input type="text" v-model="parentInputValue">
+              <div class="searchResult">
+                <div v-for="proposedWordstems in parentSearchResultList().slice(0, 5)" :key="proposedWordstems.id"
+                  @click="addWordstem(proposedWordstems, true)">
+                  {{ proposedWordstems.wordStemName }}
+                </div>
+              </div>
+              <div style="display: flex;">
+                <div v-for="parentId in wordstemDto.parents_ids" :key="parentId"
+                  style="border: 1px solid black; padding: 5px; margin: 5px; background-color: azure;">
+                  {{ wordstems[parentId].wordStemName }}
+                </div>
+                <div @click="deleteParents()">X</div>
+              </div>
+            </div>
+            <div>
+              <label for=" childrenInput">{{ t('children_wordstems') }}:</label>
+              <input type="text" v-model="childrenInputValue">
+              <div class="searchResult">
+                <div v-for="proposedWordstems in childrenSearchResultList().slice(0, 5)" :key="proposedWordstems.id"
+                  @click="addWordstem(proposedWordstems, false)">
+                  {{ proposedWordstems.wordStemName }}
+                </div>
+              </div>
+              <div style="display: flex;">
+                <div v-for="childrenId in wordstemDto.children_ids" :key="childrenId"
+                  style="border: 1px solid black; padding: 5px; margin: 5px; background-color: azure;">
+                  {{ wordstems[childrenId].wordStemName }}
+                </div>
+                <div @click="deleteChildren()">X</div>
+              </div>
+            </div>
             <label for="sources">{{ t('reference_book') }}</label>
             <select v-if="sourceList" v-model="wordstemDto.sources" multiple required>
               <option v-for="source in sourceList" :key="source.sourceId" :value="source.sourceId">{{
