@@ -35,10 +35,29 @@ export interface WordStemDto {
   frTranslation: string;
   sources: number[];
 }
+
+export interface WordStemPayload {
+  gender: string;
+  id?: number;
+  wordClass: string;
+  wordStemLanguage: string;
+  wordStemName: string;
+  parents_ids: number[];
+  children_ids: number[];
+  firstOccurrence: string;
+  semanticField: number;
+  engDescription: string | null;
+  frDescription: string | null;
+  phonetic: string;
+  engTranslation: string;
+  frTranslation: string;
+  sources: number[];
+}
+
 export interface relatedWordstemDTO {
   word_stem_id: number;
   word_stem_language: string;
-  word_stem_name: string;
+  wordStemName: string;
   firstOccurrence: string;
   phonetic: string;
   ref_words_eng: string;
