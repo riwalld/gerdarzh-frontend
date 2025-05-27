@@ -40,15 +40,16 @@ const eraseInput = () => {
 </script>
 
 <template>
-    <div>
+    <div style="width: 800px;">
         <input type="text" v-model="inputValue">
-        <div class="searchResult">
-            <div v-for="proposedWordstems in searchResultList().slice(0, 5)" :key="proposedWordstems.id"
+        <div class="searchResult" style=" max-width: 600px;">
+            <div style="padding: 3px; border: solid 1px; border-radius: 5px; border-color: gray;"
+                v-for="proposedWordstems in searchResultList().slice(0, 10)" :key="proposedWordstems.id"
                 @click="addWordstem(proposedWordstems.id)">
                 {{ proposedWordstems.name }}
             </div>
         </div>
-        <div v-if="selectedObjects" style="display: flex;">
+        <div v-if="selectedObjects" style="display: flex; flex-wrap: wrap; max-width: 600px;">
             <div v-for="object in selectedObjects" :key="object.id"
                 style="border: 1px solid black; padding: 5px; margin: 5px; background-color: azure;">
                 {{ object.name }}

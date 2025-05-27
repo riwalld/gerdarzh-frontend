@@ -153,8 +153,12 @@ onMounted(async () => {
 
             <label for="firstOccurence">{{ t('first_occurrence') }}</label>
             <input type="number" v-model="wordstemDto.firstOccurrence" required><br><br>
-            <label for="parentsInput">{{ t('parents_wordstems') }}:</label>
 
+            <label for="sources">{{ t('reference_book') }}</label>
+            <MultipleSelection v-if="sourceList" :currentPayload="wordstemDto" :object-list="sourceList"
+              :selected-list="wordstemDto.sources" @update="addSource" />
+
+            <label for="parentsInput">{{ t('parents_wordstems') }}:</label>
             <MultipleSelection :currentPayload="wordstemDto" :object-list="wordstems"
               :selected-list="wordstemDto.parents_ids" @update="addParent" />
 
@@ -162,9 +166,6 @@ onMounted(async () => {
             <MultipleSelection :currentPayload="wordstemDto" :object-list="wordstems"
               :selected-list="wordstemDto.children_ids" @update="addChild" />
 
-            <label for="sources">{{ t('reference_book') }}</label>
-            <MultipleSelection v-if="sourceList" :currentPayload="wordstemDto" :object-list="sourceList"
-              :selected-list="wordstemDto.sources" @update="addSource" />
             <button type="submit">Envoyer</button>
           </div>
         </div>
