@@ -1,4 +1,7 @@
-/*Functional Styling for tooltip on mobile device*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @media (max-width: 780px) {
     .gameHeader {
         background-color: rgb(54, 54, 54);
@@ -165,20 +168,6 @@ input {
     opacity: 0;
 }
 
-.searchBar {
-    width: 200px;
-    margin: 50px;
-    margin: auto;
-}
-
-.searchResult {
-    box-shadow: 0px 1px 2px #CCC;
-    background-color: white;
-    position: absolute;
-    width: 200px;
-    z-index: 1000;
-    margin: 0 auto;
-}
 
 body {
     position: relative;
@@ -407,7 +396,6 @@ li {
 .summary-btn {
     padding: 7px;
     margin: 5px;
-
     padding-top: 0px;
     border-radius: 5px;
     transition-duration: 0.3s;
@@ -741,13 +729,6 @@ li {
     display: none;
 }
 
-#pagesbutton {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-
 .menu-btn {
     justify-content: center;
     display: flex;
@@ -760,10 +741,6 @@ li {
     padding: 10px;
     border-radius: 4px;
     cursor: pointer;
-}
-
-.showWS {
-    text-align: center;
 }
 
 .modal {
@@ -917,12 +894,6 @@ th:hover {
 
 th a {
     display: block;
-}
-
-.wstable {
-    display: table;
-    font-size: small;
-
 }
 
 td {
