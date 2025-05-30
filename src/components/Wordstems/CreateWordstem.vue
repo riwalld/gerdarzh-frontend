@@ -79,7 +79,7 @@ onMounted(async () => {
 <template>
   <div id="modal-bg" class="modal">
     {{ }}
-    <div class="modal-content">
+    <div class="modal-content text-xxl">
       <span class="close" @click="close()">&times;</span>
       <h2>{{ t('propose_new_term') }}</h2>
       <form @submit.prevent="postWordstem">
@@ -91,7 +91,7 @@ onMounted(async () => {
             <label for="wordStemLanguage">{{ t('language_of_word') }}</label>
             <select v-model="wordstemDto.wordStemLanguage" required>
               <option value="LB">{{ t('breton') }}</option>
-              <option value="BBQ">{{ t('brittonic') }}</option>
+              <option value="LBQ">{{ t('brittonic') }}</option>
               <option value="LC">{{ t('cornish') }}</option>
               <option value="LE">{{ t('english') }}</option>
               <option value="LF">{{ t('french') }}</option>

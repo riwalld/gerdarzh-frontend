@@ -2,6 +2,7 @@
 import { useI18n } from 'vue-i18n';
 import { computed, ref } from 'vue';
 import { WordStemDto, Source, WordStemPayload } from '@/utils/types';
+import { icons } from '@/utils/svg';
 const { t } = useI18n();
 const props = defineProps<{
     objectList: WordStemDto[] | Source[]
@@ -46,7 +47,7 @@ const eraseInput = () => {
             <div style="padding: 3px; border: solid 1px; border-radius: 5px; border-color: gray;"
                 v-for="proposedWordstems in searchResultList().slice(0, 10)" :key="proposedWordstems.id"
                 @click="addWordstem(proposedWordstems.id)">
-                {{ proposedWordstems.name }}
+                {{ proposedWordstems.name }} : {{ proposedWordstems.frTranslation }}
             </div>
         </div>
         <div v-if="selectedObjects" style="display: flex; flex-wrap: wrap; max-width: 600px;">
@@ -54,7 +55,9 @@ const eraseInput = () => {
                 style="border: 1px solid black; padding: 5px; margin: 5px; background-color: azure;">
                 {{ object.name }}
             </div>
-            <div @click="eraseInput()">X</div>
+            <div @click="eraseInput()">
+                <div v-html="icons.cross"></div>
+            </div>
         </div>
     </div>
 </template>
