@@ -171,5 +171,6 @@
   "lexical_field": "Champs Lexical",
   "occurence_year": "Année d'occurence",
   "parents_wordstems": "Mots parents",
-  "children_wordstems": "Mots enfant"
+  "children_wordstems": "Mots enfant",
+  "send": "Envoyer"
 }
