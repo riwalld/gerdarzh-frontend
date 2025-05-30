@@ -1,51 +1,39 @@
-
 <script setup lang="ts">
 import NavLogo from '../../images/battersea_logo.png';
 import CopyRightImg from '../../images/Logo_CreativeC.png';
+import FooterButton from './FooterButton.vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 const navLogo = NavLogo;
 const copyRightImg = CopyRightImg;
+const currentYear = new Date().getFullYear();
 </script>
 
 <template>
-  <footer style="flex-direction: column;padding-top: 40px;">
-
-    <div class="footer-content">
-      <div style="display: flex;     align-items: center;">
-        <img style="top: 30px;" :src=navLogo width="75" height="75" alt="logo gerdarzh">
+  <footer class="flex flex-col pt-8 h-72">
+    <div class="flex flex-row relative w-[55%] max-w-[1200px] justify-between">
+      <div class="flex flex-row text-center items-center">
+        <img class="h-16" :src=navLogo alt="logo gerdarzh">
         <h1 style="color: rgb(200,200,200); font-size: 150%;">
-  <a href="/">{{ t('title') }}</a>
-</h1>
-</div>
-<div style="padding-bottom: 30px;">
-  <div class="footer-element">
-    <a :href="$router.resolve({ name: 'Home' }).href">> {{ t('home') }}</a>
-  </div>
-  <div class="footer-element">
-    <a :href="$router.resolve({ name: 'SessionGame' }).href">> {{ t('game') }}</a>
-  </div>
-  <div class="footer-element">
-    <a :href="$router.resolve({ name: 'Worsdtems' }).href">> {{ t('lexicon') }}</a>
-  </div>
-  <div class="footer-element">
-    <a :href="$router.resolve({ name: 'ProperNouns' }).href">> {{ t('entities') }}</a>
-  </div>
-  <div class="footer-element">
-    <a :href="$router.resolve({ name: 'UserProfile' }).href">> {{ t('profile') }}</a>
-  </div>
-  <div class="footer-element">
-    <a :href="$router.resolve({ name: 'Contact' }).href">> {{ t('contact') }}</a>
-  </div>
-</div>
-      <div style="padding-top: 40px;">
-        <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"> <img style="top: 30px;;"
-            :src=copyRightImg height="50" alt="test" /></a>
+          <a href="/">{{ t('title') }}</a>
+        </h1>
+      </div>
+      <div class="flex flex-col pb-8 w-48">
+        <FooterButton text="home" router="Home"></FooterButton>
+        <FooterButton text="game" router="SessionGame"></FooterButton>
+        <FooterButton text="lexicon" router="Worsdtems"></FooterButton>
+        <FooterButton text="entities" router="ProperNouns"></FooterButton>
+        <FooterButton text="profile" router="UserProfile"></FooterButton>
+        <FooterButton text="contact" router="Contact"></FooterButton>
+      </div>
+      <div class="pt-1">
+        <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"> <img class="mt-8"
+            :src=copyRightImg alt="CC-BY-NC-SA" /></a>
       </div>
     </div>
-    <div style="color: azure;">
-      @ Copyright 2024 GERDARZH
+    <div class="text-white">
+      @ Copyright 2024 - {{ currentYear }} GERDARZH
     </div>
   </footer>
 </template>

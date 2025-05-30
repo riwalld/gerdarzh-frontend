@@ -125,15 +125,16 @@ onMounted(async () => {
   <section class="text-center justify-center m-auto">
     <h2>{{ t('etymolgical_lexic') }}</h2>
     <h3>{{ t('number_words') }}: {{ wordStems.length }}</h3>
-    <div class="w-50 m-10">
-      <input type="text" v-model="inputValue" placeholder="Search..." @focus="searchResult = true" />
-
-      <div class="absolute w-50 z-[1000] mx-auto bg-white shadow-[0px_1px_2px_#CCC]" v-show=searchResult>
-        <div v-for="result in resultList.slice(0, 5)" :key="result.name" :value="result">
-          <div @click="handleShowWordstem(result)"> {{ result.name }}
+    <div class="w-96 m-auto flex flex-row items-top gap-5">
+      <div>
+        <input type="text" v-model="inputValue" placeholder="Search..." @focus="searchResult = true" />
+        <div class="absolute w-96 z-[1000] mx-auto bg-white shadow-[0px_1px_2px_#CCC]" v-show=searchResult>
+          <div v-for="result in resultList.slice(0, 5)" :key="result.name" :value="result">
+            <div @click="handleShowWordstem(result)"> {{ result.name }}
+            </div>
           </div>
         </div>
-      </div>
+      </div> <button class="p-2 bg-slate-300" @click="handleAddWordstem(true)">{{ t('add_term') }}</button>
     </div>
     <div v-if="pageableWordstems" class="m-10">
       <table class="text-sm">
@@ -157,12 +158,10 @@ onMounted(async () => {
         <span>Page: {{ pageNum }}</span>
         <button v-if="pageNum < wordStems.length / 10" @click="changePage(pageNum + 1)">{{ t('next') }}</button>
       </div>
-      <button @click="handleAddWordstem(true)">{{ t('add_term') }}</button>
     </div>
-    <create-wordstem v-if="addWordstemModal" :wordstem="showWordstem" :sources="sources" :semfields="semfields"
-      @handleAddWordstem="handleAddWordstem"></create-wordstem>
     <WordstemArticle v-if="showWordstem !== null" :wordstem="showWordstem" :sources="sources" :semfields="semfields"
       @handleShowWordstem="handleShowWordstem">
     </WordstemArticle>
-  </section>
+  </section> <create-wordstem v-if="addWordstemModal" :wordstem="showWordstem" :sources="sources" :semfields="semfields"
+    @handleAddWordstem="handleAddWordstem"></create-wordstem>
 </template>

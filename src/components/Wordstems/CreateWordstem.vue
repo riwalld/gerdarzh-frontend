@@ -166,7 +166,7 @@ onMounted(async () => {
             <MultipleSelection :currentPayload="wordstemDto" :object-list="wordstems"
               :selected-list="wordstemDto.children_ids" @update="addChild" />
 
-            <button type="submit">Envoyer</button>
+            <button type="submit">{{ t('send') }}</button>
           </div>
         </div>
       </form>
