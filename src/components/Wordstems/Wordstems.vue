@@ -17,7 +17,6 @@ const semfields = ref<SemanticField[]>([]);
 const sources = ref<any[]>([]);
 const lgColumun = ref(true);
 const wordColumun = ref(true);
-const wordclassColumun = ref(true);
 const translationColumun = ref(true);
 const occurrenceColumun = ref(true);
 const semfieldColumun = ref(true);
@@ -81,15 +80,6 @@ const sortTable = (columnIndex: number) => {
         wordColumun.value = true;
       }
       break;
-    case 2:
-      if (wordclassColumun.value) {
-        wordStems.value.sort((a, b) => checkOrder(a.wordClass, b.wordClass));
-        wordclassColumun.value = false;
-      } else {
-        wordStems.value.sort((a, b) => checkOrder(b.wordClass, a.wordClass));
-        wordclassColumun.value = true;
-      }
-      break;
     case 3:
       if (translationColumun.value) {
         wordStems.value.sort((a, b) => checkOrder(a.frTranslation, b.frTranslation));
@@ -151,7 +141,6 @@ onMounted(async () => {
           <tr>
             <th style="width: 20px;"><a href="#" @click="sortTable(0);"> Lg.</a></th>
             <th><a href="#" @click="sortTable(1);"> {{ t('word') }}</a></th>
-            <th><a href="#" @click="sortTable(2);"> {{ t('grammatical_nature') }}</a></th>
             <th><a href="#" @click="sortTable(3);"> {{ t('translation') }}</a></th>
             <th><a href="#" @click="sortTable(4);"> {{ t('occurence_year') }}</a></th>
             <th><a href="#" @click="sortTable(5);">{{ t('lexical_field') }} </a></th>
