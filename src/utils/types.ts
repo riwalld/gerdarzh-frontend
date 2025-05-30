@@ -62,9 +62,10 @@ export interface relatedWordstemDTO {
   phonetic: string;
   ref_words_eng: string;
   ref_words_fr: string;
-  parent_stems: relatedWordstemDTO[];
+  parent_stems_reverse: relatedWordstemDTO[];
   child_stems: relatedWordstemDTO[];
 }
+
 export interface LitTrans {
   litTransFr: string;
   litTransEng: string;
