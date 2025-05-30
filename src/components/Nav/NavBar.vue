@@ -5,10 +5,6 @@ import { useI18n } from 'vue-i18n';
 const burger = ref(false);
 const { t, locale } = useI18n();
 
-function changeLanguage(lang: string) {
-  locale.value = lang;
-}
-
 function handleBurgerMenu() {
   burger.value = !burger.value;
 }
@@ -35,23 +31,14 @@ onMounted(() => {
         <div class="summary-btn"><a :href="$router.resolve({ name: 'Worsdtems' }).href">{{ t('lexicon') }}</a></div>
         <div class="summary-btn"><a :href="$router.resolve({ name: 'ProperNouns' }).href">{{ t('entities') }}</a></div>
         <div class="summary-btn"><a :href="$router.resolve({ name: 'UserProfile' }).href">{{ t('profile') }}</a></div>
-        <div style="display: flex; flex-direction: column;">
-
-          <span @click="changeLanguage('br')" :class="{
-            'bold': locale === 'br',
-          }" class="change-lang">
-            brezhoneg
-          </span>
-          <span @click="changeLanguage('fr')" :class="{
-            'bold': locale === 'fr',
-          }" class="change-lang">
-            français
-          </span>
-          <span @click="changeLanguage('en')" :class="{
-            'bold': locale === 'en',
-          }" class="change-lang">
-            english
-          </span>
+        <div class="p-4 text-center">
+          <h1 class="text-2xl font-bold mb-4">{{ t('welcome') }}</h1>
+          <label class="block mb-2 text-gray-600">{{ t('language') }} :</label>
+          <select v-model="locale" class="border px-3 py-2 rounded shadow">
+            <option value="fr">Français</option>
+            <option value="en">English</option>
+            <option value="br">Brezhoneg</option>
+          </select>
         </div>
       </div>
 
@@ -68,6 +55,7 @@ onMounted(() => {
           <div class="summary-btn"><a :href="$router.resolve({ name: 'UserProfile' }).href">{{ t('profile') }}</a></div>
         </div>
       </div>
+
     </div>
   </header>
 </template>
