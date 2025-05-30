@@ -211,15 +211,6 @@ footer {
     position: relative;
 }
 
-.footer-content {
-    justify-content: space-between;
-    display: flex;
-    flex-direction: row;
-    position: relative;
-    width: 55%;
-    max-width: 1200px;
-}
-
 strong {
     font-weight: 700;
     background-color: yellow;
@@ -256,19 +247,6 @@ li {
     padding: 20px;
     max-width: 1400px;
     margin: auto;
-}
-
-.footer-element {
-    transition: .3s;
-    color: rgb(194, 194, 194);
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    padding: 5px;
-}
-
-.footer-element:hover {
-    transform: translateX(4px);
-    color: white;
-    font-weight: bold;
 }
 
 .banner {
