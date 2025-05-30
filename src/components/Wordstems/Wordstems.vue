@@ -122,24 +122,24 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="showWS">
+  <section class="text-center justify-center m-auto">
     <h2>{{ t('etymolgical_lexic') }}</h2>
     <h3>{{ t('number_words') }}: {{ wordStems.length }}</h3>
-    <div class="searchBar">
+    <div class="w-50 m-10">
       <input type="text" v-model="inputValue" placeholder="Search..." @focus="searchResult = true" />
 
-      <div class="searchResult" v-show=searchResult>
+      <div class="absolute w-50 z-[1000] mx-auto bg-white shadow-[0px_1px_2px_#CCC]" v-show=searchResult>
         <div v-for="result in resultList.slice(0, 5)" :key="result.name" :value="result">
           <div @click="handleShowWordstem(result)"> {{ result.name }}
           </div>
         </div>
       </div>
     </div>
-    <div v-if="pageableWordstems" style="margin: 50px;">
-      <table class="wstable" id="wstable">
-        <thead style="background-color: rgb(204, 202, 195);">
+    <div v-if="pageableWordstems" class="m-10">
+      <table class="text-sm">
+        <thead class="bg-white">
           <tr>
-            <th style="width: 20px;"><a href="#" @click="sortTable(0);"> Lg.</a></th>
+            <th class="w-5"><a href="#" @click="sortTable(0);"> Lg.</a></th>
             <th><a href="#" @click="sortTable(1);"> {{ t('word') }}</a></th>
             <th><a href="#" @click="sortTable(3);"> {{ t('translation') }}</a></th>
             <th><a href="#" @click="sortTable(4);"> {{ t('occurence_year') }}</a></th>
@@ -152,7 +152,7 @@ onMounted(async () => {
           </wordstem-row>
         </tbody>
       </table>
-      <div id="pagesbutton">
+      <div class="text-center">
         <button v-if="pageNum > 1" @click="changePage(pageNum - 1)">{{ t('previous') }}</button>
         <span>Page: {{ pageNum }}</span>
         <button v-if="pageNum < wordStems.length / 10" @click="changePage(pageNum + 1)">{{ t('next') }}</button>

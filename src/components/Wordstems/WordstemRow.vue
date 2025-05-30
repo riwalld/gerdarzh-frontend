@@ -32,11 +32,14 @@ const handleShowWordstem = (wordstem: Object) => {
     </td>
     <td> <router-link
         :to="{ name: 'wordstem-detail', params: { wordStemName: wordstem.name, wordStemId: wordstem.id } }"
-        class="bg-gray-200 p-2 m-1 rounded-md" style="padding-right: 10px;"> <span class="langws"
-          :title="t(wordstem.wordClass)">{{
-            t(wordstem.wordClass + '_abbr') }}</span>
-        <span class="langws" :title="t(wordstem.gender)">{{ t(wordstem.gender + '_abbr') }}</span><b>{{ wordstem.name
-        }}</b></router-link>
+        class="flex flex-row p-2 m-1 rounded-md justify-between">
+        <b>{{ wordstem.name
+        }}</b>
+        <div> <span class="langws" :title="t(wordstem.wordClass)">{{
+          t(wordstem.wordClass + '_abbr') }}</span>
+          <span class="langws" :title="t(wordstem.gender)">{{ t(wordstem.gender + '_abbr') }}</span>
+        </div>
+      </router-link>
     </td>
     <td><i v-if="locale == 'fr'">{{ wordstem.frTranslation }}</i>
       <i v-if="locale == 'en'">{{ wordstem.engTranslation }}</i>

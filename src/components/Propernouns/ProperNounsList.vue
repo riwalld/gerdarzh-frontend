@@ -79,16 +79,16 @@ function handleShowProperNoun(properNoun: any | null) {
 </script>
 
 <template>
-  <section class="showWS">
+  <section class="text-center">
     <h2>{{ t('characters_places_and_demonym') }}</h2>
     <h3>{{ t('word_count') }}: {{ properNouns.length }}</h3>
-    <div style="margin: 50px;">
-      <table class="wstable" id="wstable">
-        <thead style="background-color: rgb(204, 202, 195);">
+    <div class="m-10">
+      <table class="text-sm">
+        <thead>
           <tr>
             <th><a href="#" @click="sortTable(0);"> {{ t('word') }}</a></th>
-            <th><a href="#" @click="sortTable(1);"> Thème lexical</a></th>
-            <th style="max-width: 50px;"><a href="#" @click="sortTable(2);"> Période</a></th>
+            <th><a href="#" @click="sortTable(1);"> {{ t('lexical_theme') }}</a></th>
+            <th class="max-w-10"><a href="#" @click="sortTable(2);"> Période</a></th>
             <th><a href="#" @click="sortTable(3);"> Lieu</a></th>
             <th><a href="#" @click="sortTable(4);"> Pays</a></th>
             <th><a href="#" @click="sortTable(5);"> Description</a></th>
@@ -100,7 +100,7 @@ function handleShowProperNoun(properNoun: any | null) {
           </PropernounRow>
         </tbody>
       </table>
-      <div id="pagesbutton">
+      <div>
         <button @click=changePage(pageNum)>{{ t('previous') }}</button>
         <span>{{ t('page') }}: {{ pageNum }}</span>
         <button @click=changePage(pageNum)>{{ t('next') }}</button>
