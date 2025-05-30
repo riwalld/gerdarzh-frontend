@@ -3,21 +3,22 @@ import { useI18n } from 'vue-i18n';
 import { onBeforeMount, ref, watch } from 'vue';
 import { useRoute } from "vue-router";
 import { getAPI } from "../../utils/APIRequests"
-import navLogo from '../../images/flag_bzhg.png';
 import { SemanticField, Source, WordStemDto } from '@/utils/types';
+import EtymologicalNode from "./EtymologicalNode.vue"
 
 const route = useRoute();
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const wordstem = ref<WordStemDto>();
 const semfields = ref<SemanticField[]>();
-const sources = ref<Source>();
+const sources = ref<Source[]>();
 
 
 const emit = defineEmits(['handleShowWordstem']);
-
-function close() {
-  emit('handleShowWordstem', null);
-}
+const getSrc = (id: number) => {
+  if (sources) {
+    return sources.value?.find(source => source.id === id);
+  }
+};
 watch(() => route.params.wordStemId, async (newId) => {
   wordstem.value = await getAPI('/wordstems/', String(newId));
 });
@@ -28,34 +29,28 @@ onBeforeMount(async () => {
 });
 </script>
 <template>
-  <div style="width:70%; margin: auto;">
+  <div class="w-[1000px] m-auto">
     <div v-if="wordstem" style="width: 100%;">
-      <span class="close" @click="close()">&times;</span>
-
-      <div style="display: flex; flex-direction: row; align-items: center; position: relative;">
-        <div style=" background-color: darkslategrey; color: aliceblue; padding: 5px; position: absolute; 
-        border-radius: 7px; font-size: 20px;">
-          {{ t(wordstem.wordStemLanguage) }} <img style="margin-left: 10px;" :src=navLogo height="15"
-            alt="logo gerdarzh">
-
-        </div>
-        <div style="text-align: center; width: 100%;">
-          <h1 style="color:grey; margin: 0 auto; ">{{ wordstem.name }}</h1>
-
-          <p>
+      <div class="flex flex-col justify-center text-center">
+        <div class="bg-grey-500 text-5xl p-5 trajan">{{ wordstem.name }}</div>
+        <div class="flex flex-row gap-4 justify-center">
+          <div class="flex flex-row gap-2 p-2 bg-slate-200 rounded-md text-gray-800 items-center h-16">
+            <img class="h-10" :src="'/media/flags/flag_' + wordstem.wordStemLanguage + '.png'" height="15"
+              :alt=t(wordstem.wordStemLanguage)>
+            {{ t(wordstem.wordStemLanguage) }}
+          </div>
+          <div class="bg-slate-200 rounded-md p-2">
             <span :title="t(wordstem.wordClass)">{{ t(wordstem.wordClass) }}</span>
             &nbsp;&nbsp;
             <span :title="t(wordstem.gender)">{{ t(wordstem.gender) }}</span>
-          </p>
-
-          <p style="text-align: center; width: 50%; margin: auto; margin-bottom: 30px;">{{ wordstem.frDescription }}</p>
+            <p style="text-align: center; width: 50%; margin: auto;">{{ wordstem.frDescription }}
+            </p>
+          </div>
         </div>
       </div>
 
-      <div style="display: flex; flex-direction: row;">
-        <div style="width: 50%;">
-
-
+      <div class="flex flex-row gap-5 justify-center">
+        <div class='w-72'>
           <div class="definition-box">
             <h3>{{ t('pronunciation') }}</h3>
             <p>/<b>{{ t(wordstem.phonetic) }}</b>/</p>
@@ -63,43 +58,33 @@ onBeforeMount(async () => {
           <div class="definition-box">
             <h3>{{ t('translations') }}</h3>
             <div>
-              <li><b>{{ t('french') }}: </b>{{ wordstem.frTranslation }}</li>
-              <li><b>{{ t('english') }}: </b>{{ wordstem.engTranslation }}</li>
+              <div v-if="locale == 'fr'">{{ wordstem.frTranslation }}</div>
+              <div v-if="locale == 'en'">{{ wordstem.engTranslation }}</div>
+
             </div>
           </div>
+          <div class="definition-box">
+            <h3>{{ t('sources') }}</h3>
+            <ul v-if="wordstem?.sources && sources">
+              <li v-for="src in wordstem.sources" :key="src - 1">
+                {{ getSrc(src)?.name }} ({{ getSrc(src)?.abbreviation }})
+              </li>
+            </ul>
+          </div>
         </div>
-        <div>
+        <div class='w-72'>
           <div class="definition-box">
             <h3>{{ t('etymology') }}</h3>
-            <div v-for="parent in wordstem.parents" :key="parent.word_stem_id">
-              <p> <span class="langws" :title="t(parent.word_stem_language)"> {{ t(wordstem.wordStemLanguage +
-                '_abbr') }}
-                </span> : <router-link
-                  :to="{ name: 'wordstem-detail', params: { wordStemName: parent.name, wordStemId: parent.word_stem_id } }"
-                  class="bg-gray-200 p-2 m-1 rounded-md"><b>{{ parent.name }}</b></router-link></p>
-
-              <div v-for="grandParent in parent.child_stems" :key="grandParent.word_stem_id">
-                <p> <span class="langws" :title="t(grandParent.word_stem_language)"> {{ t(wordstem.wordStemLanguage +
-                  '_abbr') }}
-                  </span> : <router-link
-                    :to="{ name: 'wordstem-detail', params: { wordStemName: grandParent.name, wordStemId: grandParent.word_stem_id } }"
-                    class="bg-gray-200 p-2 m-1 rounded-md"><b>{{ grandParent.name }}</b></router-link></p>
-
+            <div class="flex flex-col-reverse" v-for="parent in wordstem.parents" :key="parent.word_stem_id">
+              <EtymologicalNode :related="parent"></EtymologicalNode>
+              <div v-for="grandParent in parent.parent_stems_reverse" :key="grandParent.word_stem_id" class="pl-10">
+                <EtymologicalNode :related="grandParent"></EtymologicalNode>
               </div>
             </div>
             <div v-for="child in wordstem.children" :key="child.word_stem_id">
-              <p> <span class="langws" :title="t(child.word_stem_language)"> {{ t(wordstem.wordStemLanguage +
-                '_abbr') }}
-                </span> : <router-link
-                  :to="{ name: 'wordstem-detail', params: { wordStemName: child.name, wordStemId: child.word_stem_id } }"
-                  class="bg-gray-200 p-2 m-1 rounded-md"><b>{{ child.name }}</b></router-link></p>
-
-              <div v-for="grandChild in child.child_stems" :key="grandChild.word_stem_id">
-                <p> <span class="langws" :title="t(grandChild.word_stem_language)"> {{ t(wordstem.wordStemLanguage +
-                  '_abbr') }}
-                  </span> : <router-link
-                    :to="{ name: 'wordstem-detail', params: { wordStemName: grandChild.name, wordStemId: grandChild.word_stem_id } }"
-                    class="bg-gray-200 p-2 m-1 rounded-md"><b>{{ grandChild.name }}</b></router-link></p>
+              <EtymologicalNode :related="child"></EtymologicalNode>
+              <div v-for="grandChild in child.child_stems" :key="grandChild.word_stem_id" class="pl-10">
+                <EtymologicalNode :related="grandChild"></EtymologicalNode>
               </div>
             </div>
           </div>
@@ -109,19 +94,6 @@ onBeforeMount(async () => {
             <p>{{ semfields[wordstem.semanticField - 1].frName }}</p>
           </div>
         </div>
-      </div>
-    </div>
-    <div>
-
-      <div style="display:flex; flex-direction: row; align-items: center;">
-        <div>{{ t('sources') }}</div>
-        <ul v-if="wordstem?.sources && sources">
-          <li v-for="src in wordstem.sources" :key="src - 1">
-            <div>
-              {{ sources[src].abbreviation }} :
-              {{ src.sourceOriginalName }} ({{ src.sourceEngName }})</div>
-          </li>
-        </ul>
       </div>
     </div>
   </div>
