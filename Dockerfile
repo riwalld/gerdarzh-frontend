@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:20
 
 ARG VITE_BACKEND_URL
 ARG VITE_API_ENDPOINT
@@ -7,9 +7,10 @@ ENV VITE_BACKEND_URL=${VITE_BACKEND_URL}
 ENV VITE_API_ENDPOINT=${VITE_API_ENDPOINT}
 
 WORKDIR /app
-COPY package.json ./
+COPY package.json /app/
 RUN npm install
 COPY . /app/
+
 CMD ["npm", "run", "dev"]
 
 
