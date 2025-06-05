@@ -1,8 +1,8 @@
-import { BACKEND_URL } from '@/utils/utils';
+import { API_URL } from '@/utils/utils';
 
-export const getAPI = async (path:string,id:string) => {
+export const getAPI = async (path: string, id: string) => {
   try {
-    const response = await fetch(BACKEND_URL + path + id, {
+    const response = await fetch(API_URL + path + id, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -24,10 +24,10 @@ export const getAPI = async (path:string,id:string) => {
   }
 };
 
-export const postAPI = async (path:string, object:Object) => {
+export const postAPI = async (path: string, object: Object) => {
   try {
-    
-    await fetch(BACKEND_URL + path, {
+
+    await fetch(API_URL + path, {
       body: JSON.stringify(object),
       method: "POST",
       headers: {
@@ -36,7 +36,7 @@ export const postAPI = async (path:string, object:Object) => {
       }
     });
     message.value = 'Word Stem added successfully!';
-    close(); 
+    close();
   } catch (error) {
     message.value = 'There was an error adding the Word Stem.';
     console.error(error);

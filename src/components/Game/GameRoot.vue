@@ -4,7 +4,7 @@ import ConfigSession from './ConfigSession.vue';
 import Session from './Session.vue';
 import EndSession from './EndSession.vue';
 import failImg from '../../images/fail_king_arthur.png';
-import { BACKEND_URL } from '@/utils/utils';
+import { API_URL } from '@/utils/utils';
 const sessionGameData = ref([]);
 const session = ref(null);
 const endSession = ref(null);
@@ -14,7 +14,7 @@ const isVictory = ref(null);
 const imgBackground = ref(null);
 
 const handleSession = async (wordTheme) => {
-    const response = await fetch(BACKEND_URL + '/sessionGameData/?wordTheme=' + wordTheme, {
+    const response = await fetch(API_URL + '/sessionGameData/?wordTheme=' + wordTheme, {
         method: "GET",
     });
     const data = await response.json();

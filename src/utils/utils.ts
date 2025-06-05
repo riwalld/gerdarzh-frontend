@@ -1,18 +1,14 @@
 import axios from "axios";
 
-export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
   ? import.meta.env.VITE_BACKEND_URL
   : "http://localhost:8000";
-
-const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT
-  ? import.meta.env.VITE_API_ENDPOINT
-  : "/api";
 
 const PROPERNOUN_ENDPOINT = import.meta.env.VITE_MEDIA_ENDPOINT
   ? import.meta.env.VITE_MEDIA_ENDPOINT
   : "/properNouns/propernoun";
 
-export const API_URL = BACKEND_URL + API_ENDPOINT;
+export const API_URL = BACKEND_URL + "/api";
 export const PROPERNOUN_URL = BACKEND_URL + PROPERNOUN_ENDPOINT;
 const CSRF_COOKIE_NAME = "csrftoken";
 const CSRF_HEADER_NAME = "X-CSRFToken";

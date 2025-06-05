@@ -3,9 +3,8 @@ import { ref, computed, onMounted } from 'vue';
 import CreateProperNoun from "./CreateProperNoun.vue";
 import ProperNounArticle from "./ProperNounArticle.vue";
 import { useI18n } from 'vue-i18n';
-
-import { BACKEND_URL } from "../../utils/utils"
 import PropernounRow from '@/components/Propernouns/PropernounRow.vue';
+import { API_URL } from '@/utils/utils';
 const { t } = useI18n();
 defineProps({});
 defineEmits([]);
@@ -19,7 +18,7 @@ const currentName = ref<string | null>(null);
 onMounted(async () => {
 
   try {
-    const response = await fetch(BACKEND_URL + `/properNouns/`, { method: "GET" });
+    const response = await fetch(API_URL + `/properNouns/`, { method: "GET" });
     const data = await response.json();
     properNouns.value = data;
   } catch (error) {

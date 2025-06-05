@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, defineEmits, onMounted } from 'vue';
-import { BACKEND_URL } from '../../utils/utils';
+import { API_URL } from '../../utils/utils';
 import { LitTrans, PcRadicals, Propernoun } from '../../utils/types';
 import { useI18n } from 'vue-i18n';
 
@@ -39,7 +39,7 @@ const handleAddProperNoun = (value: boolean) => {
 
 const submit = async () => {
   try {
-    await fetch(BACKEND_URL + '/properNouns/', {
+    await fetch(API_URL + '/properNouns/', {
       body: JSON.stringify(properNounDto.value),
       method: 'POST',
       headers: {
@@ -74,7 +74,7 @@ const addPcRadical = (result: any) => {
   pcRadicalInputValue.value = '';
 };
 onMounted(() => {
-  fetch(BACKEND_URL + '/wordstems/Str/', {
+  fetch(API_URL + '/wordstems/Str/', {
     method: 'GET'
   })
     .then(response => response.json())
