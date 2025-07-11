@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps, PropType } from 'vue';
-import { Propernoun } from '../..//utils/types';
+import { Propernoun } from '../../utils/types';
 const props = defineProps({
   propernoun: {
     type: Object as PropType<Propernoun>,

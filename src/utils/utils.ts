@@ -6,10 +6,10 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 const PROPERNOUN_ENDPOINT = import.meta.env.VITE_MEDIA_ENDPOINT
   ? import.meta.env.VITE_MEDIA_ENDPOINT
-  : "/properNouns/propernoun";
+  : "/properNouns";
 
 export const API_URL = BACKEND_URL + "/api";
-export const PROPERNOUN_URL = BACKEND_URL + PROPERNOUN_ENDPOINT;
+export const PROPERNOUN_URL = API_URL + PROPERNOUN_ENDPOINT;
 const CSRF_COOKIE_NAME = "csrftoken";
 const CSRF_HEADER_NAME = "X-CSRFToken";
 
@@ -27,7 +27,7 @@ export const properNounAxios = axios.create({
 
 export async function getPropernoun(currentName: string) {
   try {
-    const response = await fetch(PROPERNOUN_URL + `?current_name=${currentName}`, {
+    const response = await fetch(PROPERNOUN_URL + `/by-name/${currentName}`, {
       method: 'GET',
     });
 
