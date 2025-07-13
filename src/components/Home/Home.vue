@@ -13,7 +13,7 @@ const etymotree = ref(EtymoTree);
     <section>
         <div class="banner">
             <!--<Vue3Lottie style="margin:0"   :animationData="playJSON" :height="300" :width="300" />-->
-            <h1>- {{ t('welcome_gerdarzh')}} -</h1>
+            <h1>- {{ t('welcome_gerdarzh') }} -</h1>
         </div>
     </section>
     <div class="home">
@@ -33,7 +33,7 @@ const etymotree = ref(EtymoTree);
                 </div>
                 <p>
                     Geriadur est d’abord un lexique
-                    etymologique des langues celtiques. Ici nous répéretorions et
+                    etymologique des langues celtiques. Ici nous répertorions et
                     mettons en évidences les éléments linguistiques récurrents présents dans les termes
                     d’origine celtique afin d'aboutir à une meilleure compréhension du sens des mots appartenant à cette
                     branche
