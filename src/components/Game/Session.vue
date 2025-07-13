@@ -133,8 +133,8 @@ onUnmounted(() => {
                     </div>
                 </div>
             </div>
-            <div>
-                <span class="shield" v-for="(shield, index) in shields" :key="shield" :id="isLast(index)">
+            <div style="display: flex; flex-direction: row; justify-items: center; margin-top: 5px;">
+                <span class=" shield" v-for="(shield, index) in shields" :key="shield" :id="isLast(index)">
                     <img :src="shield" />
                 </span>
             </div>
