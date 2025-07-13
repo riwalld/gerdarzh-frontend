@@ -12,14 +12,13 @@ const currentYear = new Date().getFullYear();
 
 <template>
   <footer class="flex flex-col pt-8 h-72">
-    <div class="flex flex-row relative w-[55%] max-w-[1200px] justify-between">
+    <div class="flex flex-row relative w-[95%] max-w-[1200px] justify-between">
       <div class="flex flex-row text-center items-center">
         <img class="h-16" :src=navLogo alt="logo gerdarzh">
         <h1 style="color: rgb(200,200,200); font-size: 150%;">
-          <a href="/">{{ t('title') }}</a>
         </h1>
       </div>
-      <div class="flex flex-col pb-8 w-48">
+      <div class="flex flex-col pb-8 min-w-48">
         <FooterButton text="home" router="Home"></FooterButton>
         <FooterButton text="game" router="SessionGame"></FooterButton>
         <FooterButton text="lexicon" router="Worsdtems"></FooterButton>
