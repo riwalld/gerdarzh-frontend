@@ -32,33 +32,22 @@ const etymotree = ref(EtymoTree);
 
                 </div>
                 <p>
-                    Geriadur est d’abord un lexique
-                    etymologique des langues celtiques. Ici nous répertorions et
-                    mettons en évidences les éléments linguistiques récurrents présents dans les termes
-                    d’origine celtique afin d'aboutir à une meilleure compréhension du sens des mots appartenant à cette
-                    branche
-                    linguistique de la grande famille des langues indo-européennes. <br />
-                    La compréhension des langues celtique ont un intérêt sur plusieurs aspects:<br />
+                    Geriadur est d’abord un lexique étymologique des langues celtiques. Nous y répertorions et mettons
+                    en évidence les éléments linguistiques récurrents présents dans les termes d’origine celtique, afin
+                    de parvenir à une meilleure compréhension du sens des mots appartenant à cette branche linguistique
+                    de la grande famille des langues indo-européennes.<br />
+                    La compréhension des langues celtiques présente un intérêt à plusieurs niveaux :
                 </p>
                 <div>
-                    <p>
-                    <ul margin="25px">
-                        <li> Son omniprésence dans la toponymie française, une grande part des villes et régions
-                            française,
-                            belges,
-                            suisses et des îles brittaniques ont une origine et une signification celtique.
-                        </li>
-                        <li> Cerner quels sont les fondements de la culture celtique antique et médiévale au travers de
-                            son
-                            champs
-                            lexical réccurrent.
-                        </li>
-                        <li> Retrouver le sens profond des mots présents dans les langues celtiques actuelles tel que le
-                            breton, le
-                            gallois ou l'irlandais moderne.
-                        </li>
+                    <ul style="margin: 25px;">
+                        <li>Leur omniprésence dans la toponymie française : une grande partie des noms de villes et de
+                            régions françaises, belges, suisses et des îles britanniques ont une origine et une
+                            signification celtiques.</li>
+                        <li>Mieux cerner les fondements de la culture celtique antique et médiévale à travers son champ
+                            lexical récurrent.</li>
+                        <li>Retrouver le sens profond des mots présents dans les langues celtiques actuelles telles que
+                            le breton, le gallois ou l’irlandais moderne.</li>
                     </ul>
-                    </p>
                 </div>
             </div>
             <div>
