@@ -1,17 +1,20 @@
 <script setup lang='ts'>
-import { SemanticField, WordStemDto } from '../../utils/types';
+import { WordStemDto } from '../../utils/types';
 import { useI18n } from 'vue-i18n';
 const { t, locale } = useI18n();
+import { useBasicSets } from '@/stores/basicData'
+const basicSets = useBasicSets()
+
+
 
 const props = defineProps<{
   wordstem: WordStemDto,
-  semfields: SemanticField[]
 }>();
 
 </script>
 
 <template>
-  <tr v-if="wordstem && semfields">
+  <tr v-if="wordstem && basicSets.semFieldSet">
     <td>
       <span class="langws" :title="t(props.wordstem.wordStemLanguage)"> {{ t(wordstem.wordStemLanguage + '_abbr') }}
       </span>
@@ -31,7 +34,9 @@ const props = defineProps<{
       <i v-if="locale == 'en'">{{ wordstem.engTranslation }}</i>
     </td>
     <td>{{ wordstem.firstOccurrence }}</td>
-    <td v-if="semfields && wordstem.semanticField > 0 && wordstem.semanticField <= semfields.length">{{
-      semfields[wordstem.semanticField - 1].frName }}</td>
+    <td
+      v-if="basicSets.semFieldSet && wordstem.semanticField > 0 && wordstem.semanticField <= basicSets.semFieldSet.length">
+      {{
+        basicSets.semFieldSet[wordstem.semanticField - 1].frName }}</td>
   </tr>
 </template>

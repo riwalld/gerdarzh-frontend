@@ -6,10 +6,6 @@ import { useI18n } from 'vue-i18n';
 import { getAPI } from '@/utils/APIRequests';
 const { t } = useI18n();
 
-const props = defineProps<{
-  semfields: SemanticField[]
-}>();
-
 const wordStemSet = ref<WordStemDto[]>([]);
 const emit = defineEmits<{
   (e: 'handleShowWordstem', wordstem: WordStemDto): void
@@ -24,7 +20,7 @@ const pageAmount = ref(1);
 const orderingType = ref('abc')
 
 const updatePage = async (page: number, ordType: string) => {
-  const response = await getAPI("/wordstems/" + ordType + "/" + page);
+  const response = await getAPI("/wordstems/" + ordType + "/?page=" + page);
   wordStemSet.value = response.results
   pageNum.value = page;
   orderingType.value = ordType;
@@ -32,7 +28,7 @@ const updatePage = async (page: number, ordType: string) => {
 
 
 onMounted(async () => {
-  const response = await getAPI("/wordstems/word/1");
+  const response = await getAPI("/wordstems/word/?page=1");
   wordStemSet.value = response.results
   pageAmount.value = Math.ceil(response.count / pageSize.value)
 });
@@ -63,7 +59,7 @@ onMounted(async () => {
       </thead>
       <tbody>
         <wordstem-row v-for="wordstem in wordStemSet" :key="wordstem.id" :wordstem="wordstem"
-          :semfields="props.semfields" @handleShowWordstem="emit('handleShowWordstem', $event)" />
+          @handleShowWordstem="emit('handleShowWordstem', $event)" />
       </tbody>
     </table>
 
