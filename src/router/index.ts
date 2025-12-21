@@ -1,13 +1,12 @@
 
 
 import { createWebHistory, createRouter } from 'vue-router'
-import Wordstems from "../components/Wordstems/Wordstems.vue";
+import Wordstems from "@/views/WordstemsView.vue";
 import WordstemArticle from "../components/Wordstems/WordstemArticle.vue";
 import ProperNouns from "../components/Propernouns/ProperNounsList.vue";
-import NotImplemented from "../components/Profile/NotImplemented.vue";
-import Home from "../components/Home/Home.vue";
-import Game from '../components/Game/GameRoot.vue';
-import Contact from '../components/Home/Contact.vue';
+import NotImplemented from "@/components/profile/NotImplemented.vue";
+import Home from "@/views/HomeView.vue";
+import Game from '@/components/game/GameRoot.vue';
 
 const routes = [
   {
@@ -33,7 +32,7 @@ const routes = [
   },
   {
     path: '/sessionGame',
-    name: 'SessionGame',
+    name: 'game',
     component: Game
   },
   {
@@ -47,11 +46,6 @@ const routes = [
     name: 'UserProfile',
     component: NotImplemented
   },
-  {
-    path: '/contact',
-    name: 'Contact',
-    component: Contact
-  }
 ]
 
 const router = createRouter({
