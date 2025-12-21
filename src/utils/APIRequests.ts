@@ -1,8 +1,8 @@
 import { API_URL } from '@/utils/utils';
 
-export const getAPI = async (path: string, id: string) => {
+export const getAPI = async (path: string) => {
   try {
-    const response = await fetch(API_URL + path + id, {
+    const response = await fetch(API_URL + path, {
       method: "GET",
       headers: {
         Accept: "application/json",
