@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import WordstemTable from "@/components/Wordstems/WordstemTable.vue";
-import CreateWordstem from "@/components/Wordstems/CreateWordstem.vue";
+import WordstemTable from "@/components/wordstems/WordstemTable.vue";
+import CreateWordstem from "@/components/wordstems/CreateWordstem.vue";
 import SearchInput from '@/components/search/SearchInput.vue';
 import { getAPI } from '@/utils/APIRequests';
 import { SemanticField } from '@/utils/types';
