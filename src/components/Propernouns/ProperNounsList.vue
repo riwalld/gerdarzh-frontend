@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import CreateProperNoun from "./CreateProperNoun.vue";
-import ProperNounArticle from "./ProperNounArticle.vue";
+import ProperNounArticle from "./properNounArticle.vue";
 import { useI18n } from 'vue-i18n';
-import PropernounRow from '@/components/Propernouns/PropernounRow.vue';
+import PropernounRow from '@/components/propernouns/PropernounRow.vue';
 import { API_URL } from '@/utils/utils';
 const { t } = useI18n();
 defineProps({});
