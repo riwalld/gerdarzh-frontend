@@ -36,6 +36,12 @@ export interface WordStemDto {
   sources: number[];
 }
 
+export interface MiniWordStem {
+  id?: number;
+  name: string;
+  lang: string;
+}
+
 export interface WordStemPayload {
   gender: string;
   id?: number;
