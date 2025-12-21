@@ -1,5 +1,5 @@
 import {createApp} from 'vue/dist/vue.esm-bundler'
-import Root from './components/Root.vue'
+import App from './App.vue'
 import router from './router/index.js'
 import "./main.css";
 import en from './locales/en.json';
@@ -17,7 +17,7 @@ const i18n = createI18n({
   },
 });
 
-createApp(Root)
+createApp(App)
   .use(router)
   .use(i18n)
   .mount('#app')
