@@ -1,27 +1,13 @@
 <script setup lang='ts'>
-import { defineProps, PropType } from 'vue';
 import { SemanticField, WordStemDto } from '../../utils/types';
 import { useI18n } from 'vue-i18n';
 const { t, locale } = useI18n();
 
-const props = defineProps({
-  wordstem: {
-    type: Object as PropType<WordStemDto>,
-    required: true
-  },
-  semfields: {
-    type: Array as PropType<SemanticField[]>,
-    required: true
-  }
-});
-/*
-const emit = defineEmits(['handleShowWordstem']);
+const props = defineProps<{
+  wordstem: WordStemDto,
+  semfields: SemanticField[]
+}>();
 
-const handleShowWordstem = (wordstem: Object) => {
-  console.log(wordstem);
-  emit('handleShowWordstem', wordstem);
-};
-*/
 </script>
 
 <template>

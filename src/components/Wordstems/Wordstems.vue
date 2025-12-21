@@ -114,9 +114,9 @@ const sortTable = (columnIndex: number) => {
 };
 
 onMounted(async () => {
-  wordStems.value = await getAPI("/wordstems", '')
-  semfields.value = await getAPI("/semanticFields/", '')
-  sources.value = await getAPI("/sources/", '')
+  wordStems.value = await getAPI("/wordstems")
+  semfields.value = await getAPI("/semanticFields/")
+  sources.value = await getAPI("/sources/")
   wordStems.value.sort((a, b) => checkOrder(a.name, b.name));
 });
 </script>

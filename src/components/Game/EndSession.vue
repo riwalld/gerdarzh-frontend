@@ -41,6 +41,6 @@ watch([props.isVictory, props.result], () => {
         <div>
             <img :src="imageBackground" />
         </div>
-        <div class="btn"><a :href="$router.resolve({ name: 'SessionGame' }).href">{{ t('back-to-menu') }}</a></div>
+        <div class="btn"><a :href="$router.resolve({ name: 'game' }).href">{{ t('back-to-menu') }}</a></div>
     </section>
 </template>

@@ -20,11 +20,11 @@ const currentYear = new Date().getFullYear();
       </div>
       <div class="flex flex-col pb-8 min-w-48">
         <FooterButton text="home" router="Home"></FooterButton>
-        <FooterButton text="game" router="SessionGame"></FooterButton>
+        <FooterButton text="game" router="game"></FooterButton>
         <FooterButton text="lexicon" router="Worsdtems"></FooterButton>
         <FooterButton text="entities" router="ProperNouns"></FooterButton>
         <FooterButton text="profile" router="UserProfile"></FooterButton>
-        <FooterButton text="contact" router="Contact"></FooterButton>
+        <a href="mailto:contact@gerdarzh.bzh">contact@gerdarzh.bzh</a>
       </div>
       <div class="pt-1">
         <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr"> <img class="mt-8"

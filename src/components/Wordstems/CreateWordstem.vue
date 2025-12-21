@@ -70,9 +70,9 @@ watch(
 )
 
 onMounted(async () => {
-  semfields.value = await getAPI('/semanticFields/', '');
-  sourceList.value = await getAPI('/sources/', '');
-  wordstems.value = await getAPI('/wordstems/', '');
+  semfields.value = await getAPI('/semanticFields/');
+  sourceList.value = await getAPI('/sources/');
+  wordstems.value = await getAPI('/wordstems/');
 });
 </script>
 

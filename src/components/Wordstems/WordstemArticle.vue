@@ -20,12 +20,12 @@ const getSrc = (id: number) => {
   }
 };
 watch(() => route.params.wordStemId, async (newId) => {
-  wordstem.value = await getAPI('/wordstems/', String(newId));
+  wordstem.value = await getAPI('/wordstems/' + newId);
 });
 onBeforeMount(async () => {
-  wordstem.value = await getAPI('/wordstems/', String(route.params.wordStemId));
-  semfields.value = await getAPI('/semanticFields/', '');
-  sources.value = await getAPI('/sources/', '');
+  wordstem.value = await getAPI('/wordstems/' + route.params.wordStemId);
+  semfields.value = await getAPI('/semanticFields/');
+  sources.value = await getAPI('/sources/');
 });
 </script>
 <template>

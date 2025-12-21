@@ -15,7 +15,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <header class="justify-center m-auto">
+  <header class="justify-center m-auto sticky">
     <div class="flex flex-col justify-center w-[100%] max-w-[1200px]">
       <!--<img style="top: 30px;" :src="navLogo" width="80" height="80" alt="test">-->
       <div class="w-[500px] m-auto">
@@ -27,7 +27,7 @@ onMounted(() => {
 
       <div class="text-white flex flex-row justify-center px-0 m-auto w-full mr-5 font-[Lato,Calibri]">
         <div class="summary-btn"><a :href="$router.resolve({ name: 'Home' }).href">{{ t('home') }}</a></div>
-        <div class="summary-btn"><a :href="$router.resolve({ name: 'SessionGame' }).href">{{ t('game') }}</a></div>
+        <div class="summary-btn"><a :href="$router.resolve({ name: 'game' }).href">{{ t('game') }}</a></div>
         <div class="summary-btn"><a :href="$router.resolve({ name: 'Worsdtems' }).href">{{ t('lexicon') }}</a></div>
         <div class="summary-btn"><a :href="$router.resolve({ name: 'ProperNouns' }).href">{{ t('entities') }}</a></div>
         <div class="summary-btn"><a :href="$router.resolve({ name: 'UserProfile' }).href">{{ t('profile') }}</a></div>
