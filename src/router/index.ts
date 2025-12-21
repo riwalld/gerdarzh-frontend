@@ -2,8 +2,8 @@
 
 import { createWebHistory, createRouter } from 'vue-router'
 import Wordstems from "@/views/WordstemsView.vue";
-import WordstemArticle from "../components/Wordstems/WordstemArticle.vue";
-import ProperNouns from "../components/Propernouns/ProperNounsList.vue";
+import WordstemArticle from "../components/wordstems/WordstemArticle.vue";
+import ProperNouns from "../components/propernouns/ProperNounsList.vue";
 import NotImplemented from "@/components/profile/NotImplemented.vue";
 import Home from "@/views/HomeView.vue";
 import Game from '@/components/game/GameRoot.vue';
