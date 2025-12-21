@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import WordstemRow from "@/components/Wordstems/WordstemRow.vue";
+import WordstemRow from "@/components/wordstems/WordstemRow.vue";
 import { WordStemDto, SemanticField } from '@/utils/types';
 import { useI18n } from 'vue-i18n';
 import { getAPI } from '@/utils/APIRequests';
