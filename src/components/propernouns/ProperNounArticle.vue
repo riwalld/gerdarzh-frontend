@@ -28,14 +28,14 @@ function close() {
       <div style="display: flex; padding: 10px">
         <div v-if="propernoun">
           <div class="etymoInfo">
-            <div>
+            <div class="m-auto">
               <img :src="getImage(propernoun.image)" />
             </div>
 
             <div style="display: flex; flex-direction: column">
-              <div style="padding: 30px">
-                <h2 style="padding-bottom: 20px">{{ propernoun.currentName }}</h2>
-                <div style="font-size: larger; font-weight: bold">{{ propernoun.descrFr }}</div>
+              <div class="m-auto">
+                <h2 class="text-center">{{ propernoun.currentName }}</h2>
+                <div class="font-bold p-5">{{ propernoun.descrFr }}</div>
               </div>
               <div class="flex gap-3">
                 {{ t('literal_meaning') }}:
