@@ -1,34 +1,43 @@
-
-
 import { createWebHistory, createRouter } from 'vue-router'
-import Wordstems from "@/views/WordstemsView.vue";
-import WordstemArticle from "@/components/wordstems/WordstemArticle.vue";
-import ProperNouns from "@/components/propernouns/ProperNounsList.vue";
-import NotImplemented from "@/components/profile/NotImplemented.vue";
-import Home from "@/views/HomeView.vue";
-import Game from '@/components/game/GameRoot.vue';
+import Wordstems from '@/views/WordstemsView.vue'
+import WordstemArticle from '@/components/wordstems/WordstemArticle.vue'
+import ProperNouns from '@/components/propernouns/ProperNounsList.vue'
+import NounsCards from '@/components/propernouns/ProperNounCards.vue'
+import LitCards from '@/components/propernouns/LitteralTransCards.vue'
+import NotImplemented from '@/components/profile/NotImplemented.vue'
+import Home from '@/views/HomeView.vue'
+import Game from '@/components/game/GameRoot.vue'
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'home',
     component: Home
   },
   {
-    path: '/wordstems/list',
-    name: 'Worsdtems',
+    path: '/lexicon/list',
+    name: 'wordstems',
     component: Wordstems
   },
   {
-    path: '/wordstems/:wordStemName/:wordStemId/',
+    path: '/lexicon/:wordStemName/:wordStemId/',
     name: 'wordstem-detail',
-    component: WordstemArticle,
-  }
-  ,
+    component: WordstemArticle
+  },
   {
     path: '/nouns/list',
-    name: 'ProperNouns',
+    name: 'propernouns',
     component: ProperNouns
+  },
+  {
+    path: '/nouncards',
+    name: 'NounCard',
+    component: NounsCards
+  },
+  {
+    path: '/litcards',
+    name: 'LitCard',
+    component: LitCards
   },
   {
     path: '/sessionGame',
@@ -39,18 +48,17 @@ const routes = [
     path: '/leaderboard',
     name: 'Leaderboard',
     component: NotImplemented
-  }
-  ,
+  },
   {
     path: '/userprofile',
     name: 'UserProfile',
     component: NotImplemented
-  },
+  }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes
 })
 
 export default router
