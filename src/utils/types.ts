@@ -96,4 +96,5 @@ export interface Source {
 export interface PcRadicals {
   id: number
   name: string
+  fr: string
 }
