@@ -1,19 +1,41 @@
-import { getAPI } from "@/utils/APIRequests"
-import { MiniWordStem, SemanticField } from "@/utils/types"
-import { defineStore } from "pinia"
-import { ref } from "vue"
+import { getAPI } from '@/utils/APIRequests'
+import { Language, MiniWordStem, SemanticField } from '@/utils/types'
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
-export const useBasicSets = defineStore('worstemSet', () => {
-    const worstemSet = ref<MiniWordStem[]>([])
-    const semFieldSet = ref<SemanticField[]>([])
-    async function fetchBasicSets() {
-        worstemSet.value = await getAPI('/wordstemstrset')
-        semFieldSet.value = await getAPI('/semanticFields')
+export const useSearchInputParametersStore = defineStore('searchInputParameters', {
+  state: () => ({
+    semfieldList: ref<SemanticField[]>([]),
+    languageList: ref<Language[]>([]),
+    miniWordstemList: ref<MiniWordStem[]>([])
+  }),
+  actions: {
+    async fetchSearchInputParameters() {
+      //this.semfieldList = await getAPI('/semfields')
+      this.languageList = await getAPI('/languages')
+      //this.miniWordstemList = await getAPI('/miniwordstems')
     }
+  }
+})
 
-    return {
-        fetchWordstemSet: fetchBasicSets,
-        worstemSet,
-        semFieldSet
+export const useStatisticNumbersStore = defineStore('miniwordstems', {
+  state: () => ({
+    miniWordstemCount: ref<number>(0)
+  }),
+  actions: {
+    async fetchWordstems() {
+      this.miniWordstemCount = await getAPI('/wordstemstrcount')
     }
+  }
+})
+
+export const useLanguageStore = defineStore('languages', {
+  state: () => ({
+    languageList: ref<Language[]>([])
+  }),
+  actions: {
+    async fetchLanguages() {
+      this.languageList = await getAPI('/languagesset')
+    }
+  }
 })

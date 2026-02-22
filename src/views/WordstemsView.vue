@@ -6,11 +6,11 @@ import SearchInput from '@/components/search/SearchInput.vue'
 import { getAPI } from '@/utils/APIRequests'
 import { SemanticField } from '@/utils/types'
 import { useI18n } from 'vue-i18n'
-import { useBasicSets } from '@/stores/basicData'
-const basicSets = useBasicSets()
+import { useStatisticNumbersStore } from '@/stores/basicData'
+const miniWordstemsStore = useStatisticNumbersStore()
 
 onMounted(async () => {
-  await basicSets.fetchWordstemSet()
+  await miniWordstemsStore.fetchWordstems()
 })
 
 const { t } = useI18n()
@@ -32,7 +32,7 @@ onMounted(async () => {
 <template>
   <section class="text-center justify-center m-auto">
     <h2>{{ t('etymolgical_lexic') }}</h2>
-    <h3>{{ t('number_words') }}: {{ basicSets.worstemSet.length }}</h3>
+    <h3>{{ t('number_words') }}: {{ miniWordstemsStore.miniWordstemCount }}</h3>
     <SearchInput />
     <button v-if="false" class="p-2 bg-slate-300" @click="handleAddWordstem(true)">
       {{ t('add_term') }}
