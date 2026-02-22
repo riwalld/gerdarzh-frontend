@@ -98,3 +98,10 @@ export interface PcRadicals {
   name: string
   fr: string
 }
+export interface Language {
+  br_name: string
+  code: string
+  abbr: string
+  fr_name: string
+  en_name: string
+}
