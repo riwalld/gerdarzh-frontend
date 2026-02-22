@@ -19,7 +19,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <header class="m-auto sticky">
+  <header class="sticky">
     <div class="flex justify-between">
       <!--<img style="top: 30px;" :src="navLogo" width="80" height="80" alt="test">-->
       <div class="w-[200px] ml-28">

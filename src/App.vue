@@ -5,6 +5,6 @@ import NavBar from '@/components/layout/NavBar.vue'
 
 <template>
   <nav-bar></nav-bar>
-  <router-view></router-view>
+  <router-view class="min-h-[calc(100vh-300px)]"></router-view>
   <footer-bar></footer-bar>
 </template>

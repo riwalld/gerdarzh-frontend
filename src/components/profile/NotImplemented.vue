@@ -1,4 +1,1 @@
-
-
-
-<template>    <h2>Data non implémentée dans l'IHM</h2></template>
+<template><h2>Da zont</h2></template>
