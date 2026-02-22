@@ -7,6 +7,18 @@ import br from './locales/br.json'
 import fr from './locales/fr.json'
 import { createI18n } from 'vue-i18n'
 import { createPinia } from 'pinia'
+
+// Vuetify
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+
+const vuetify = createVuetify({
+  components,
+  directives
+})
+
 const pinia = createPinia()
 const i18n = createI18n({
   locale: 'br',
@@ -18,4 +30,4 @@ const i18n = createI18n({
   }
 })
 
-createApp(App).use(router).use(i18n).use(pinia).mount('#app')
+createApp(App).use(vuetify).use(router).use(i18n).use(pinia).mount('#app')
