@@ -33,6 +33,7 @@ onMounted(() => {
         <NavBarButton route="propernouns" title="entities"></NavBarButton
         ><NavBarButton route="game" title="game"></NavBarButton>
         <NavBarButton route="UserProfile" title="profile"></NavBarButton>
+        <NavBarButton route="NounCard" title="cards"></NavBarButton>
       </div>
 
       <div class="p-2 mx-10 w-32">
