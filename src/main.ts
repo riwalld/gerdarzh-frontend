@@ -21,8 +21,8 @@ const vuetify = createVuetify({
 
 const pinia = createPinia()
 const i18n = createI18n({
-  locale: 'br',
-  fallbackLocale: ['en', 'fr'],
+  locale: 'fr',
+  fallbackLocale: ['en', 'br'],
   messages: {
     en,
     br,
