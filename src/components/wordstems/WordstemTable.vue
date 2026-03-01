@@ -32,8 +32,37 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="m-10">
-    <table class="text-sm w-full">
+  <div class="m-5">
+    <div class="flex flex-row justify-end">
+      <button
+        class="mx-2 p-1 bg-slate-300 border border-gray-500 rounded-lg"
+        v-if="pageNum < pageAmount"
+        @click="updatePage(pageNum - 1, orderingType)"
+      >
+        {{ t('previous') }}
+      </button>
+      <div
+        class="mx-2 p-1 bg-slate-300 border border-gray-500 rounded-lg cursor-pointer"
+        @click="updatePage(pageNum - 1, orderingType)"
+      >
+        {{ pageNum - 1 }}
+      </div>
+      <div class="mx-2 p-1 bg-slate-100 border border-gray-500 rounded-lg">{{ pageNum }}</div>
+      <div
+        class="mx-2 p-1 bg-slate-300 border border-gray-500 rounded-lg cursor-pointer"
+        @click="updatePage(pageNum + 1, orderingType)"
+      >
+        {{ pageNum + 1 }}
+      </div>
+      <button
+        class="mx-2 p-1 bg-slate-300 border border-gray-500 rounded-lg"
+        v-if="pageNum < pageAmount"
+        @click="updatePage(pageNum + 1, orderingType)"
+      >
+        {{ t('next') }}
+      </button>
+    </div>
+    <table class="text-sm w-[700px]">
       <thead class="bg-white">
         <tr>
           <th class="w-5">
@@ -62,15 +91,5 @@ onMounted(async () => {
         />
       </tbody>
     </table>
-
-    <div class="text-center mt-4">
-      <button v-if="pageNum > 1" @click="updatePage(pageNum - 1, orderingType)">
-        {{ t('previous') }}
-      </button>
-      <span class="mx-2">Page: {{ pageNum }}</span>
-      <button v-if="pageNum < pageAmount" @click="updatePage(pageNum + 1, orderingType)">
-        {{ t('next') }}
-      </button>
-    </div>
   </div>
 </template>

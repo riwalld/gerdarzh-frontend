@@ -17,15 +17,17 @@ const noResult = ref<boolean>(false)
 const searchInputParametersStore = useSearchInputParametersStore()
 
 const selectedLanguages = ref<string[]>([])
-const handleShowWordstem = (wordstem: WordStemDto) => {
-  inputValue.value = ''
-  searchResult.value = false
-  showWordstem.value = wordstem
-}
+const selectedSemfield = ref<string[]>([])
 function toggleLanguage(code: string) {
   const idx = selectedLanguages.value.indexOf(code)
   if (idx === -1) selectedLanguages.value.push(code)
   else selectedLanguages.value.splice(idx, 1)
+}
+
+function toggleSemField(code: string) {
+  const idx = selectedSemfield.value.indexOf(code)
+  if (idx === -1) selectedSemfield.value.push(code)
+  else selectedSemfield.value.splice(idx, 1)
 }
 
 const searching = async () => {
@@ -39,8 +41,8 @@ const searching = async () => {
     params.append('lang', selectedLanguages.value.join(','))
   }
 
-  if (lexicalField.value) {
-    params.append('field', lexicalField.value)
+  if (selectedSemfield.value.length > 0) {
+    params.append('field', selectedSemfield.value.join(','))
   }
 
   if (!includeDerived.value) {
@@ -60,30 +62,47 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="w-96 m-auto flex flex-col items-top gap-5">
+  <div class="m-auto flex flex-col items-top gap-5 m-16">
     <input
       type="text"
       v-model="inputValue"
       :placeholder="t('search')"
       @focus="searchResult = true"
       @keydown.enter="searching"
-    />{{ selectedLanguages }}
-    <v-row>
-      <v-col
-        v-for="language in searchInputParametersStore.languageList"
-        :key="language.code"
-        cols="3"
-      >
-        <v-btn
-          :class="{ 'active-btn': selectedLanguages.includes(language.code) }"
-          :id="'lang-' + language.code"
-          block
-          @click="toggleLanguage(language.code)"
-          >{{ language.code }}
-        </v-btn>
-      </v-col>
-    </v-row>
-
+    />
+    <div class="flex flex-row gap-16">
+      <div class="w-48">
+        <h2>{{ t('languages') }}</h2>
+        <v-row>
+          <v-col v-for="language in searchInputParametersStore.languageList" :key="language.code">
+            <v-btn
+              size="x-small"
+              :class="{ 'active-btn': selectedLanguages.includes(language.code) }"
+              :id="'lang-' + language.code"
+              block
+              @click="toggleLanguage(language.code)"
+              >{{ language.code }}
+            </v-btn>
+          </v-col>
+        </v-row>
+      </div>
+      <div class="w-[500px]">
+        <h2>{{ t('semantic_fields') }}</h2>
+        <v-row>
+          <v-col v-for="semfield in searchInputParametersStore.semfieldList" :key="semfield.id">
+            <v-btn
+              size="x-small"
+              :class="{ 'active-btn': selectedSemfield.includes(semfield.id.toString()) }"
+              :id="'lang-' + semfield.id"
+              class="text-sm"
+              block
+              @click="toggleSemField(semfield.id.toString())"
+              >{{ semfield.frName }}
+            </v-btn>
+          </v-col>
+        </v-row>
+      </div>
+    </div>
     <div
       class="absolute w-96 z-[1000] mx-auto bg-white shadow-[0px_1px_2px_#CCC]"
       v-show="searchResult"

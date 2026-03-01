@@ -11,7 +11,7 @@ export const useSearchInputParametersStore = defineStore('searchInputParameters'
   }),
   actions: {
     async fetchSearchInputParameters() {
-      //this.semfieldList = await getAPI('/semfields')
+      this.semfieldList = await getAPI('/semanticFields')
       this.languageList = await getAPI('/languages')
       //this.miniWordstemList = await getAPI('/miniwordstems')
     }
