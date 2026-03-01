@@ -847,17 +847,6 @@ input[type=submit] {
     color: #ffffff;
 }
 
-
-table {
-    border-spacing: 0px;
-    font-family: Verdana;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
-    margin-top: 30px;
-    row-gap: 10px;
-}
-
 th {
     padding: 15px;
 }
