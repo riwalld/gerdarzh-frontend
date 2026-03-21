@@ -13,8 +13,8 @@ const props = defineProps<{
 <template>
   <tr v-if="wordstem && basicSets.semfieldList">
     <td>
-      <span class="langws" :title="t(props.wordstem.wordStemLanguage)">
-        {{ t(wordstem.wordStemLanguage + '_abbr') }}
+      <span class="langws" :title="t(props.wordstem.language.name)">
+        {{ t(props.wordstem.language.name) }}
       </span>
     </td>
     <td>
@@ -35,8 +35,9 @@ const props = defineProps<{
       </router-link>
     </td>
     <td>
-      <i v-if="locale == 'fr'">{{ wordstem.frTranslation }}</i>
-      <i v-if="locale == 'en'">{{ wordstem.engTranslation }}</i>
+      <span v-for="translation in wordstem.translations" v-if="locale == 'fr'">{{
+        translation
+      }}</span>
     </td>
     <td>{{ wordstem.firstOccurrence }}</td>
     <td

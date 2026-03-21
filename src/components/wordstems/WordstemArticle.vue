@@ -67,9 +67,8 @@ onBeforeMount(async () => {
           </div>
           <div class="definition-box">
             <h3>{{ t('translations') }}</h3>
-            <div>
-              <div v-if="locale == 'fr'">{{ wordstem.frTranslation }}</div>
-              <div v-if="locale == 'en'">{{ wordstem.engTranslation }}</div>
+            <div v-for="translation in wordstem.translations" v-if="locale == 'fr'">
+              {{ translation.value }}
             </div>
           </div>
           <div class="definition-box">

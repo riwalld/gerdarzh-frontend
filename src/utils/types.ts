@@ -21,7 +21,7 @@ export interface WordStemDto {
   gender: string
   id?: number
   wordClass: string
-  wordStemLanguage: string
+  language: Language
   name: string
   parents: relatedWordstemDTO[]
   children: relatedWordstemDTO[]
@@ -30,8 +30,7 @@ export interface WordStemDto {
   engDescription: string | null
   frDescription: string | null
   phonetic: string
-  engTranslation: string
-  frTranslation: string
+  translations: Translation[]
   sources: number[]
 }
 
@@ -45,7 +44,7 @@ export interface WordStemPayload {
   gender: string
   id?: number
   wordClass: string
-  wordStemLanguage: string
+  language: string
   name: string
   parents_ids: number[]
   children_ids: number[]
@@ -54,21 +53,28 @@ export interface WordStemPayload {
   engDescription: string | null
   frDescription: string | null
   phonetic: string
-  engTranslation: string
-  frTranslation: string
+  translations: string
   sources: number[]
 }
 
 export interface relatedWordstemDTO {
   word_stem_id: number
-  word_stem_language: string
+  language: Language
   name: string
   firstOccurrence: string
   phonetic: string
-  ref_words_eng: string
-  ref_words_fr: string
+  translations: Translation[]
   parent_stems_reverse: relatedWordstemDTO[]
   child_stems: relatedWordstemDTO[]
+}
+
+export interface Translation {
+  language: Language
+  value: string
+}
+export interface Language {
+  code: string
+  name: string
 }
 
 export interface LitTrans {
@@ -97,11 +103,4 @@ export interface PcRadicals {
   id: number
   name: string
   fr: string
-}
-export interface Language {
-  br_name: string
-  code: string
-  abbr: string
-  fr_name: string
-  en_name: string
 }

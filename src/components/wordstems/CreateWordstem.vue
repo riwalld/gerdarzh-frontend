@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { ref, defineEmits, onMounted, watch, reactive } from 'vue';
-import { getAPI, postAPI } from "../../utils/APIRequests"
-import { useI18n } from 'vue-i18n';
-import { SemanticField, Source, WordStemDto, WordStemPayload } from '../../utils/types';
-import MultipleSelection from '../MultipleSelection.vue';
-const { t } = useI18n();
+import { ref, defineEmits, onMounted, watch, reactive } from 'vue'
+import { getAPI, postAPI } from '../../utils/APIRequests'
+import { useI18n } from 'vue-i18n'
+import { SemanticField, Source, WordStemDto, WordStemPayload } from '../../utils/types'
+import MultipleSelection from '../MultipleSelection.vue'
+const { t } = useI18n()
 const semFieldl = ref<SemanticField>({
   id: 0,
   frName: '',
   engName: ''
-});
+})
 const wordstemDto = reactive<WordStemPayload>({
   gender: '',
   wordClass: '',
-  wordStemLanguage: '',
+  language: '',
   name: '',
   parents_ids: [],
   children_ids: [],
@@ -22,43 +22,41 @@ const wordstemDto = reactive<WordStemPayload>({
   engDescription: '',
   frDescription: '',
   phonetic: '',
-  engTranslation: '',
-  frTranslation: '',
-  sources: [],
-});
+  translations: '',
+  sources: []
+})
 
+const sourceList = ref<Source[]>()
+const semfields = ref<SemanticField[]>([])
+const wordstems = ref<WordStemDto[]>([])
 
-const sourceList = ref<Source[]>();
-const semfields = ref<SemanticField[]>([]);
-const wordstems = ref<WordStemDto[]>([]);
-
-const emit = defineEmits(['handleAddWordstem']);
+const emit = defineEmits(['handleAddWordstem'])
 const handleAddWordstem = (value: boolean) => {
-  emit('handleAddWordstem', value);
-};
+  emit('handleAddWordstem', value)
+}
 
 const close = () => {
-  handleAddWordstem(false);
-};
+  handleAddWordstem(false)
+}
 
 const postWordstem = async () => {
-  postAPI('/wordstems/', wordstemDto);
-};
+  postAPI('/wordstems/', wordstemDto)
+}
 
 function addParent(val: number) {
   if (val == null) {
-    wordstemDto.parents_ids = [];
+    wordstemDto.parents_ids = []
   } else {
-    wordstemDto.parents_ids.push(val);
+    wordstemDto.parents_ids.push(val)
   }
 }
 
 function addChild(val: number) {
-  wordstemDto.children_ids.push(val);
+  wordstemDto.children_ids.push(val)
 }
 
 function addSource(val: number) {
-  wordstemDto.sources.push(val);
+  wordstemDto.sources.push(val)
 }
 watch(
   () => wordstemDto.sources,
@@ -70,26 +68,26 @@ watch(
 )
 
 onMounted(async () => {
-  semfields.value = await getAPI('/semanticFields/');
-  sourceList.value = await getAPI('/sources/');
-  wordstems.value = await getAPI('/wordstems/');
-});
+  semfields.value = await getAPI('/semanticFields/')
+  sourceList.value = await getAPI('/sources/')
+  wordstems.value = await getAPI('/wordstems/')
+})
 </script>
 
 <template>
   <div id="modal-bg" class="modal">
-    {{ }}
+    {{}}
     <div class="modal-content text-xxl">
       <span class="close" @click="close()">&times;</span>
       <h2>{{ t('propose_new_term') }}</h2>
       <form @submit.prevent="postWordstem">
-        <div style="display: flex; flex-direction: row; gap: 40px;">
+        <div style="display: flex; flex-direction: row; gap: 40px">
           <div>
             <label for="name">{{ t('term') }}</label>
-            <input type="text" v-model="wordstemDto.name" required><br><br>
+            <input type="text" v-model="wordstemDto.name" required /><br /><br />
 
             <label for="wordStemLanguage">{{ t('language_of_word') }}</label>
-            <select v-model="wordstemDto.wordStemLanguage" required>
+            <select v-model="wordstemDto.language" required>
               <option value="LB">{{ t('breton') }}</option>
               <option value="LBQ">{{ t('brittonic') }}</option>
               <option value="LC">{{ t('cornish') }}</option>
@@ -103,11 +101,11 @@ onMounted(async () => {
               <option value="LS">{{ t('scottish_gaelic') }}</option>
               <option value="LPC">{{ t('proto_celtic') }}</option>
               <option value="LW">{{ t('welsh') }}</option>
-              <option value="LLT">{{ t('latin') }}</option>
-            </select><br><br>
+              <option value="LLT">{{ t('latin') }}</option></select
+            ><br /><br />
 
             <label for="phonetic">{{ t('phonetic') }}</label>
-            <input type="text" v-model="wordstemDto.phonetic" required><br><br>
+            <input type="text" v-model="wordstemDto.phonetic" required /><br /><br />
 
             <label for="gender">{{ t('gender') }}</label>
             <select v-model="wordstemDto.gender" required>
@@ -115,8 +113,8 @@ onMounted(async () => {
               <option value="GF">{{ t('feminine') }}</option>
               <option value="GN">{{ t('neutral') }}</option>
               <option value="GU">{{ t('unknown') }}</option>
-              <option value="NO">{{ t('na') }}</option>
-            </select><br><br>
+              <option value="NO">{{ t('na') }}</option></select
+            ><br /><br />
 
             <label for="wordClass">{{ t('word_class') }}</label>
             <select v-model="wordstemDto.wordClass" required>
@@ -128,43 +126,50 @@ onMounted(async () => {
               <option value="WPRN">{{ t('pronoun') }}</option>
               <option value="WPREP">{{ t('preposition') }}</option>
               <option value="WCONJ">{{ t('conjunction') }}</option>
-              <option value="WAF">{{ t('affix') }}</option>
-            </select><br><br>
-
-            <label for="engTranslation">{{ t('english_translation') }}</label>
-            <input type="text" v-model="wordstemDto.engTranslation" required><br><br>
-
-            <label for="frTranslation">{{ t('french_translation') }}</label>
-            <input type="text" v-model="wordstemDto.frTranslation" required><br><br>
+              <option value="WAF">{{ t('affix') }}</option></select
+            ><br /><br />
 
             <label for="engDescription">{{ t('english_Description') }}</label>
-            <input type="text" v-model="wordstemDto.engDescription" required><br><br>
+            <input type="text" v-model="wordstemDto.engDescription" required /><br /><br />
 
             <label for="frDescription">{{ t('french_Description') }}</label>
-            <input type="text" v-model="wordstemDto.frDescription" required><br><br>
+            <input type="text" v-model="wordstemDto.frDescription" required /><br /><br />
           </div>
-          <div style="width: 200px;">
+          <div style="width: 200px">
             <label for="semanticField">{{ t('semantic_field') }}</label>
             <select v-model="wordstemDto.semanticField" required>
               <option v-for="semfield in semfields" :key="semfield.id" :value="semfield.id">
                 {{ semfield.frName }}
-              </option>
-            </select><br><br>
+              </option></select
+            ><br /><br />
 
             <label for="firstOccurence">{{ t('first_occurrence') }}</label>
-            <input type="number" v-model="wordstemDto.firstOccurrence" required><br><br>
+            <input type="number" v-model="wordstemDto.firstOccurrence" required /><br /><br />
 
             <label for="sources">{{ t('reference_book') }}</label>
-            <MultipleSelection v-if="sourceList" :currentPayload="wordstemDto" :object-list="sourceList"
-              :selected-list="wordstemDto.sources" @update="addSource" />
+            <MultipleSelection
+              v-if="sourceList"
+              :currentPayload="wordstemDto"
+              :object-list="sourceList"
+              :selected-list="wordstemDto.sources"
+              @update="addSource"
+            />
 
             <label for="parentsInput">{{ t('parents_wordstems') }}:</label>
-            <MultipleSelection :currentPayload="wordstemDto" :object-list="wordstems"
-              :selected-list="wordstemDto.parents_ids" @update="addParent" />
+            <MultipleSelection
+              :currentPayload="wordstemDto"
+              :object-list="wordstems"
+              :selected-list="wordstemDto.parents_ids"
+              @update="addParent"
+            />
 
             <label for="parentsInput">{{ t('children_wordstems') }}:</label>
-            <MultipleSelection :currentPayload="wordstemDto" :object-list="wordstems"
-              :selected-list="wordstemDto.children_ids" @update="addChild" />
+            <MultipleSelection
+              :currentPayload="wordstemDto"
+              :object-list="wordstems"
+              :selected-list="wordstemDto.children_ids"
+              @update="addChild"
+            />
 
             <button type="submit">{{ t('send') }}</button>
           </div>
@@ -172,5 +177,4 @@ onMounted(async () => {
       </form>
     </div>
   </div>
-
 </template>
