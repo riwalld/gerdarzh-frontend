@@ -4,14 +4,15 @@ import { getAPI } from '@/utils/APIRequests'
 import { WordStemDto } from '@/utils/types'
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+const emit = defineEmits<{
+  (e: 'lgs', value: string[]): void
+  (e: 'smfields', value: string[]): void
+}>()
 
-const burger = ref(false)
 const { t, locale } = useI18n()
 const searchResult = ref(false)
 const inputValue = ref('')
-const lexicalField = ref('')
 const includeDerived = ref<boolean>(false)
-const showWordstem = ref<WordStemDto | null>(null)
 const resultList = ref<WordStemDto[]>([])
 const noResult = ref<boolean>(false)
 const searchInputParametersStore = useSearchInputParametersStore()
@@ -22,12 +23,14 @@ function toggleLanguage(code: string) {
   const idx = selectedLanguages.value.indexOf(code)
   if (idx === -1) selectedLanguages.value.push(code)
   else selectedLanguages.value.splice(idx, 1)
+  emit('lgs', selectedLanguages.value)
 }
 
 function toggleSemField(code: string) {
   const idx = selectedSemfield.value.indexOf(code)
   if (idx === -1) selectedSemfield.value.push(code)
   else selectedSemfield.value.splice(idx, 1)
+  emit('smfields', selectedSemfield.value)
 }
 
 const searching = async () => {
@@ -71,17 +74,18 @@ onMounted(async () => {
       @keydown.enter="searching"
     />
     <div class="flex flex-row gap-16">
-      <div class="w-48">
+      <div class="w-72">
         <h2>{{ t('languages') }}</h2>
         <v-row>
           <v-col v-for="language in searchInputParametersStore.languageList" :key="language.code">
             <v-btn
+              v-if="language.is_focus"
               size="x-small"
-              :class="{ 'active-btn': selectedLanguages.includes(language.code) }"
+              :color="selectedLanguages.includes(language.code) ? 'light-blue' : ''"
               :id="'lang-' + language.code"
               block
               @click="toggleLanguage(language.code)"
-              >{{ language.code }}
+              >{{ language.name }}
             </v-btn>
           </v-col>
         </v-row>
@@ -92,7 +96,7 @@ onMounted(async () => {
           <v-col v-for="semfield in searchInputParametersStore.semfieldList" :key="semfield.id">
             <v-btn
               size="x-small"
-              :class="{ 'active-btn': selectedSemfield.includes(semfield.id.toString()) }"
+              :color="selectedSemfield.includes(semfield.id.toString()) ? 'blue-grey' : ''"
               :id="'lang-' + semfield.id"
               class="text-sm"
               block

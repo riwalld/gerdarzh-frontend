@@ -41,11 +41,11 @@ onBeforeMount(async () => {
           >
             <img
               class="h-10"
-              :src="'/media/flags/flag_' + wordstem.wordStemLanguage + '.png'"
+              :src="'/media/flags/flag_' + wordstem.language.code + '.png'"
               height="15"
-              :alt="t(wordstem.wordStemLanguage)"
+              :alt="t(wordstem.language.code)"
             />
-            {{ t(wordstem.wordStemLanguage) }}
+            {{ t(wordstem.language.code) }}
           </div>
           <div class="bg-slate-200 rounded-md p-2">
             <span :title="t(wordstem.wordClass)">{{ t(wordstem.wordClass) }}</span>

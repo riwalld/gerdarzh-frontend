@@ -75,6 +75,7 @@ export interface Translation {
 export interface Language {
   code: string
   name: string
+  is_focus: boolean
 }
 
 export interface LitTrans {
