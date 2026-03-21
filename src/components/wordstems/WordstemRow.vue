@@ -37,9 +37,14 @@ const props = defineProps<{
       </router-link>
     </td>
     <td>
-      <span v-for="translation in wordstem.translations" v-if="locale == 'fr'">{{
-        translation.value
-      }}</span>
+      <span v-for="translation in wordstem.translations">
+        <span v-if="translation.language == 4 && locale == 'fr'"
+          >{{ translation.value }}&nbsp;</span
+        >
+        <span v-if="translation.language == 3 && locale == 'en'"
+          >{{ translation.value }}&nbsp;</span
+        >
+      </span>
     </td>
     <td>{{ wordstem.firstOccurrence }}</td>
     <td

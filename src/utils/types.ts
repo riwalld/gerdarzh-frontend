@@ -69,7 +69,7 @@ export interface relatedWordstemDTO {
 }
 
 export interface Translation {
-  language: Language
+  language: number
   value: string
 }
 export interface Language {
