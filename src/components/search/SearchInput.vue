@@ -66,13 +66,13 @@ onMounted(async () => {
 
 <template>
   <div class="m-auto flex flex-col items-top gap-5 m-16">
-    <input
+    <!--<input
       type="text"
       v-model="inputValue"
       :placeholder="t('search')"
       @focus="searchResult = true"
       @keydown.enter="searching"
-    />
+    />-->
     <div class="flex flex-row gap-16">
       <div class="w-72">
         <h2>{{ t('languages') }}</h2>

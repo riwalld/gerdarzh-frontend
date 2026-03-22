@@ -45,7 +45,7 @@ const updateWs = async () => {
   wsCount.value = response.count
 }
 
-watch(() => [props.lgs, props.smfields], updateWs)
+watch(() => [props.lgs, props.smfields], updateWs, { deep: true })
 
 onMounted(async () => {
   updateWs()
