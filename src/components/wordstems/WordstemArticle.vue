@@ -54,7 +54,7 @@ onBeforeMount(async () => {
 
       <div class="flex flex-row gap-5 justify-center">
         <div class="w-72">
-          <div class="definition-box">
+          <div v-if="wordstem.phonetic" class="definition-box">
             <h3>{{ t('pronunciation') }}</h3>
             <p>
               /<b>{{ t(wordstem.phonetic) }}</b
