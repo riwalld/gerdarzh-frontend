@@ -3,21 +3,17 @@ import { useI18n } from 'vue-i18n'
 import { onBeforeMount, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { getAPI } from '../../utils/APIRequests'
-import { SemanticField, Source, WordStemDto } from '@/utils/types'
+import { WordStemDto } from '@/utils/types'
 import EtymologicalNode from './EtymologicalNode.vue'
+import { useSearchInputParametersStore } from '@/stores/basicData'
+const basicSets = useSearchInputParametersStore()
 
 const route = useRoute()
 const { t, locale } = useI18n()
 const wordstem = ref<WordStemDto>()
-const semfields = ref<SemanticField[]>()
-const sources = ref<Source[]>()
 
 const emit = defineEmits(['handleShowWordstem'])
-const getSrc = (id: number) => {
-  if (sources) {
-    return sources.value?.find((source) => source.id === id)
-  }
-}
+
 watch(
   () => route.params.wordStemId,
   async (newId) => {
@@ -26,8 +22,6 @@ watch(
 )
 onBeforeMount(async () => {
   wordstem.value = await getAPI('/wordstem/' + route.params.wordStemId)
-  semfields.value = await getAPI('/semanticFields/')
-  sources.value = await getAPI('/sources/')
 })
 </script>
 <template>
@@ -48,9 +42,11 @@ onBeforeMount(async () => {
             {{ t(wordstem.language.code) }}
           </div>
           <div class="bg-slate-200 rounded-md p-2">
-            <span :title="t(wordstem.wordClass)">{{ t(wordstem.wordClass) }}</span>
+            <span v-if="wordstem.wordClass" :title="t(wordstem.wordClass)">{{
+              t(wordstem.wordClass)
+            }}</span>
             &nbsp;&nbsp;
-            <span :title="t(wordstem.gender)">{{ t(wordstem.gender) }}</span>
+            <span v-if="wordstem.gender" :title="t(wordstem.gender)">{{ t(wordstem.gender) }}</span>
             <p style="text-align: center; width: 50%; margin: auto">{{ wordstem.frDescription }}</p>
           </div>
         </div>
@@ -71,14 +67,14 @@ onBeforeMount(async () => {
               {{ translation.value }}
             </div>
           </div>
-          <div class="definition-box">
+          <!--<div class="definition-box">
             <h3>{{ t('sources') }}</h3>
             <ul v-if="wordstem?.sources && sources">
               <li v-for="src in wordstem.sources" :key="src - 1">
                 {{ getSrc(src)?.name }} ({{ getSrc(src)?.abbreviation }})
               </li>
             </ul>
-          </div>
+          </div>-->
         </div>
         <div class="w-72">
           <div class="definition-box">
@@ -110,12 +106,14 @@ onBeforeMount(async () => {
           </div>
           <div
             v-if="
-              semfields && wordstem.semanticField > 0 && wordstem.semanticField <= semfields.length
+              basicSets.semfieldList &&
+              wordstem.semanticField > 0 &&
+              wordstem.semanticField <= basicSets.semfieldList.length
             "
             class="definition-box"
           >
             <h3>{{ t('semantic_field') }}</h3>
-            <p>{{ semfields[wordstem.semanticField - 1].frName }}</p>
+            <p>{{ basicSets.semfieldList[wordstem.semanticField - 1].frName }}</p>
           </div>
         </div>
       </div>
